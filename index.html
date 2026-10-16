@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>Estadísticas de Recolección y Captura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 /* Layout: barra de marca + barra de período fija + segmentadores a la izquierda + pestañas de análisis. Look deliberadamente claro, estilo informe ejecutivo (un solo tema). */
@@ -256,6 +258,284 @@ td .lnk{border:0;background:none;padding:0;color:var(--brand-ink);font-weight:60
 }
 @media (max-width:560px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi .v{font-size:1.25rem}.donut-wrap{grid-template-columns:110px minmax(0,1fr)}.ficha{grid-template-columns:minmax(0,1fr)}.neg-res{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===================== Diseño 2.0 ===================== */
+:root{--bg:#edf2f4;--surface:#ffffff;--ink:#0d2328;--ink-2:#46595e;--muted:#7f9298;--line:#e1e8eb;
+  --brand:#0a8aa5;--brand-ink:#04637a;--brand-deep:#05303b;--brand-soft:#d9eff4;--brand-08:#eff7f9;--accent:#f29d38;
+  --shadow:0 1px 2px rgba(5,48,59,.05),0 10px 28px -12px rgba(5,48,59,.18);--r:16px;
+  --font:"Manrope","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif}
+body{font-family:var(--font);letter-spacing:-.003em}
+svg text{font-family:var(--font)}
+#gate{background:radial-gradient(900px 420px at 80% 0%,rgba(242,157,56,.22),transparent 60%),linear-gradient(150deg,#04252e 0%,#05505f 55%,#0a8aa5 100%)}
+.gcard{border-radius:20px}
+.top{background:radial-gradient(1000px 260px at 88% -60%,rgba(242,157,56,.28),transparent 60%),linear-gradient(118deg,#04252e 0%,#05505f 55%,#0a8aa5 100%);padding-block:16px}
+.top h1{font-size:1.06rem;font-weight:800;letter-spacing:.05em}
+.top .tsub{opacity:.88;margin-top:2px}
+.top .btn{border-radius:999px;padding:7px 14px}
+.role{background:rgba(242,157,56,.95);color:#2b1700}
+.fsearch input{border-radius:999px;background:rgba(255,255,255,.96)}
+.tabs{background:var(--surface);border-bottom:1px solid var(--line);padding-block:8px;gap:6px}
+.tabs button{color:var(--ink-2);border:0;border-radius:999px;padding:8px 16px;font-weight:700}
+.tabs button:hover{background:var(--brand-08);color:var(--brand-ink)}
+.tabs button[aria-selected="true"]{background:var(--brand-deep);color:#fff;border-bottom:0}
+.period{background:rgba(255,255,255,.93);backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);box-shadow:0 6px 18px -14px rgba(5,48,59,.5)}
+.pill{font-weight:700;border-color:var(--line)}
+.pill[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);box-shadow:0 4px 10px -4px rgba(10,138,165,.6)}
+.seg{border-radius:999px}
+.quick button{border-radius:999px;padding:5px 11px}
+.card,.kpi,.claves,aside,.ficha{border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.card{padding:16px 18px 14px;gap:8px}
+.card h3{font-size:.98rem;font-weight:800;letter-spacing:-.01em}
+.slicer{border-radius:12px}
+.btn{border-radius:10px}
+.claves{border-left:1px solid var(--line);background:linear-gradient(180deg,#fff,#fbfdfe)}
+.claves h3{font-size:1rem;font-weight:800}
+.reg{border-radius:14px;border:0;background:var(--brand-08)}
+.reg-k b{font-size:1.05rem;font-weight:800}
+/* KPI con iconos y mini tendencia */
+.kpi{position:relative;overflow:hidden;padding:14px 16px 12px;gap:4px;align-content:start}
+.kpi .kh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.kpi .ic{flex:0 0 auto;width:34px;height:34px;border-radius:11px;background:var(--brand-soft);color:var(--brand-ink);display:grid;place-items:center}
+.kpi .ic svg{width:19px;height:19px}
+.kpi .v{font-size:1.8rem;font-weight:800;letter-spacing:-.02em}
+.kpi .spark{display:block;width:100%;height:30px;margin-top:6px;color:var(--brand)}
+.kpi.hero{background:linear-gradient(145deg,#05303b 0%,#07627a 70%,#0a8aa5 100%);color:#fff;border-color:transparent}
+.kpi.hero .k,.kpi.hero .d,.kpi.hero .v small{color:rgba(255,255,255,.82)}
+.kpi.hero .v{color:#fff}
+.kpi.hero .ic{background:rgba(255,255,255,.16);color:#fff}
+.kpi.hero .spark{color:#fff}
+.kpi.hero .delta.up,.kpi.hero .delta.down,.kpi.hero .delta.flat{background:rgba(255,255,255,.18);color:#fff}
+/* Infografía */
+.info{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.ig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:15px 16px;display:grid;gap:10px;align-content:start;min-width:0}
+.ig .k{font-size:.7rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.ig .big{font-size:1.7rem;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.stack{display:flex;height:14px;border-radius:999px;overflow:hidden;gap:2px;background:var(--brand-08)}
+.stack i{display:block;height:100%;min-width:3px}
+.iglist{display:grid;gap:5px;font-size:.84rem}
+.iglist div{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:8px;align-items:center}
+.iglist div span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.iglist .cs{grid-column:2/4;margin-top:-4px}
+.dot{width:10px;height:10px;border-radius:3px}
+.picto{display:flex;gap:3px;flex-wrap:wrap}
+.picto svg{width:20px;height:22px}
+.ringw{display:grid;grid-template-columns:84px minmax(0,1fr);gap:12px;align-items:center}
+.ring{width:84px;height:84px}
+/* Filtros en celular */
+.fab{display:none}
+.backdrop{position:fixed;inset:0;background:rgba(4,30,37,.45);z-index:65}
+@media (max-width:1200px){.info{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){
+  #btnFilters{display:none!important}
+  .fab{display:inline-flex;align-items:center;gap:8px;position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--brand-deep);color:#fff;border:0;border-radius:999px;padding:12px 18px;font-weight:800;box-shadow:0 12px 30px rgba(5,48,59,.38)}
+  .fab svg{width:18px;height:18px}
+  aside{z-index:70;border-radius:0 18px 18px 0}
+}
+@media (max-width:700px){
+  .top{padding-block:12px;gap:8px}
+  .top h1{font-size:.9rem;letter-spacing:.03em}
+  .top .tsub{font-size:.72rem}
+  .top-r{width:100%;gap:6px}
+  .hello{width:100%;font-size:.85rem}
+  .fsearch{flex:1 1 100%}
+  .tabs{padding-block:6px}
+  .tabs button{padding:7px 12px;font-size:.84rem}
+  .period{flex-wrap:nowrap;overflow-x:auto;gap:16px;padding-block:8px;scrollbar-width:none}
+  .period{-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);padding-right:40px}
+  .period::-webkit-scrollbar{display:none}
+  .period .pgroup,.period .quick{flex-wrap:nowrap;flex:0 0 auto}
+  #measNote{display:none}
+  .layout{padding-block:12px;gap:12px}
+  main{gap:12px}
+  .kpi{padding:12px}
+  .kpi .v{font-size:1.3rem}
+  .kpi .ic{width:30px;height:30px}
+  .card{padding:13px 12px 11px}
+  .info{grid-template-columns:minmax(0,1fr)}
+  .claves{padding:13px 14px}
+  .reg-k{gap:2px 12px}
+  .neg-res{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* ===== Hoy: indicadores y puertos ===== */
+.today{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:start}
+.today>div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:15px 16px;display:grid;gap:10px;min-width:0}
+.indh{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.indh h3{margin:0;font-size:.98rem;font-weight:800}
+.indrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px}
+.indc{background:var(--brand-08);border-radius:12px;padding:10px 12px;display:grid;gap:2px;min-width:0}
+.indc .k{font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.indc b{font-size:1.12rem;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+.indc .ch{font-size:.74rem;font-weight:700;min-height:1em}
+.indc .ch{color:var(--ink-2)}
+.plist{display:grid;gap:8px}
+.prt{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.prt:first-child{border-top:0;padding-top:0}
+.prt>div:first-child{display:grid;min-width:0}
+.prt .pobs,.prt .pupd{grid-column:1/3}
+.pobs{font-size:.84rem;color:var(--ink-2)}
+.pst{font-size:.74rem;font-weight:800;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.pst.ok{background:var(--up-bg);color:var(--up)}.pst.bad{background:var(--down-bg);color:var(--down)}.pst.warn{background:var(--warn-bg);color:var(--warn)}.pst.na{background:var(--brand-08);color:var(--muted)}
+@media (max-width:1100px){.today{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:700px){.indrow{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(132px,1fr);overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.indrow::-webkit-scrollbar{display:none}}
+
+.hbar{display:inline-flex;border-radius:999px;overflow:hidden;vertical-align:middle;margin:0 6px}
+.hbar i{display:block;width:18px;height:10px}
+
+.ugrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.usum{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.84rem;color:var(--ink-2)}
+.field .comunas label{display:flex;flex-direction:row;gap:6px;align-items:center;font-size:.9rem;font-weight:500;color:var(--ink)}
+.field .comunas input{width:auto;padding:0;accent-color:var(--brand)}
+.usum b{color:var(--ink);font-size:1rem}
+@media (max-width:560px){.ugrid{grid-template-columns:minmax(0,1fr)}}
+/* ===================== Tema naranjo (#ff8000) ===================== */
+:root{--brand:#ff8000;--brand-ink:#a84c00;--brand-deep:#3b1d00;--brand-soft:#ffe3c4;--brand-08:#fff6ec;--accent:#33505e;--on-brand:#241100;
+  --bg:#f7f3ef;--line:#eee3d8;--ink:#24170c;--ink-2:#5c4a3b;--muted:#8d7b6b;
+  --s1:#ff8000;--s2:#33505e;--s3:#ffb257;--s4:#9a4a00;--s5:#6f9bb3;--s6:#c9b8a6;
+  --shadow:0 1px 2px rgba(80,40,0,.05),0 10px 28px -12px rgba(80,40,0,.2)}
+#gate{background:radial-gradient(900px 420px at 80% 0%,rgba(255,214,160,.35),transparent 60%),linear-gradient(150deg,#b85300 0%,#ff8000 60%,#ff9d3d 100%)}
+.top{background:radial-gradient(1000px 260px at 88% -60%,rgba(255,226,190,.55),transparent 60%),linear-gradient(118deg,#ff8000 0%,#ff8f1f 55%,#ffa347 100%);color:var(--on-brand)}
+.top .tsub{opacity:1;color:#4a2400}
+.top .btn{background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.95);color:#5a2a00}
+.top .btn:hover{background:#fff}
+.role{background:#3b1d00;color:#fff}
+.hello .cs{color:#5a2a00!important}
+.btn{background:var(--brand);color:var(--on-brand);font-weight:700}
+.btn:hover{background:#ff9326}
+.btn.ghost{color:var(--brand-ink)}
+.btn.danger{background:var(--down);color:#fff}
+.tabs button:hover{background:var(--brand-08);color:var(--brand-ink)}
+.tabs button[aria-selected="true"]{background:var(--brand);color:var(--on-brand)}
+.pill[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--on-brand);box-shadow:0 4px 10px -4px rgba(255,128,0,.6)}
+.kpi.hero{background:linear-gradient(145deg,#ff8000 0%,#ff9426 60%,#ffab52 100%);color:var(--on-brand)}
+.kpi.hero .k,.kpi.hero .d,.kpi.hero .v small{color:#4a2400}
+.kpi.hero .v{color:var(--on-brand)}
+.kpi.hero .ic{background:rgba(255,255,255,.45);color:#4a2400}
+.kpi.hero .spark{color:#3b1d00}
+.kpi.hero .delta.up,.kpi.hero .delta.down,.kpi.hero .delta.flat{background:rgba(255,255,255,.55);color:#3b1d00}
+.claves{border-top:4px solid var(--brand);background:#fff}
+.reg{background:var(--brand-08);border:1px solid var(--line)}
+.reg h4{color:#7a3a00}
+.fab{background:var(--brand)!important;color:var(--on-brand)!important}
+.backdrop{background:rgba(40,20,0,.45)}
+a{color:var(--brand-ink)}
+/* Claves: ficha de datos */
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:8px}
+.fact{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 11px;display:grid;gap:1px;align-content:start;min-width:0}
+.fact .fk{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--brand-ink)}
+.fact b{font-size:.98rem;font-weight:800;color:var(--ink);overflow-wrap:anywhere}
+.fact .fs{font-size:.76rem;color:var(--muted)}
+/* Mapa de poder e interés */
+.warnbox{margin:0;background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:8px 12px;font-size:.85rem}
+.pi-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-items:start}
+.pi-left{display:grid;grid-template-columns:minmax(0,420px) minmax(0,320px);gap:14px 28px;align-items:center}
+.pig{display:grid;grid-template-columns:22px 20px repeat(5,minmax(0,1fr));gap:4px;align-items:stretch}
+.pi-ylab{grid-row:1/6;display:flex;align-items:center;justify-content:center}
+.pi-ylab span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.pi-xlab{grid-column:3/8;text-align:center;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.pi-ax{display:grid;place-items:center;font-size:.78rem;font-weight:800;color:var(--muted)}
+.pic{aspect-ratio:1;min-height:52px;border:1px solid rgba(0,0,0,.04);border-radius:10px;padding:4px;display:grid;grid-template-rows:auto 1fr;justify-items:center;align-content:start;gap:2px;color:var(--ink);transition:transform .12s,box-shadow .12s}
+.pic:hover{transform:translateY(-1px);box-shadow:0 6px 14px -8px rgba(80,40,0,.5)}
+.pic.on{outline:3px solid var(--ink);outline-offset:1px}
+.pic.empty{opacity:.55}
+.pic .pin{font-size:1.15rem;font-weight:800;line-height:1.1}
+.pch{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;align-content:flex-start}
+.pch i{font-style:normal;font-size:.62rem;font-weight:800;background:rgba(255,255,255,.88);color:#3b1d00;border-radius:999px;padding:0 4px;line-height:1.45}
+.pch i.more{background:transparent}
+.g4{background:#ff8000}.g3{background:#ffb257}.g2{background:#ffd8a8}.g1{background:#fff0de}
+.g4 .pin{color:#241100}
+.piqs{display:grid;gap:5px}
+.piq{display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:.84rem}
+.piq .sw{width:14px;height:14px;border-radius:4px;border:1px solid rgba(0,0,0,.08)}
+.piq .n{font-size:.95rem}
+.pi-right{display:grid;gap:8px;min-width:0}
+.pi-right input[type=search]{border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-width:0;width:240px;max-width:100%}
+.pit td{vertical-align:top}
+.pit th,.pit td{padding:6px 7px}
+.pit td:nth-child(2){white-space:normal;min-width:170px}
+.pit th{white-space:normal;vertical-align:bottom}
+.pit .c{text-align:center}
+.lv{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--brand-soft);font-weight:800;color:#5a2a00}
+.stg{display:inline-block;font-size:.72rem;font-weight:800;border-radius:999px;padding:2px 9px;color:#3b1d00;white-space:nowrap}
+.adj{display:inline-block;font-size:.68rem;font-weight:700;border-radius:999px;padding:1px 7px;background:#33505e;color:#fff}
+@media (max-width:820px){.pi-left{grid-template-columns:minmax(0,1fr);max-width:480px}}
+.sm-only{display:none}
+@media (max-width:560px){.pit .hm{display:none}.pit th,.pit td{padding:6px 4px}.pit td:nth-child(2){min-width:0}.pit th{font-size:.62rem}.pit .btn.small{padding:5px 8px}.sm-only{display:inline-block;margin-top:3px}.pch i:nth-child(n+4){display:none}.pig{grid-template-columns:18px 16px repeat(5,minmax(0,1fr));gap:3px}.pic{min-height:0;border-radius:8px;padding:3px 2px}.pic .pin{font-size:.95rem}.pch i{font-size:.56rem;padding:0 3px}}
+/* ===================== Mejoras 3.0 (todo en la familia del naranjo) ===================== */
+:root{--s1:#ff8000;--s2:#a84a00;--s3:#ffb35c;--s4:#5c2a00;--s5:#ffd9ad;--s6:#8c7866;--accent:#a84a00;--veda:rgba(92,42,0,.09)}
+.adj{background:#5c2a00}
+.vbtn{border:1px solid var(--line);background:var(--surface);color:var(--brand-ink);border-radius:999px;padding:5px 11px;font-weight:700;font-size:.8rem}
+.vbtn:hover{background:var(--brand-08)}
+#vSel{border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--surface);max-width:220px}
+/* Alertas */
+.alerts{border-top:4px solid var(--brand)}
+.alerts h3{display:flex;align-items:center;gap:8px}
+.bell{width:22px;height:22px;border-radius:7px;background:var(--brand);display:inline-block;-webkit-mask:none;position:relative}
+.bell::after{content:"!";position:absolute;inset:0;display:grid;place-items:center;font-weight:900;color:var(--on-brand);font-size:.85rem}
+.alist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.al{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start;padding:8px 10px;border-radius:10px;background:var(--brand-08);font-size:.88rem}
+.al .ai{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:.75rem}
+.al.s3 .ai{background:#b4372f;color:#fff}.al.s2 .ai{background:var(--brand);color:var(--on-brand)}.al.s0 .ai,.al.s1 .ai{background:var(--s5);color:#5c2a00}
+.al.s3{background:#fdeee9}
+/* Comparación */
+.comp td:first-child{font-weight:600;color:var(--ink-2)}
+.comp th.r,.comp td.r{min-width:160px}
+/* Proyección */
+.proj{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px}
+.pz{display:grid;gap:6px;background:var(--brand-08);border-radius:12px;padding:10px 12px}
+.pz-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.pz-l{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.pz-l div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 8px;display:grid}
+.pz-l b{font-size:1.05rem}
+/* Reporte */
+.rep-modal{width:min(980px,100%)!important;background:#fff}
+#repBody{min-width:0;overflow-x:auto}
+.rep-modal{grid-template-columns:minmax(0,1fr)}
+.rep-actions{position:sticky;top:-22px;background:#fff;z-index:2;padding:6px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+@media print{
+  body.printing #app,body.printing #gate,body.printing #toast,body.printing #tip,body.printing .overlay:not(#repModal),body.printing .fab{display:none!important}
+  body.printing{background:#fff}
+  body.printing #repModal{position:static!important;display:block!important;background:none!important;padding:0!important}
+  body.printing #repModal .modal{max-height:none!important;overflow:visible!important;box-shadow:none!important;width:auto!important;padding:0!important}
+  body.printing .rep-actions{display:none!important}
+}
+/* Bitácora */
+.blist{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.bit{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:grid;gap:4px;background:var(--brand-08)}
+.bit-h{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.bit p{margin:0;white-space:pre-wrap}
+.bit select{border:1px solid var(--line);border-radius:6px;padding:3px 6px;background:#fff}
+.bt{display:inline-block;font-size:.7rem;font-weight:800;border-radius:999px;padding:2px 8px;background:var(--brand);color:var(--on-brand)}
+.bc{display:inline-grid;place-items:center;min-width:18px;height:18px;border-radius:999px;background:var(--brand);color:var(--on-brand);font-size:.68rem;padding:0 5px;margin-left:2px}
+/* Vedas */
+.vcal th,.vcal td{text-align:center;padding:5px 4px}
+.vcal td:first-child,.vcal th:first-child{text-align:left}
+.vcal td{position:relative;min-width:44px}
+.vcal td i{position:absolute;inset:4px;border-radius:6px;background:var(--brand)}
+.vcal td span{position:relative;font-size:.74rem;font-weight:700}
+.vcal td.vd{background:repeating-linear-gradient(135deg,rgba(92,42,0,.16) 0 6px,rgba(92,42,0,.04) 6px 12px)}
+/* Escenarios y ajustes */
+#gScen{width:100%;height:auto}
+#gScen text{font-size:12px;fill:var(--ink)}
+.prIn{width:110px;border:1px solid var(--line);border-radius:6px;padding:5px 8px;text-align:right}
+#prS,#actS{border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+/* Revisión de carga */
+.mlist .i{background:var(--brand-08);color:var(--ink-2);border-radius:8px;padding:6px 10px}
+.mlist .rvh{font-weight:800;color:var(--brand-ink);margin-top:4px}
+/* Detalles de tono */
+.kpi .ic{background:var(--brand-soft);color:#8a3f00}
+.callout{border-left:4px solid var(--brand);background:var(--brand-08)}
+.banner{background:var(--brand-soft);color:#5a2a00}
+.neg-res .kpi:first-child{background:linear-gradient(145deg,#ff8000,#ffa347);border-color:transparent;color:var(--on-brand)}
+.neg-res .kpi:first-child .k,.neg-res .kpi:first-child .d{color:#4a2400}
+.ig .big{color:#8a3f00}
+.chip{background:var(--brand-soft);border-color:#ffc58a;color:#5a2a00}
+.slicer.on{border-color:var(--brand);box-shadow:0 0 0 2px var(--brand-soft)}
+.seg button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand)}
+.quick button{background:var(--brand-08);color:var(--brand-ink)}
+.quick button:hover{background:var(--brand-soft)}
+svg .gl{stroke:#f1e6da}
+@media (max-width:700px){.pz-l{grid-template-columns:minmax(0,1fr)}#vSel{max-width:160px}}
 </style>
 </head>
 <body>
@@ -284,6 +564,7 @@ td .lnk{border:0;background:none;padding:0;color:var(--brand-ink);font-weight:60
         <div class="sugg" id="fsList" hidden></div>
       </div>
       <button class="btn small" id="btnFilters" type="button">Filtros</button>
+      <button class="btn small" id="btnReport" type="button">Reporte ejecutivo</button>
       <button class="btn small" id="btnUpload" type="button" hidden>Actualizar datos</button>
       <button class="btn small" id="btnLogout" type="button">Cerrar sesión</button>
     </div>
@@ -293,6 +574,7 @@ td .lnk{border:0;background:none;padding:0;color:var(--brand-ink);font-weight:60
     <button role="tab" data-tab="pescadores" aria-selected="false">Pescadores</button>
     <button role="tab" data-tab="especies" aria-selected="false">Especies y caletas</button>
     <button role="tab" data-tab="negociacion" aria-selected="false">Negociación</button>
+    <button role="tab" data-tab="poder" aria-selected="false">Poder e interés</button>
     <button role="tab" data-tab="detalle" aria-selected="false">Detalle</button>
     <button role="tab" data-tab="admin" aria-selected="false" id="tabAdmin" hidden>Administración</button>
   </nav>
@@ -301,9 +583,12 @@ td .lnk{border:0;background:none;padding:0;color:var(--brand-ink);font-weight:60
     <div class="pgroup"><span class="plabel">Meses</span><div class="pgroup" id="pMo"></div></div>
     <div class="pgroup"><span class="plabel">Desde</span><select id="ymFrom" aria-label="Desde mes y año"></select><span class="plabel">Hasta</span><select id="ymTo" aria-label="Hasta mes y año"></select></div>
     <div class="pgroup"><span class="plabel">Medida</span><div class="seg" id="meas" role="group" aria-label="Medida"><button type="button" data-m="total" aria-pressed="true">Toneladas totales</button><button type="button" data-m="mes" aria-pressed="false">Promedio mensual</button><button type="button" data-m="pesc" aria-pressed="false">Promedio por pescador</button></div><span class="cs" id="measNote"></span></div>
+    <div class="pgroup"><span class="plabel">Vistas</span><select id="vSel" aria-label="Vistas guardadas"></select><button type="button" class="vbtn" id="vSave">Guardar vista</button><button type="button" class="vbtn" id="vDel" hidden>Borrar</button></div>
     <div class="quick"><button type="button" data-q="lastfull">Último año completo</button><button type="button" data-q="ytd">Año en curso</button><button type="button" data-q="l12">Últimos 12 meses</button><button type="button" data-q="all">Todo</button></div>
   </div>
 
+  <button class="fab" id="fab" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span id="fabT">Filtros</span></button>
+  <div class="backdrop" id="backdrop" hidden></div>
   <div class="layout gut">
     <aside id="aside" aria-label="Segmentadores">
       <h2>Segmentadores <button type="button" id="clearAll">Limpiar todo</button></h2>
@@ -316,11 +601,17 @@ td .lnk{border:0;background:none;padding:0;color:var(--brand-ink);font-weight:60
 
       <!-- RESUMEN -->
       <section data-pane="resumen" style="display:grid;gap:14px">
+        <div class="today" id="today"><div id="ind" hidden></div></div>
         <div class="kpis" id="kpis"></div>
+        <div class="card alerts" id="alerts" hidden></div>
         <div class="claves" id="claves"></div>
+        <div class="card" id="cZonas"><div class="tbar"><h3>Comparación de zonas</h3><span class="cs">Mismos indicadores lado a lado · responde a los filtros y al período</span></div><div class="tbl"><table id="compTbl" class="comp"></table></div></div>
+        <div class="info" id="info"></div>
         <div class="ficha" id="ficha" hidden></div>
         <div class="viz">
-          <div class="card w8" id="cMes"><h3>Evolución mensual del desembarque</h3><div class="hlegend"><span><i style="background:var(--brand)"></i><span id="cMesSub">Toneladas del mes</span></span><span><span class="ln"></span>Promedio móvil 12 meses</span></div><svg id="gMes"></svg></div>
+          <div class="card w12" id="cCalHeat"><div class="tbar"><h3>Actividad por caleta y mes</h3><div class="hlegend" id="lCalHeat" style="align-items:center"></div></div><div class="cs" id="calHeatSub"></div><svg id="gCalHeat" role="img" aria-label="Mapa de calor de actividad por caleta y mes"></svg></div>
+          <div class="card w8" id="cMes"><h3>Evolución mensual del desembarque</h3><div class="hlegend"><span><i style="background:var(--brand)"></i><span id="cMesSub">Toneladas del mes</span></span><span><span class="ln" style="border-top-style:dashed"></span>Promedio móvil 12 meses</span><span id="vedaLeg" hidden><i style="background:rgba(92,42,0,.18)"></i>Meses en veda</span></div><svg id="gMes"></svg></div>
+          <div class="card w12" id="cProj"><div class="tbar"><h3>Proyección de los próximos 3 meses</h3><div class="hlegend"><span><i style="background:var(--s3)"></i>Últimos 12 meses (real)</span><span><i style="background:var(--brand)"></i>Proyección</span><span><span class="ln" style="border-top-width:2px"></span>Rango probable</span></div></div><div class="cs">Estimación simple: promedio del mismo mes en los últimos 3 años, ajustado por la tendencia de los últimos 12 meses. Responde a los filtros de zona, caleta, especie y pescador, no a los de período.</div><div class="proj" id="proj"></div></div>
           <div class="card w4" id="cAnio"><h3>Desembarque por año y grupo de especie</h3><div class="hlegend" id="lAnio"></div><svg id="gAnio"></svg></div>
           <div class="card w4" id="cComuna"><h3>Captura por comuna</h3><div class="cs">Toneladas · clic para filtrar</div><svg id="gComuna"></svg></div>
           <div class="card w4" id="cComp"><h3>Compañía área de influencia</h3><div class="donut-wrap"><svg id="gComp"></svg><div class="legend" id="lComp"></div></div></div>
@@ -345,6 +636,7 @@ td .lnk{border:0;background:none;padding:0;color:var(--brand-ink);font-weight:60
       <!-- ESPECIES Y CALETAS -->
       <section data-pane="especies" style="display:grid;gap:14px" hidden>
         <div class="viz">
+          <div class="card w12"><div class="tbar"><h3>Calendario de vedas</h3><span class="cs">Meses en veda (sombreados) y toneladas desembarcadas en cada mes del período</span></div><div class="tbl" id="vedaCal" style="border:0"></div></div>
           <div class="card w12"><h3>Especie × caleta</h3><div class="cs">Toneladas · 12 especies principales del período</div><div class="tbl" id="xEspCal" style="border:0"></div></div>
           <div class="card w6"><h3>Variación por especie</h3><div class="cs" id="varSub">Mismo período, año anterior</div><svg id="gVar"></svg></div>
           <div class="card w6"><h3>Productividad por caleta</h3><div class="cs">Toneladas por pescador activo en el período</div><svg id="gProd"></svg></div>
@@ -369,6 +661,19 @@ td .lnk{border:0;background:none;padding:0;color:var(--brand-ink);font-weight:60
         </div>
         <div class="neg-res" id="nKpis"></div>
         <div class="callout" id="nText"></div>
+        <div class="card" id="scenCard">
+          <h3>Escenarios de compensación</h3>
+          <div class="cs">Compara cuánto costaría cada fórmula y cómo se reparte entre los pescadores con desembarque de la especie, el lugar, los años y los meses elegidos arriba. La base es el promedio de kilos por año de cada pescador.</div>
+          <div class="neg-form">
+            <div class="field"><label for="scA">A · $ por kg histórico</label><input id="scA" type="number" min="0" step="10"></div>
+            <div class="field"><label for="scB">B · Monto fijo por pescador ($)</label><input id="scB" type="number" min="0" step="10000" placeholder="Ej. 500000"></div>
+            <div class="field"><label for="scCf">C · Monto fijo ($)</label><input id="scCf" type="number" min="0" step="10000" placeholder="Ej. 200000"></div>
+            <div class="field"><label for="scCk">C · Más $ por kg</label><input id="scCk" type="number" min="0" step="10" placeholder="Ej. 1500"></div>
+          </div>
+          <div class="tbl"><table id="scTbl"></table></div>
+          <svg id="gScen" role="img" aria-label="Costo total por escenario"></svg>
+          <p class="cs" id="scNote" style="margin:0;color:var(--ink-2)"></p>
+        </div>
         <div class="viz">
           <div class="card w7"><h3>Toneladas por año en los meses elegidos</h3><div class="hlegend" id="nLeg"></div><svg id="gNeg"></svg></div>
           <div class="card w5"><h3>Resumen por mes</h3><div class="tbl"><table id="nTbl"></table></div></div>
@@ -377,6 +682,17 @@ td .lnk{border:0;background:none;padding:0;color:var(--brand-ink);font-weight:60
       </section>
 
       <!-- DETALLE -->
+      <section data-pane="poder" style="display:grid;gap:14px" hidden>
+        <div class="card pi-intro">
+          <div class="tbar"><h3>Mapa de poder e interés</h3>
+            <div class="l"><label for="piMode" class="cs" style="margin:0">Actores</label><select id="piMode"><option value="p">Pescadores</option><option value="o">Organizaciones</option></select><label for="piBase" class="cs" style="margin:0">Poder según</label><select id="piBase"><option value="t">Toneladas</option><option value="v">Valor ($)</option></select><span class="cs" id="piBaseNote">(valor: requiere precios en Administración)</span><label for="piTop" class="cs" style="margin:0">Números del mapa</label><select id="piTop"><option value="10">Top 10</option><option value="20" selected>Top 20</option><option value="50">Top 50</option><option value="all">Todos</option></select></div></div>
+          <p class="cs" style="margin:0;color:var(--ink-2)">Cada actor se ubica según su <b>poder de influencia</b> (1 a 5, por volumen o por valor: el 20 % mayor de su zona queda en 5) y su <b>interés</b> (1 a 5, por regularidad: meses con desembarque en el período). Los números dentro de las celdas son el lugar en el ranking por toneladas. Haz clic en una celda para ver quiénes están ahí. En la vista por <b>organizaciones</b> se suman sus integrantes. Responde a los filtros y al período.<span id="piAdmNote"> Los administradores pueden ajustar poder, interés y organización con <b>Evaluar</b>, y registrar reuniones y compromisos en la <b>Bitácora</b>.</span></p>
+          <p class="warnbox" id="piWarn" hidden></p>
+        </div>
+        <div class="card" id="bitPend" hidden></div>
+        <div id="piZones" style="display:grid;gap:14px"></div>
+      </section>
+
       <section data-pane="detalle" style="display:grid;gap:14px" hidden>
         <div class="card">
           <div class="tbar">
@@ -396,19 +712,81 @@ td .lnk{border:0;background:none;padding:0;color:var(--brand-ink);font-weight:60
       <!-- ADMIN -->
       <section data-pane="admin" style="display:grid;gap:14px" hidden>
         <div class="card">
-          <h3>Usuarios y solicitudes de acceso</h3>
-          <div class="cs">Aprueba las cuentas nuevas y asigna su nivel. Las personas crean su cuenta desde la pantalla de inicio de sesión.</div>
+          <div class="tbar"><h3>Usuarios</h3><button class="btn small" id="uAdd" type="button">+ Agregar usuario</button></div><div class="usum" id="uSum"></div>
+          <div class="cs">Agrega, edita, suspende o elimina usuarios y cambia sus contraseñas. Las solicitudes creadas desde la pantalla de inicio aparecen como pendientes.</div>
           <div class="tbl"><table id="uTbl"></table></div>
         </div>
         <div class="card">
           <h3>Historial de cargas de datos</h3>
           <div class="tbl"><table id="cTbl"></table></div>
         </div>
+        <p class="warnbox" id="cfgWarn" hidden></p>
+        <div class="card">
+          <div class="tbar"><h3>Precios de playa por especie</h3><div class="l"><input type="search" id="prS" placeholder="Buscar especie" aria-label="Buscar especie"><button class="btn small" id="prSave" type="button">Guardar precios</button></div></div>
+          <div class="cs">En pesos por kilo. Se usan para estimar el valor económico del desembarque, el poder según valor y los escenarios de negociación. Deja vacío lo que no sepas.</div>
+          <div class="tbl" style="max-height:420px;overflow:auto"><table id="prTbl"></table></div>
+        </div>
+        <div class="card">
+          <h3>Vedas y temporadas</h3>
+          <div class="cs">Se marcan en el calendario de vedas, en la evolución mensual cuando filtras la especie, y evitan que una baja por veda aparezca como alerta.</div>
+          <div class="neg-form">
+            <div class="field"><label for="vdE">Especie</label><select id="vdE"></select></div>
+            <div class="field"><label for="vdZ">Zona</label><select id="vdZ"></select></div>
+            <div class="field"><label for="vdD">Desde</label><select id="vdD"></select></div>
+            <div class="field"><label for="vdH">Hasta</label><select id="vdH"></select></div>
+            <div class="field"><label for="vdN">Nota (opcional)</label><input id="vdN" maxlength="120" placeholder="Ej. Veda reproductiva, D.S. N.°"></div>
+          </div>
+          <div><button class="btn small" id="vdAdd" type="button">Agregar veda</button></div>
+          <div class="tbl"><table id="vdList"></table></div>
+        </div>
+        <div class="card">
+          <h3>Umbral de alertas</h3>
+          <div class="neg-form">
+            <div class="field"><label for="alU">Avisar caídas de (%)</label><input id="alU" type="number" min="5" max="90" step="5"></div>
+            <div class="field"><label for="alT">Con una base mínima de (t)</label><input id="alT" type="number" min="0" step="1"></div>
+          </div>
+          <div><button class="btn small" id="alSave" type="button">Guardar umbral</button></div>
+        </div>
+        <div class="card">
+          <div class="tbar"><h3>Registro de actividad</h3><div class="l"><input type="search" id="actS" placeholder="Buscar usuario o acción" aria-label="Buscar en el registro"><button class="btn ghost small" id="actRef" type="button">Actualizar</button></div></div>
+          <div class="cs">Inicios de sesión, cargas de datos, cambios de usuarios, evaluaciones, bitácora, ajustes y reportes. Últimos 200 movimientos.</div>
+          <div class="tbl" style="max-height:420px;overflow:auto"><table id="actTbl"></table></div>
+        </div>
       </section>
     </main>
   </div>
 </div>
 
+<div class="overlay" id="repModal" hidden>
+  <div class="modal rep-modal" role="dialog" aria-modal="true" aria-label="Reporte ejecutivo">
+    <div class="row rep-actions"><b style="flex:1">Reporte ejecutivo</b><button class="btn ghost small" id="repDl" type="button">Descargar</button><button class="btn small" id="repPrint" type="button">Imprimir o guardar PDF</button><button class="btn ghost small" id="repClose" type="button">Cerrar</button></div>
+    <div id="repBody"></div>
+  </div>
+</div>
+<div class="overlay" id="bitModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="bitTitle" style="width:min(680px,100%)">
+    <h2 id="bitTitle">Bitácora · <span id="bitWho"></span></h2>
+    <div class="ugrid">
+      <div class="field"><label for="bF">Fecha</label><input id="bF" type="date"></div>
+      <div class="field"><label for="bT">Tipo</label><select id="bT"><option>Reunión</option><option>Compromiso</option><option>Acuerdo</option><option>Conflicto</option><option>Otro</option></select></div>
+      <div class="field"><label for="bE">Estado</label><select id="bE"><option>Pendiente</option><option>Cumplido</option><option>No aplica</option></select></div>
+      <div class="field"><label for="bR">Responsable (opcional)</label><input id="bR" maxlength="80"></div>
+    </div>
+    <div class="field"><label for="bX">Detalle</label><textarea id="bX" maxlength="1500" placeholder="Qué se conversó, qué se comprometió y para cuándo"></textarea></div>
+    <p class="err" id="bErr"></p>
+    <div class="row"><span class="cs" style="flex:1">Solo los administradores ven la bitácora.</span><button class="btn ghost" id="bClose" type="button">Cerrar</button><button class="btn" id="bSave" type="button">Agregar registro</button></div>
+    <div id="bList" class="blist"></div>
+  </div>
+</div>
+<div class="overlay" id="vModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="vTitle" style="width:min(420px,100%)">
+    <h2 id="vTitle">Guardar vista</h2>
+    <p class="cs" style="margin:0">Guarda los filtros, el período, la medida y la pestaña actuales para abrirlos después con un clic.</p>
+    <div class="field"><label for="vName">Nombre de la vista</label><input id="vName" maxlength="60" placeholder="Ej. Pulpo Los Vilos agosto"></div>
+    <p class="err" id="vErr"></p>
+    <div class="row"><button class="btn ghost" id="vCancel" type="button">Cancelar</button><button class="btn" id="vOk" type="button">Guardar</button></div>
+  </div>
+</div>
 <div class="overlay" id="upModal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="upTitle">
     <h2 id="upTitle">Actualizar datos desde Excel</h2>
@@ -427,19 +805,61 @@ td .lnk{border:0;background:none;padding:0;color:var(--brand-ink);font-weight:60
   </div>
 </div>
 
+<div class="overlay" id="pieModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pieTitle" style="width:min(480px,100%)">
+    <h2 id="pieTitle">Evaluar poder e interés</h2>
+    <div id="pieWho" style="color:var(--ink-2)"></div>
+    <div class="ugrid">
+      <div class="field"><label for="pieP">Poder de influencia</label><select id="pieP"></select></div>
+      <div class="field"><label for="pieI">Interés</label><select id="pieI"></select></div>
+    </div>
+    <div class="field" id="pieOrgBox"><label for="pieOrg">Organización <span class="cs">(si la dejas vacía, se usa la del Excel)</span></label><input id="pieOrg" list="pieOrgL" maxlength="80"><datalist id="pieOrgL"></datalist></div>
+    <div class="field"><label for="pieN">Nota <span class="cs">(opcional, solo la ven administradores)</span></label><textarea id="pieN" maxlength="400" placeholder="ej. Dirigente del sindicato, vocero de la caleta"></textarea></div>
+    <p class="err" id="pieErr"></p>
+    <div class="row"><span class="cs">Elige “Automático” para volver al cálculo.</span><span style="flex:1"></span><button class="btn ghost" id="pieCancel" type="button">Cancelar</button><button class="btn" id="pieSave" type="button">Guardar</button></div>
+  </div>
+</div>
 <div class="overlay" id="pModal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pTitle">
-    <h2 id="pTitle">Nivel de usuario y permisos</h2>
-    <div id="pWho" class="cs" style="color:var(--ink-2)"></div>
+    <h2 id="pTitle">Usuario</h2>
+    <div class="ugrid">
+      <div class="field"><label for="uUsr">Usuario</label><input id="uUsr" maxlength="40" autocomplete="off" placeholder="ej. jperez"></div>
+      <div class="field"><label for="uNom">Nombre y apellido</label><input id="uNom" maxlength="80"></div>
+      <div class="field"><label for="uCargo">Cargo</label><input id="uCargo" maxlength="80"></div>
+      <div class="field"><label for="uArea">Área o empresa</label><input id="uArea" maxlength="80"></div>
+    </div>
+    <div class="ugrid" id="uPwBox">
+      <div class="field"><label for="uPw">Contraseña inicial <span class="cs">(mínimo 8)</span></label><input id="uPw" type="password" autocomplete="new-password"></div>
+      <div class="field"><label for="uPw2">Repite la contraseña</label><input id="uPw2" type="password" autocomplete="new-password"></div>
+    </div>
     <div class="field"><label for="pRol">Nivel de usuario</label><select id="pRol"><option value="visualizador">Visualizador: solo ve la información</option><option value="administrador">Administrador: ve, modifica el Excel base y administra usuarios</option></select></div>
-    <p class="cs" id="pAdmNote" hidden style="color:var(--warn)">Para que un administrador pueda cargar el Excel y aprobar usuarios, dale además nivel <b>Editor</b> en el menú Compartir de esta página.</p>
+    <p class="cs" id="uMeNote" hidden>No puedes cambiar tu propio nivel. Pídeselo a otro administrador.</p>
     <div class="perm-grid" id="pExtra">
       <label><input type="checkbox" id="pNombres" checked> <span>Ver nombres de pescadores <span class="cs">(si no, se muestra solo el RPA)</span></span></label>
       <label><input type="checkbox" id="pExport"> <span>Exportar tablas a CSV</span></label>
     </div>
     <div class="field"><label>Comunas que puede ver <span class="cs">(ninguna marcada = todas)</span></label><div class="comunas" id="pCom"></div></div>
     <p class="err" id="pErr"></p>
-    <div class="row"><button class="btn ghost" id="pCancel" type="button">Cancelar</button><button class="btn" id="pSave" type="button">Guardar y aprobar</button></div>
+    <div class="row"><button class="btn ghost" id="pCancel" type="button">Cancelar</button><button class="btn" id="pSave" type="button">Guardar</button></div>
+  </div>
+</div>
+<div class="overlay" id="pwModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pwTitle" style="width:min(440px,100%)">
+    <h2 id="pwTitle">Cambiar contraseña</h2>
+    <div class="cs" id="pwWho" style="color:var(--ink-2)"></div>
+    <div class="field"><label for="pw1">Nueva contraseña <span class="cs">(mínimo 8 caracteres)</span></label><input id="pw1" type="password" autocomplete="new-password"></div>
+    <div class="field"><label for="pw2">Repite la contraseña</label><input id="pw2" type="password" autocomplete="new-password"></div>
+    <p class="cs" style="margin:0">Comunica la nueva contraseña a la persona por un canal seguro.</p>
+    <p class="err" id="pwErr"></p>
+    <div class="row"><button class="btn ghost" id="pwCancel" type="button">Cancelar</button><button class="btn" id="pwSave" type="button">Cambiar contraseña</button></div>
+  </div>
+</div>
+<div class="overlay" id="delModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="delTitle" style="width:min(440px,100%)">
+    <h2 id="delTitle">Eliminar usuario</h2>
+    <p style="margin:0">¿Eliminar a <b id="delWho"></b>? Perderá el acceso y su cuenta se borra. Esta acción no se puede deshacer.</p>
+    <p class="err" id="delErr"></p>
+    <div class="row"><button class="btn ghost" id="delCancel" type="button">Cancelar</button><button class="btn danger" id="delOk" type="button">Eliminar</button></div>
   </div>
 </div>
 <div id="tip" hidden></div>
@@ -535,12 +955,12 @@ async function enter(){
   $("#gate").hidden=true;$("#app").hidden=false;setTab("resumen");
   const c=S.acct,first=(c.nombre||"").trim().split(/\s+/)[0];
   $("#hello").innerHTML=`Bienvenido/a, <b>${esc(first||c.usuario)}</b>${first?` <span class="cs" style="color:rgba(255,255,255,.75)">(${esc(c.usuario)})</span>`:""}<span class="role">${ROLE_LBL[c.rol]||"Usuario"}</span>`;
-  applyPerms();lastAct=Date.now();
+  applyPerms();lastAct=Date.now();loadToday();ST.log("Inicio de sesión","");
 }
-function applyPerms(){const p=S.perm;$("#btnUpload").hidden=!p.carga;$("#tabAdmin").hidden=!p.admin;$("#tCsv").hidden=!p.exportar;if(!p.admin&&S.tab==="admin")setTab("resumen")}
+function applyPerms(){const p=S.perm;$("#btnUpload").hidden=!p.carga;$("#tabAdmin").hidden=!p.admin;$("#tCsv").hidden=!p.exportar;$("#piAdmNote").hidden=!p.admin;if(!p.admin&&S.tab==="admin")setTab("resumen")}
 async function logout(msg){
   try{await api("logout",{method:"POST"})}catch(e){}
-  S.acct=null;S.perm=null;S.model=null;S.full=null;S.R=null;LAST=null;TROWS=[];ADM={users:[],car:[]};
+  S.acct=null;S.perm=null;S.model=null;S.full=null;S.R=null;LAST=null;TROWS=[];PI.loaded=false;PI.ov=new Map();PI.cell={};PI.q={};CFG.loaded=false;BIT.loaded=false;BIT.list=[];VW.list=[];ADM={users:[],car:[]};
   $("#upModal").hidden=true;$("#pModal").hidden=true;$("#newData").hidden=true;$("#hello").innerHTML="";showLogin(msg);if(msg)toast(msg);
 }
 $("#btnLogout").onclick=()=>logout();
@@ -611,7 +1031,7 @@ function start(model){
   const keep=S.f&&Object.keys(S.f).length;S.f={};S.R.F.forEach(f=>S.f[f.id]=new Set());if(!keep){S.from=S.to=null}S.page=0;
   buildSlicers();buildPeriod();buildNeg();
   const inf=S.info||{};$("#stamp").innerHTML=`Datos desde el <b>${dstr(S.R.minD)}</b> hasta el <b>${dstr(S.R.maxD)}</b> · ${t0(S.R.n)} registros${inf.archivo?" · "+esc(inf.archivo):""}`;
-  render();
+  render();Promise.all([cfgLoad(),piLoad()]).then(()=>{if(LAST&&S.tab!=="admin"&&S.tab!=="negociacion")renderPane()});vLoad();
 }
 
 /* ================= Segmentadores y período ================= */
@@ -640,8 +1060,9 @@ document.querySelectorAll(".quick button").forEach(btn=>btn.onclick=()=>{
 $("#clearAll").onclick=clearAll;
 function clearAll(){Object.values(S.f).forEach(s=>s.clear());S.from=S.to=null;$("#ymFrom").value="";$("#ymTo").value="";S.page=0;render()}
 function toggle(fid,v,add){const s=S.f[fid];if(add){s.has(v)?s.delete(v):s.add(v)}else if(s.size===1&&s.has(v))s.clear();else{s.clear();s.add(v)}S.page=0;render()}
-$("#btnFilters").onclick=()=>{$("#aside").classList.add("open");$("#closeAside").hidden=false};
-$("#closeAside").onclick=()=>{$("#aside").classList.remove("open");$("#closeAside").hidden=true};
+$("#btnFilters").onclick=()=>{$("#aside").classList.add("open");$("#closeAside").hidden=false;$("#backdrop").hidden=false};
+$("#fab").onclick=()=>$("#btnFilters").click();$("#backdrop").onclick=()=>$("#closeAside").click();
+$("#closeAside").onclick=()=>{$("#aside").classList.remove("open");$("#closeAside").hidden=true;$("#backdrop").hidden=true};
 
 /* ================= Pestañas ================= */
 function setTab(t){S.tab=t;document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
@@ -690,19 +1111,107 @@ function aggregate(pass,prev){
   return A;
 }
 
+/* ---------- Iconos, mini tendencias e infografía ---------- */
+const IC={coin:'<circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2c-.5-.9-1.6-1.4-2.8-1.4-1.6 0-2.8.8-2.8 2s1.2 1.7 2.8 2.1 2.8.9 2.8 2.1-1.2 2-2.8 2c-1.3 0-2.4-.5-2.9-1.5M12 6.3v1.5M12 16.2v1.5"/>',fish:'<path d="M2.5 12c3.5-5.5 10-6.5 14-2.8L21 6v12l-4.5-3.2C12.5 18.5 6 17.5 2.5 12z"/><circle cx="14.5" cy="11" r=".9" fill="currentColor"/>',people:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.6 14.1c3 .4 5.4 2.8 5.4 5.9"/>',scale:'<path d="M12 4v16M6 20h12M4 8h16M12 4l-1 4h2zM7 8l-3 6a3 3 0 006 0zM17 8l-3 6a3 3 0 006 0z"/>',calc:'<rect x="5" y="3" width="14" height="18" rx="3"/><path d="M8.5 7.5h7M8.5 12h1M14.5 12h1M8.5 16h1M14.5 16h1"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',pie:'<path d="M12 3a9 9 0 109 9h-9z"/><path d="M15 3.5A9 9 0 0120.5 9H15z"/>'};
+const icon=k=>`<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[k]}</svg></span>`;
+function spark(vals){vals=vals.filter(v=>v!=null);if(vals.length<3)return"";const W=120,H=30,mx=Math.max(...vals)||1;const pts=vals.map((v,i)=>[i/(vals.length-1)*W,H-3-(v/mx)*(H-6)]);const d="M"+pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join("L");const l=pts[pts.length-1];
+  return`<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}L${W},${H}L0,${H}Z" fill="currentColor" fill-opacity=".14"/><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.8" vector-effect="non-scaling-stroke"/><circle cx="${l[0].toFixed(1)}" cy="${l[1].toFixed(1)}" r="2.4" fill="currentColor"/></svg>`}
+function sparkSeries(A,fn){let lo=Infinity,hi=-Infinity;A.ym.forEach((v,i)=>{if(v>0){if(i<lo)lo=i;if(i>hi)hi=i}});if(hi<lo)return[];const out=[];for(let i=Math.max(lo,hi-23);i<=hi;i++)out.push(fn(i));return out}
+function renderInfo(A){
+  const R=S.R,el=$("#info");if(!el)return;if(!A.rows){el.innerHTML="";return}
+  const pass=LAST.pass,zq=new Float64Array(R.regs.length);for(let i=0;i<R.n;i++)if(pass[i])zq[R.reg[i]]+=R.q[i]/1000;
+  const zo=R.regs.map((r,i)=>i).filter(i=>zq[i]>0).sort((a,b)=>R.regRaw[a].localeCompare(R.regRaw[b]));const zc=["var(--s1)","var(--accent)","var(--s3)"];
+  const z=`<div class="ig"><span class="k">Distribución por zona</span><div class="stack">${zo.map((i,j)=>`<i style="width:${(zq[i]/A.q*100).toFixed(2)}%;background:${zc[j%3]}"></i>`).join("")}</div><div class="iglist">${zo.map((i,j)=>`<div><span class="dot" style="background:${zc[j%3]}"></span><span>${esc(R.regs[i])}</span><b>${t1(zq[i]/A.q*100)} %</b><span class="cs">${t0(zq[i])} t</span></div>`).join("")}</div></div>`;
+  const go=R.grps.map((n,i)=>i).filter(i=>A.grp[i]>0).sort((a,b)=>A.grp[b]-A.grp[a]);
+  const c=`<div class="ig"><span class="k">Composición por grupo de especie</span><div class="stack">${go.map(i=>`<i style="width:${(A.grp[i]/A.q*100).toFixed(2)}%;background:${R.grpColor[i]}" title="${esc(R.grps[i])}"></i>`).join("")}</div><div class="iglist">${go.slice(0,4).map(i=>`<div><span class="dot" style="background:${R.grpColor[i]}"></span><span>${esc(R.grps[i])}</span><b>${t1(A.grp[i]/A.q*100)} %</b></div>`).join("")}</div></div>`;
+  const muj=R.m.sexes.indexOf("Mujer"),nm=muj>=0?A.sexF[muj].size:0,nf=A.fis.size,sh=nf?nm/nf:0,on=Math.min(10,Math.max(nm?1:0,Math.round(sh*10)));
+  const person=f=>`<svg viewBox="0 0 24 26" aria-hidden="true"><circle cx="12" cy="6" r="4" fill="${f}"/><path d="M4.5 25v-7A6.5 6.5 0 0111 11.5h2a6.5 6.5 0 016.5 6.5v7z" fill="${f}"/></svg>`;
+  const g=`<div class="ig"><span class="k">Participación de mujeres</span><div class="picto" role="img" aria-label="${t1(sh*100)} % de mujeres">${Array.from({length:10},(_,k)=>person(k<on?"var(--accent)":"var(--brand-soft)")).join("")}</div><div><span class="big">${t1(sh*100)} %</span><div class="cs" style="color:var(--ink-2)">${nm?`Aproximadamente 1 de cada ${t0(Math.round(1/sh))} pescadores es mujer (${t0(nm)} de ${t0(nf)}).`:"No hay mujeres con estos filtros."}</div></div></div>`;
+  const arr=[...A.pq.values()].sort((a,b)=>b-a),k=Math.max(1,Math.round(arr.length*.2)),s=arr.slice(0,k).reduce((a,b)=>a+b,0),p=A.q?s/A.q:0,r=31,C=2*Math.PI*r;
+  const ring=`<div class="ig"><span class="k">Concentración del volumen</span><div class="ringw"><svg viewBox="0 0 84 84" class="ring" role="img" aria-label="${t0(p*100)} %"><circle cx="42" cy="42" r="${r}" fill="none" stroke="var(--brand-soft)" stroke-width="11"/><circle cx="42" cy="42" r="${r}" fill="none" stroke="var(--brand)" stroke-width="11" stroke-linecap="round" stroke-dasharray="${(C*p).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 42 42)"/><text x="42" y="47" text-anchor="middle" style="font-size:16px;font-weight:800;fill:var(--ink)">${t0(p*100)}%</text></svg><p class="cs" style="margin:0;color:var(--ink-2);font-size:.84rem">del volumen lo aporta el <b>20 %</b> de los pescadores con más desembarque (${t0(k)} de ${t0(arr.length)}).</p></div></div>`;
+  el.innerHTML=z+c+g+ring;
+}
+function vw(id,def){const el=document.getElementById(id);if(!el)return def;const w=el.getBoundingClientRect().width;return w>200?Math.round(w):def}
+let rzT=null,rzW=innerWidth;addEventListener("resize",()=>{if(Math.abs(innerWidth-rzW)<20)return;rzW=innerWidth;clearTimeout(rzT);rzT=setTimeout(()=>{if(LAST&&S.R){renderPane();if(S.tab==="negociacion")renderNeg()}},250)});
+
+/* ================= Hoy: indicadores económicos y estado de puertos ================= */
+const IND_DEF=[["dolar","Dólar observado"],["euro","Euro"],["uf","UF"],["utm","UTM"],["libra_cobre","Cobre (libra)"],["ipc","IPC mensual"],["tpm","TPM (tasa de política monetaria)"]];
+const fmtInd=(k,v)=>k==="libra_cobre"?"US$ "+t2(v):(k==="ipc"||k==="tpm")?t2(v)+" %":k==="dolar"||k==="euro"?"$ "+t2(v):"$ "+t2(v);
+async function fetchMindicador(){
+  const out=[];await Promise.all(IND_DEF.map(async([k,n])=>{try{const r=await fetch("https://mindicador.cl/api/"+k);const j=await r.json();const s=j.serie||[];if(s.length)out.push({k,nombre:n,valor:s[0].valor,fecha:s[0].fecha,prev:s[1]?s[1].valor:null})}catch(e){}}));
+  return out.length?{items:out,fuente:"mindicador.cl"}:null;
+}
+async function loadToday(){
+  const box=$("#today");if(!box)return;
+  let ind=null;
+  try{if(typeof api==="function")ind=await api("indicadores");else if(window.__STANDALONE)ind=await fetchMindicador()}catch(e){ind=null}
+  renderInd(ind);
+}
+function renderInd(d){
+  const el=$("#ind");if(!el)return;
+  if(d===null&&typeof api!=="function"&&!window.__STANDALONE){el.hidden=true;$("#today").hidden=true;return}
+  el.hidden=false;$("#today").hidden=false;
+  if(!d||!d.items||!d.items.length){el.innerHTML=`<div class="indh"><h3>Indicadores económicos del día</h3></div><p class="cs">No se pudieron obtener los indicadores en este momento. Revisa tu conexión a internet.</p>`;return}
+  const by=Object.fromEntries(d.items.map(x=>[x.k,x]));
+  el.innerHTML=`<div class="indh"><h3>Indicadores económicos del día</h3><span class="cs">Fuente: Banco Central de Chile vía mindicador.cl</span></div><div class="indrow">`+IND_DEF.filter(([k])=>by[k]).map(([k,n])=>{const x=by[k];const ch=x.prev?((x.valor-x.prev)/x.prev*100):null;
+    const f=new Date(x.fecha),mens=k==="ipc"||k==="utm";const fs=mens?MESL[f.getUTCMonth()]+" "+f.getUTCFullYear():String(f.getUTCDate()).padStart(2,"0")+"-"+String(f.getUTCMonth()+1).padStart(2,"0")+"-"+f.getUTCFullYear();
+    return`<div class="indc"><span class="k">${esc(n)}</span><b>${fmtInd(k,x.valor)}</b><span class="ch ${ch===null||Math.abs(ch)<.005?"flat":ch>0?"up":"down"}">${ch===null||k==="ipc"||k==="tpm"||k==="utm"?"":`${ch>0?"▲":ch<0?"▼":"•"} ${t2(Math.abs(ch))} %`}</span><span class="cs">${mens?fs:"al "+fs}</span></div>`}).join("")+`</div>`;
+}
+/* ---------- Mapa de calor: actividad por caleta y mes ---------- */
+const HEAT=["#fdf0cf","#f9cf7a","#f3a13b","#e06a22","#b8341b"];
+function monthYears(m){const R=S.R;let n=0;for(let y=0;y<=R.y1-R.y0;y++){const ym=y*12+m;if(ym<R.firstYM||ym>R.lastYM)continue;if(S.f.yr.size&&!S.f.yr.has(y))continue;if(S.f.mo.size&&!S.f.mo.has(m))continue;if(S.from!==null&&ym<S.from)continue;if(S.to!==null&&ym>S.to)continue;n++}return n}
+function calHeat(A){
+  const R=S.R,m=R.m,svg=$("#gCalHeat");if(!svg)return;const pass=LAST.pass,ms=S.measure,nC=m.C.length;
+  const T=new Float64Array(nC*12),F=Array.from({length:nC*12},()=>null);
+  for(let i=0;i<R.n;i++){if(!pass[i])continue;const k=R.c[i]*12+R.mo[i];T[k]+=R.q[i]/1000;(F[k]||(F[k]=new Set())).add(R.p[i])}
+  const my=MES.map((_,j)=>monthYears(j));
+  const val=(c,j)=>{const t=T[c*12+j];if(ms==="mes")return my[j]?t/my[j]:0;if(ms==="pesc"){const f=F[c*12+j];return f&&f.size?t/f.size:0}return t};
+  const tot=c=>V(A.cal[c],A.calFis[c],A.nMonths);
+  const zones=new Map();m.C.forEach((c,i)=>{if(A.cal[i]<=0)return;const z=regLabel(c[3]);if(!zones.has(z))zones.set(z,{raw:c[3],rows:[]});zones.get(z).rows.push(i)});
+  const zl=[...zones.entries()].sort((a,b)=>String(a[1].raw).localeCompare(String(b[1].raw)));zl.forEach(([,z])=>z.rows.sort((a,b)=>tot(b)-tot(a)));
+  const W=vw("gCalHeat",1000);if(!zl.length){emptyMsg(svg,W,120);return}
+  const narrow=W<640,L=narrow?104:170,BW=narrow?62:150,cw=(W-L-BW-12)/12,ch=narrow?24:26,zh=26;
+  let rowsN=0;zl.forEach(([,z])=>rowsN+=z.rows.length);const H=24+zl.length*zh+rowsN*ch+6;clear(svg,W,H);
+  let mx=0;zl.forEach(([,z])=>z.rows.forEach(c=>{for(let j=0;j<12;j++)mx=Math.max(mx,val(c,j))}));
+  const mxT=Math.max(...zl.flatMap(([,z])=>z.rows.map(tot)));
+  MES.forEach((s,j)=>E("text",{x:L+j*cw+cw/2,y:14,"text-anchor":"middle",style:"font-size:10.5px;font-weight:700;fill:var(--muted)"},svg).textContent=narrow?s[0].toUpperCase():s);
+  E("text",{x:W-BW+4,y:14,style:"font-size:10.5px;font-weight:700;fill:var(--muted)"},svg).textContent=narrow?"Total":"Total del período";
+  let y=24;const fmt=v=>ms==="total"?t0(v):tt(v);
+  zl.forEach(([zn,z])=>{
+    E("rect",{x:0,y:y+3,width:W,height:zh-6,rx:8,fill:"var(--brand-08)"},svg);
+    E("text",{x:8,y:y+zh/2+4,style:"font-size:11.5px;font-weight:800;fill:var(--brand-deep)"},svg).textContent=zn;
+    y+=zh;
+    z.rows.forEach(c=>{const nm=m.C[c][0].replace(/\s*\(.*\)$/,"").replace(/ Iv Reg$/,"");const dim=S.f.cal.size&&!S.f.cal.has(c);
+      const lb=E("text",{x:L-8,y:y+ch/2+4,"text-anchor":"end",class:"hit"+(dim?" dim":""),style:"font-size:11.5px;font-weight:600;fill:var(--ink)"},svg);lb.textContent=nm.length>(narrow?14:24)?nm.slice(0,narrow?13:23)+"…":nm;
+      hover(lb,()=>`<b>${esc(m.C[c][0])}</b> (${esc(m.C[c][1])})<br>${tipAll(A.cal[c],A.calFis[c],A.nMonths,A.q)}`,add=>toggle("cal",c,add));
+      for(let j=0;j<12;j++){const v=val(c,j),k=mx?v/mx:0,col=v>0?HEAT[Math.min(4,Math.floor(Math.sqrt(k)*5))]:"#f1f5f6";const g=E("g",{class:dim?"dim":""},svg);
+        E("rect",{x:L+j*cw+1.5,y:y+1.5,width:Math.max(0,cw-3),height:ch-3,rx:5,fill:col},g);
+        if(v>0&&cw>=40)E("text",{x:L+j*cw+cw/2,y:y+ch/2+4,"text-anchor":"middle",style:`font-size:10px;font-weight:700;fill:${Math.sqrt(k)>.6?"#fff":"#5a3a10"}`},g).textContent=v>=1000?t1(v/1000)+"k":fmt(v);
+        const t=T[c*12+j],f=F[c*12+j];
+        hover(g,()=>`<b>${esc(nm)} · ${MESL[j]}</b><br>${t1(t)} t en total${my[j]>1?` (${my[j]} años)`:""}<br>${tt(my[j]?t/my[j]:0)} t por mes promedio<br>${f?f.size:0} pescadores · ${tt(f&&f.size?t/f.size:0)} t por pescador`,v>0?add=>{const fc=S.f.cal,fm=S.f.mo;const same=fc.size===1&&fc.has(c)&&fm.size===1&&fm.has(j);if(!add){fc.clear();fm.clear()}if(!same||add){fc.add(c);fm.add(j)}S.page=0;render()}:null)}
+      const tv=tot(c),bw=Math.max(2,(BW-(narrow?14:58))*(mxT?tv/mxT:0));
+      E("rect",{x:W-BW+4,y:y+ch/2-5,width:bw,height:10,rx:5,fill:"var(--brand)",class:dim?"dim":""},svg);
+      if(!narrow)E("text",{x:W-BW+8+bw,y:y+ch/2+4,class:"val"},svg).textContent=fmt(tv);
+      y+=ch});
+  });
+  $("#lCalHeat").innerHTML=`<span class="cs">Menos</span><span class="hbar">${HEAT.map(c=>`<i style="background:${c}"></i>`).join("")}</span><span class="cs">Más</span>`;
+  $("#calHeatSub").textContent=(ms==="total"?"Toneladas por mes del período":ms==="mes"?"Promedio de toneladas en cada mes (por año del período)":"Toneladas por pescador activo en cada mes")+" · clic en una celda filtra caleta y mes · clic en el nombre filtra la caleta";
+}
+
 /* ================= Render ================= */
 let LAST=null;
 function render(slicersOnly){
   const {pass,optT,prev}=compute();renderSlicers(optT);if(slicersOnly&&LAST)return;
   const A=aggregate(pass,prev);LAST={pass,A,prev};renderChips();renderPane();
-  const nAct=Object.values(S.f).reduce((a,s)=>a+s.size,0)+(S.from!==null)+(S.to!==null);$("#btnFilters").textContent=nAct?`Filtros (${nAct})`:"Filtros";
+  const nAct=Object.values(S.f).reduce((a,s)=>a+s.size,0)+(S.from!==null)+(S.to!==null);$("#btnFilters").textContent=nAct?`Filtros (${nAct})`:"Filtros";$("#fabT").textContent=nAct?`Filtros (${nAct})`:"Filtros";
 }
 function renderPane(){const {pass,A}=LAST;
-  if(S.tab==="resumen"){renderKpis(A);renderClaves(A);renderFicha(pass);chartMes(A);chartAnio(A);chartComuna(A);
-    measureNote();donut("gComp","lComp","comp",S.R.comps,A.comp,i=>COLS[i%6],"t",A.compFis);donut("gSexo","lSexo","sex",S.R.m.sexes,S.R.m.sexes.map((_,i)=>A.sexF[i].size),i=>COLS[i],"pesc");treemap(A);chartEsp(A);heat(A)}
+  if(S.tab==="resumen"){renderKpis(A);renderClaves(A);renderInfo(A);renderFicha(pass);chartMes(A);chartAnio(A);chartComuna(A);
+    measureNote();donut("gComp","lComp","comp",S.R.comps,A.comp,i=>COLS[i%6],"t",A.compFis);donut("gSexo","lSexo","sex",S.R.m.sexes,S.R.m.sexes.map((_,i)=>A.sexF[i].size),i=>COLS[i],"pesc");treemap(A);chartEsp(A);heat(A);calHeat(A);renderAlerts();renderComp();renderProj()}
   if(S.tab==="pescadores"){pareto(A);hist(A);yearBars("gActivos",A.yFis.map(s=>s.size),"pescadores",v=>t0(v));yearBars("gProm",A.yFis.map((s,y)=>s.size?A.yg[y].reduce((a,b)=>a+b,0)/s.size:0),"t",v=>t1(v));topFis(A)}
-  if(S.tab==="especies"){xEspCal(pass,A);varEsp(A);prodCal(A);mujCal(A);donut("gCat","lCat","cat",S.R.m.cats,A.cat,i=>COLS[i],"t",A.catFis);measureNote()}
+  if(S.tab==="especies"){renderVedas();xEspCal(pass,A);varEsp(A);prodCal(A);mujCal(A);donut("gCat","lCat","cat",S.R.m.cats,A.cat,i=>COLS[i],"t",A.catFis);measureNote()}
   if(S.tab==="detalle")renderTable(pass);
+  if(S.tab==="poder")renderPoder(pass);
 }
 function renderSlicers(optT){
   const R=S.R;
@@ -738,42 +1247,67 @@ function renderKpis(A){
   const share=R.totalQ?A.q/R.totalQ*100:0,nF=A.fis.size,on=A.hasPrev,muj=R.m.sexes.indexOf("Mujer");
   const one=S.f.p.size===1?R.m.P[[...S.f.p][0]][1]:null;
   const pf=A.P.fis.size?A.P.q/A.P.fis.size:0;
-  $("#kpis").innerHTML=[
-    (S.measure==="total"?["Desembarque total",`${t0(A.q)} <small>t</small>`,deltaHtml(A.q,A.P.q,on)||`<span class="d">${t0(A.rows)} registros</span>`]:S.measure==="mes"?["Promedio mensual",`${tt(A.nMonths?A.q/A.nMonths:0)} <small>t/mes</small>`,deltaHtml(A.q,A.P.q,on)||`<span class="d">${t0(A.q)} t en ${A.nMonths} meses</span>`]:["Desembarque total",`${t0(A.q)} <small>t</small>`,deltaHtml(A.q,A.P.q,on)||`<span class="d">${t0(A.rows)} registros</span>`]),
-    ["Pescadores activos",one?`<span title="${esc(one)}">${esc(one)}</span>`:t0(nF),deltaHtml(nF,A.P.fis.size,on&&!one)||`<span class="d">${t0(muj>=0?A.sexF[muj].size:0)} mujeres</span>`],
-    ["Promedio por pescador",nF?`${t1(A.q/nF)} <small>t</small>`:"—",deltaHtml(nF?A.q/nF:0,pf,on)||`<span class="d">en el período</span>`],
-    ["Captura calculada",`${t0(A.x)} <small>t</small>`,`<span class="d">Desembarque × factor de conversión</span>`],
-    ["Mes de mayor captura",bv>0?ymLabel(bi):"—",`<span class="d">${bv>0?t0(bv)+" t ese mes":"Sin datos"}</span>`],
-    ["% del total de la base",`${t1(share)} <small>%</small>`,`<div class="meter" aria-hidden="true"><i style="width:${Math.min(100,share)}%"></i></div>`]
-  ].map(([k,v,d])=>`<div class="kpi"><span class="k">${k}</span><span class="v">${v}</span>${d}</div>`).join("");
+  const spQ=spark(sparkSeries(A,i=>A.ym[i])),spF=spark(sparkSeries(A,i=>A.ymFis[i]?A.ymFis[i].size:0)),spP=spark(sparkSeries(A,i=>A.ymFis[i]&&A.ymFis[i].size?A.ym[i]/A.ymFis[i].size:0));
+  const first=S.measure==="mes"?["Promedio mensual",`${tt(A.nMonths?A.q/A.nMonths:0)} <small>t/mes</small>`,deltaHtml(A.q,A.P.q,on)||`<span class="d">${t0(A.q)} t en ${A.nMonths} meses</span>`,"fish",spQ]:["Desembarque total",`${t0(A.q)} <small>t</small>`,deltaHtml(A.q,A.P.q,on)||`<span class="d">${t0(A.rows)} registros</span>`,"fish",spQ];
+  $("#kpis").innerHTML=[first,
+    ["Pescadores activos",one?`<span title="${esc(one)}">${esc(one)}</span>`:t0(nF),deltaHtml(nF,A.P.fis.size,on&&!one)||`<span class="d">${t0(muj>=0?A.sexF[muj].size:0)} mujeres</span>`,"people",one?"":spF],
+    ["Promedio por pescador",nF?`${t1(A.q/nF)} <small>t</small>`:"—",deltaHtml(nF?A.q/nF:0,pf,on)||`<span class="d">en el período</span>`,"scale",spP],
+    ["Captura calculada",`${t0(A.x)} <small>t</small>`,`<span class="d">Desembarque × factor de conversión</span>`,"calc",""],
+    ["Mes de mayor captura",bv>0?ymLabel(bi):"—",`<span class="d">${bv>0?t0(bv)+" t ese mes":"Sin datos"}</span>`,"cal",""],
+    (hasPrices()?(()=>{const v=A.esp.reduce((a,t,e)=>a+t*1000*priceOf(e),0),pv=A.P.esp.reduce((a,t,e)=>a+t*1000*priceOf(e),0);return["Valor estimado",money(v),deltaHtml(v,pv,on)||`<span class="d">a precio de playa por especie</span>`,"coin",""]})():["% del total de la base",`${t1(share)} <small>%</small>`,`<div class="meter" aria-hidden="true"><i style="width:${Math.min(100,share)}%"></i></div>`,"pie",""])
+  ].map(([k,v,d,ic,sp],j)=>`<div class="kpi${j===0?" hero":""}"><div class="kh">${icon(ic)}<span class="k">${k}</span></div><span class="v">${v}</span>${d}${sp}</div>`).join("");
 }
 function regLabel(r){const s=String(r).trim();if(/^II\s+REGI/i.test(s))return"Asuntos Públicos Norte";if(/^IV\s+REGI/i.test(s))return"Asuntos Públicos Los Pelambres";return regName(s)}
 function regName(r){const s=String(r).trim();const m=s.match(/^(\S+)\s+REGI[OÓ]N\s+(.*)$/i);if(!m)return s;const nm=m[2].toLowerCase().replace(/(^|\s)\S/g,c=>c.toUpperCase());return`${m[1].toUpperCase()} Región de ${nm}`}
 function renderClaves(A){
   const R=S.R,m=R.m,per=periodText(),pass=LAST.pass,prev=LAST.prev;
   if(!A.rows){$("#claves").innerHTML=`<h3>Claves del período</h3><p class="cs">No hay desembarques con estos filtros.</p>`;return}
-  const nR=R.regs.length,G=R.regs.map(()=>({q:0,pq:0,fis:new Set(),pfis:new Set(),muj:new Set(),cal:new Map(),esp:new Map(),pesp:new Map(),fq:new Map()}));const muj=m.sexes.indexOf("Mujer");
+  const muj=m.sexes.indexOf("Mujer");
+  const G=R.regs.map(()=>({q:0,x:0,rows:0,pq:0,fis:new Set(),muj:new Set(),cal:new Map(),com:new Map(),esp:new Map(),pesp:new Map(),grp:new Map(),fq:new Map(),mq:new Map(),ym:new Map(),yr:new Map(),mo:new Map(),day:new Map(),dmin:Infinity,dmax:-Infinity}));
   const add=(mp,k,v)=>mp.set(k,(mp.get(k)||0)+v);
   for(let i=0;i<R.n;i++){const g=G[R.reg[i]],q=R.q[i]/1000;
-    if(prev&&prev[i]){g.pq+=q;g.pfis.add(R.p[i]);add(g.pesp,R.e[i],q)}
-    if(!pass[i])continue;g.q+=q;g.fis.add(R.p[i]);if(R.sex[i]===muj)g.muj.add(R.p[i]);add(g.cal,R.c[i],q);add(g.esp,R.e[i],q);add(g.fq,R.p[i],q)}
+    if(prev&&prev[i]){g.pq+=q;add(g.pesp,R.e[i],q)}
+    if(!pass[i])continue;g.q+=q;g.rows++;if(R.x[i]>=0)g.x+=R.x[i]/1000;const p=R.p[i];g.fis.add(p);if(R.sex[i]===muj){g.muj.add(p);add(g.mq,p,q)}
+    add(g.cal,R.c[i],q);add(g.com,R.com[i],q);add(g.esp,R.e[i],q);add(g.grp,R.grp[i],q);add(g.fq,p,q);add(g.ym,R.ym[i],q);add(g.yr,R.yr[i],q);add(g.mo,R.mo[i],q);add(g.day,R.d[i],q);
+    if(R.d[i]<g.dmin)g.dmin=R.d[i];if(R.d[i]>g.dmax)g.dmax=R.d[i]}
   const order=R.regs.map((r,i)=>i).filter(i=>G[i].q>0).sort((a,b)=>R.regRaw[a].localeCompare(R.regRaw[b]));
-  const block=i=>{const g=G[i],L=[],top=mp=>[...mp].sort((a,b)=>b[1]-a[1]);
+  const top=mp=>[...mp].sort((a,b)=>b[1]-a[1]);
+  const pn=p=>m.P[p][1];
+  const fact=(ic,k,v,s)=>`<div class="fact"><span class="fk">${k}</span><b>${v}</b>${s?`<span class="fs">${s}</span>`:""}</div>`;
+  const block=i=>{const g=G[i],F=[],L=[];
+    const ym=top(g.ym),yr=top(g.yr),mo=top(g.mo),dy=top(g.day),es=top(g.esp),cs=top(g.cal),co=top(g.com),gr=top(g.grp),fq=top(g.fq),mq=top(g.mq);
+    const nM=g.ym.size,nD=g.day.size;
+    F.push(fact("cal","Datos del período",`${dstr(g.dmin)} al ${dstr(g.dmax)}`,`${t0(nM)} meses y ${t0(nD)} días con desembarque`));
+    if(dy.length)F.push(fact("cal","Día de mayor desembarque",dstr(dy[0][0]),`${tt(dy[0][1])} t ese día`));
+    if(ym.length)F.push(fact("cal","Mes de mayor actividad",cap(ymLabel(ym[0][0])),`${t0(ym[0][1])} t · promedio ${tt(g.q/nM)} t por mes`));
+    if(yr.length)F.push(fact("cal","Año de mayor actividad",String(R.y0+yr[0][0]),`${t0(yr[0][1])} t${yr.length>1?` · menor: ${R.y0+yr[yr.length-1][0]} (${t0(yr[yr.length-1][1])} t)`:""}`));
+    if(mo.length&&g.yr.size>1)F.push(fact("cal","Mes más fuerte del año",cap(MESL[mo[0][0]]),`${t1(mo[0][1]/g.q*100)} % del volumen · más bajo: ${MESL[mo[mo.length-1][0]]}`));
+    if(es.length)F.push(fact("fish","Recurso más capturado",esc(m.E[es[0][0]][1]),`${t0(es[0][1])} t · ${t1(es[0][1]/g.q*100)} % de la zona`));
+    if(es.length>1)F.push(fact("fish","Siguientes recursos",es.slice(1,3).map(e=>esc(m.E[e[0]][1])).join(" y "),es.slice(1,3).map(e=>`${t1(e[1]/g.q*100)} %`).join(" · ")+` · ${t0(g.esp.size)} especies en total`));
+    if(gr.length)F.push(fact("fish","Grupo principal",esc(R.grps[gr[0][0]]),`${t1(gr[0][1]/g.q*100)} % del volumen`));
+    if(cs.length)F.push(fact("pin","Caleta con más desembarque",esc(m.C[cs[0][0]][0]),`${t0(cs[0][1])} t · ${t1(cs[0][1]/g.q*100)} % · ${t0(g.cal.size)} caletas activas`));
+    if(co.length)F.push(fact("pin","Comuna principal",esc(R.coms[co[0][0]]),`${t1(co[0][1]/g.q*100)} % del volumen`));
+    if(fq.length)F.push(fact("people","Pescador con más desembarque",esc(pn(fq[0][0])),`${t0(fq[0][1])} t · ${t1(fq[0][1]/g.q*100)} % de la zona`));
+    if(mq.length)F.push(fact("people","Mujer con más desembarque",esc(pn(mq[0][0])),`${tt(mq[0][1])} t`));
+    F.push(fact("people","Mujeres activas",`${t0(g.muj.size)} de ${t0(g.fis.size)}`,`${t1(g.fis.size?g.muj.size/g.fis.size*100:0)} % de los pescadores`));
+    F.push(fact("calc","Captura calculada",`${t0(g.x)} t`,`${t0(g.rows)} registros de desembarque`));
+    if(hasPrices()){const v=[...g.esp].reduce((a,[e,t])=>a+t*1000*priceOf(e),0);F.push(fact("coin","Valor estimado",money(v),"a precio de playa por especie"))}
     if(A.hasPrev&&g.pq>0){const d=pct(g.q,g.pq);L.push(`El desembarque ${d>=0?"subió":"bajó"} <b>${t1(Math.abs(d))} %</b> frente al mismo período del año anterior (${t0(g.pq)} t).`);
       const ch=[...new Set([...g.esp.keys(),...g.pesp.keys()])].map(e=>({n:m.E[e][1],d:(g.esp.get(e)||0)-(g.pesp.get(e)||0)})).filter(x=>Math.abs(x.d)>0.05).sort((a,b)=>b.d-a.d);
       if(ch.length){const up=ch[0],dn=ch[ch.length-1];const t=[];if(up.d>0)t.push(`la especie que más creció fue <b>${esc(up.n)}</b> (+${tt(up.d)} t)`);if(dn.d<0)t.push(`la que más cayó, <b>${esc(dn.n)}</b> (${tt(dn.d)} t)`);if(t.length){const x=t.join("; ");L.push(x.charAt(0).toUpperCase()+x.slice(1)+".")}}}
     else if(A.hasPrev)L.push(`Sin desembarques en el mismo período del año anterior para comparar.`);
-    const cs=top(g.cal);if(cs.length)L.push(`Caleta principal: <b>${esc(m.C[cs[0][0]][0])}</b> con ${t0(cs[0][1])} t (${t1(cs[0][1]/g.q*100)} % de la zona)${cs[1]?`, seguida de ${esc(m.C[cs[1][0]][0])} (${t1(cs[1][1]/g.q*100)} %)`:""}.`);
-    const es=top(g.esp);if(es.length)L.push(`<b>${esc(m.E[es[0][0]][1])}</b> concentra el ${t1(es[0][1]/g.q*100)} % del volumen${es[1]?`, seguida de ${esc(m.E[es[1][0]][1])} (${t1(es[1][1]/g.q*100)} %)`:""}.`);
-    const arr=[...g.fq.values()].sort((a,b)=>b-a);if(arr.length>=10){const k=Math.max(1,Math.round(arr.length*.1));const s=arr.slice(0,k).reduce((a,b)=>a+b,0);L.push(`El 10 % de los pescadores con más volumen (${k}) explica el <b>${t0(s/g.q*100)} %</b> del desembarque.`)}
-    L.push(`Mujeres: ${t1(g.fis.size?g.muj.size/g.fis.size*100:0)} % de los pescadores activos (${t0(g.muj.size)} de ${t0(g.fis.size)}).`);
+    const arr=fq.map(x=>x[1]);if(arr.length>=10){const k=Math.max(1,Math.round(arr.length*.1));const s=arr.slice(0,k).reduce((a,b)=>a+b,0);L.push(`El 10 % de los pescadores con más volumen (${k}) explica el <b>${t0(s/g.q*100)} %</b> del desembarque.`)}
+    if(es.length&&es[0][1]/g.q>.5)L.push(`Alta dependencia de un solo recurso: <b>${esc(m.E[es[0][0]][1])}</b> supera la mitad del volumen.`);
+    if(yr.length>1){const ys=[...g.yr].sort((a,b)=>a[0]-b[0]);const l=ys[ys.length-1],b=ys[ys.length-2];if(l[0]===R.y1-R.y0&&R.lastYM%12<11)L.push(`${R.y1} está incompleto (datos hasta ${ymLabel(R.lastYM)}); compáralo con cuidado.`)}
     const d=A.hasPrev&&g.pq>0?pct(g.q,g.pq):null;
     return`<div class="reg"><div class="reg-h"><h4>${esc(R.regs[i])}</h4>${d===null?"":`<span class="delta ${Math.abs(d)<.5?"flat":d>0?"up":"down"}">${d>0?"▲":d<0?"▼":"•"} ${t1(Math.abs(d))} %</span>`}</div>
       <div class="reg-k"><span><b>${t0(g.q)}</b> t</span><span><b>${t1(g.q/A.q*100)}</b> % del total</span><span><b>${t0(g.fis.size)}</b> pescadores</span><span><b>${t1(g.fis.size?g.q/g.fis.size:0)}</b> t por pescador</span></div>
-      <ul>${L.map(x=>`<li>${x}</li>`).join("")}</ul></div>`};
+      <div class="facts">${F.join("")}</div>
+      ${L.length?`<ul>${L.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}</div>`};
   let head="";if(order.length>1){const parts=order.map(i=>`${esc(R.regs[i])}: ${t1(G[i].q/A.q*100)} %`);head=`<p class="cs" style="color:var(--ink-2);margin:0">Total ${t0(A.q)} t · ${parts.join(" · ")}${A.hasPrev?` · Variación total ${(d=>`${d>=0?"+":""}${t1(d)} %`)(pct(A.q,A.P.q))} vs año anterior`:""}</p>`}
   $("#claves").innerHTML=`<h3>Claves del período${per?" · "+esc(per):""}</h3>${head}<div class="regs">${order.map(block).join("")}</div>`;
 }
+const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
 function renderFicha(pass){
   const el=$("#ficha");if(S.f.p.size!==1){el.hidden=true;return}
   const R=S.R,pi=[...S.f.p][0],P=R.m.P[pi],cal=new Map(),esp=new Map();let a=Infinity,b=-Infinity,tot=0;
@@ -821,22 +1355,25 @@ function measureNote(){const m=S.measure;const nm=LAST?LAST.A.nMonths:0;
 document.getElementById("meas").addEventListener("click",ev=>{const b=ev.target.closest("button[data-m]");if(!b)return;S.measure=b.dataset.m;document.querySelectorAll("#meas button").forEach(x=>x.setAttribute("aria-pressed",x===b));render()});
 
 function chartMes(A){
-  const R=S.R,svg=$("#gMes"),W=780,H=240,L=48,Rr=W-8,T=14,B=H-26;clear(svg,W,H);const pm=S.measure==="pesc";
+  const R=S.R,svg=$("#gMes"),W=vw("gMes",780),H=240,L=48,Rr=W-8,T=14,B=H-26;clear(svg,W,H);const pm=S.measure==="pesc";
   let a=R.firstYM,b=R.lastYM;if(hasTime()||S.f.mo.size){let lo=Infinity,hi=-Infinity;A.ym.forEach((v,i)=>{if(v>0){if(i<lo)lo=i;if(i>hi)hi=i}});if(hi>=lo){a=Math.max(a,lo-(lo%12));b=Math.min(b,hi+(11-hi%12))}}
   const vals=[];for(let i=a;i<=b;i++){const t=A.ym[i],f=A.ymFis[i];vals.push([i,pm?(f&&f.size?t/f.size:0):t,t,f?f.size:0])}
   const mx=niceMax(Math.max(pm?.01:1,...vals.map(v=>v[1]))),sc=v=>B-(v/mx)*(B-T);yAxis(svg,L,Rr,sc,mx,pm?tt:t0);
-  const bw=(Rr-L)/vals.length,fy=S.f.yr,fm=S.f.mo;
-  vals.forEach(([i,v,t,nf],k)=>{const y=Math.floor(i/12),mo=i%12,x=L+k*bw;
-    if(mo===0||k===0)E("text",{x:x+1,y:B+16},svg).textContent=String(R.y0+y);
-    if(v>0)E("path",{d:rr(x+bw*.14,sc(v),Math.max(bw*.72,1),B-sc(v),Math.min(3,bw*.3)),fill:"var(--brand)","fill-opacity":".85"},svg);
+  const bw=(Rr-L)/vals.length,fy=S.f.yr,fm=S.f.mo,AP=[];const VD=vedaMask();$("#vedaLeg").hidden=!VD;
+  vals.forEach(([i,v,t,nf],k)=>{const y=Math.floor(i/12),mo=i%12,x=L+k*bw;if(VD&&VD[mo])E("rect",{x,y:T,width:bw,height:B-T,fill:"var(--veda)"},svg);
+    if((mo===0||k===0)&&x<Rr-28)E("text",{x:x+1,y:B+16},svg).textContent=String(R.y0+y);
+    AP.push([x+bw/2,sc(v)]);
     const hit=E("rect",{x,y:T,width:bw,height:B-T,fill:"transparent"},svg);
     hover(hit,()=>`<b>${MESL[mo]} ${R.y0+y}</b><br>${t1(t)} t en total<br>${nf} pescadores · ${tt(nf?t/nf:0)} t por pescador`,add=>{const same=fy.size===1&&fy.has(y)&&fm.size===1&&fm.has(mo);if(!add){fy.clear();fm.clear()}if(!same||add){fy.add(y);fm.add(mo)}S.page=0;render()})});
+  const gid="gm"+Math.random().toString(36).slice(2,7),df=E("defs",{},svg),lg=E("linearGradient",{id:gid,x1:0,y1:0,x2:0,y2:1},df);E("stop",{offset:"0%","stop-color":"#ff8000","stop-opacity":.38},lg);E("stop",{offset:"100%","stop-color":"#ff8000","stop-opacity":.03},lg);
+  if(AP.length>1){const dd="M"+AP.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join("L");E("path",{d:dd+`L${AP[AP.length-1][0].toFixed(1)},${B}L${AP[0][0].toFixed(1)},${B}Z`,fill:`url(#${gid})`,"pointer-events":"none"},svg);E("path",{d:dd,fill:"none",stroke:"var(--brand)","stroke-width":2.2,"stroke-linejoin":"round","pointer-events":"none"},svg);
+    const mi=AP.reduce((b,p,i)=>p[1]<AP[b][1]?i:b,0);E("circle",{cx:AP[mi][0],cy:AP[mi][1],r:4.5,fill:"var(--accent)",stroke:"#fff","stroke-width":2,"pointer-events":"none"},svg)}
   const pts=[];if(!S.f.mo.size)vals.forEach(([i],k)=>{if(k<11)return;let s=0;for(let j=k-11;j<=k;j++)s+=vals[j][1];pts.push([L+k*bw+bw/2,sc(s/12)])});
-  if(pts.length>1)E("path",{d:"M"+pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join("L"),fill:"none",stroke:"var(--ink)","stroke-width":2,"stroke-linejoin":"round","pointer-events":"none"},svg);
-  E("line",{x1:L,x2:Rr,y1:B,y2:B,stroke:"var(--ink-2)"},svg);
+  if(pts.length>1)E("path",{d:"M"+pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join("L"),fill:"none",stroke:"var(--ink)","stroke-width":1.6,"stroke-dasharray":"5 4","stroke-linejoin":"round","pointer-events":"none"},svg);
+  E("line",{x1:L,x2:Rr,y1:B,y2:B,stroke:"var(--line)"},svg);
 }
 function chartAnio(A){
-  const R=S.R,svg=$("#gAnio"),W=380,H=240,L=46,Rr=W-6,T=20,B=H-24;clear(svg,W,H);const m=S.measure;
+  const R=S.R,svg=$("#gAnio"),W=vw("gAnio",380),H=240,L=46,Rr=W-6,T=20,B=H-24;clear(svg,W,H);const m=S.measure;
   $("#lAnio").innerHTML=R.grps.map((g,i)=>`<span><i style="background:${R.grpColor[i]}"></i>${esc(g)}</span>`).join("");
   const div=A.yg.map((_,y)=>m==="mes"?monthsIn(y):m==="pesc"?A.yFis[y].size:1);
   const YG=A.yg.map((arr,y)=>Array.from(arr,v=>div[y]?v/div[y]:0));
@@ -852,6 +1389,7 @@ function chartAnio(A){
   E("line",{x1:L,x2:Rr,y1:B,y2:B,stroke:"var(--ink-2)"},svg);
 }
 function hbar(svgId,items,fid,W,labW,opt={}){
+  W=vw(svgId,W);labW=Math.min(labW,Math.round(W*.36));opt={...opt,maxc:Math.min(opt.maxc||40,Math.max(10,Math.floor(labW/6.2)))};
   const svg=$("#"+svgId);if(!items.length){emptyMsg(svg,W,120);return}
   const rh=opt.rh||24,T=4,H=T+items.length*rh+22,L=labW,Rr=W-(opt.right||52);clear(svg,W,H);
   const mx=opt.max||niceMax(Math.max(...items.map(i=>i.v))),sc=v=>(v/mx)*(Rr-L),B=T+items.length*rh,fmt=opt.fmt||tt;
@@ -860,7 +1398,8 @@ function hbar(svgId,items,fid,W,labW,opt={}){
   items.forEach((it,i)=>{const y=T+i*rh+4,h=rh-8,w=Math.max(sc(it.v),1.5),dim=sel&&sel.size&&!sel.has(it.id);
     const lab=it.label.length>opt.maxc?it.label.slice(0,opt.maxc-1)+"…":it.label;
     E("text",{x:L-8,y:y+h/2+4,"text-anchor":"end"},svg).textContent=lab;
-    E("path",{d:rrH(L,y,w,h,4),fill:it.color||"var(--brand)",class:dim?"dim":""},svg);
+    E("rect",{x:L,y,width:Math.max(0,Rr-L),height:h,rx:h/2,fill:"var(--brand-08)"},svg);
+    E("path",{d:rrH(L,y,w,h,h/2),fill:it.color||"var(--brand)",class:dim?"dim":""},svg);
     E("text",{x:L+w+5,y:y+h/2+4,class:"val"},svg).textContent=fmt(it.v)+(opt.unit||"");
     const hit=E("rect",{x:0,y:T+i*rh,width:W,height:rh,fill:"transparent"},svg);
     hover(hit,()=>`<b>${esc(it.label)}</b>${it.sub?`<br>${esc(it.sub)}`:""}<br>${it.tip||fmt(it.v)+(opt.unit||" t")}`,fid||opt.click?add=>(opt.click?opt.click(it):toggle(fid,it.id,add)):null)});
@@ -888,7 +1427,7 @@ function donut(svgId,legId,fid,labels,vals,color,unit,fisArr){
     b.innerHTML=`<i style="background:${color(i)}"></i><span>${esc(lab)}</span><span class="pc">${m==="total"?t1(tot?v/tot*100:0)+" %":tt(disp(i))+" "+MEAS[m].short}</span>`;b.title=fmt(v)+` · ${t1(tot?v/tot*100:0)} % del total`;b.onclick=ev=>toggle(fid,i,ev.ctrlKey||ev.metaKey);leg.appendChild(b)});
 }
 function treemap(A){
-  const R=S.R,svg=$("#gCaleta"),W=560,H=260,nm=A.nMonths;clear(svg,W,H);const m=S.measure;
+  const R=S.R,svg=$("#gCaleta"),W=vw("gCaleta",560),H=260,nm=A.nMonths;clear(svg,W,H);const m=S.measure;
   const items=R.m.C.map((c,i)=>({i,label:c[0],sub:c[1],t:A.cal[i],v:V(A.cal[i],A.calFis[i],nm)})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v);if(!items.length){emptyMsg(svg,W,H);return}
   const tot=items.reduce((s,x)=>s+x.v,0);items.forEach(x=>x.a=x.v/tot*W*H);const rects=[];let x=0,y=0,w=W,h=H,row=[];
   const worst=(row,len)=>{const s=row.reduce((a,b)=>a+b.a,0);let mx=0,mn=Infinity;row.forEach(r=>{mx=Math.max(mx,r.a);mn=Math.min(mn,r.a)});return Math.max(len*len*mx/(s*s),(s*s)/(len*len*mn))};
@@ -902,18 +1441,18 @@ function treemap(A){
     hover(g,()=>`<b>${esc(r.label)}</b> (${esc(r.sub)})<br>${tipAll(r.t,A.calFis[r.i],nm,A.q)}`,add=>toggle("cal",r.i,add))});
 }
 function heat(A){
-  const R=S.R,svg=$("#gHeat"),nY=R.y1-R.y0+1,L=44,T=20,W=1000,cw=(W-L-6)/12,ch=26,H=T+nY*ch+4;clear(svg,W,H);const pm=S.measure==="pesc";
+  const R=S.R,svg=$("#gHeat"),nY=R.y1-R.y0+1,L=40,T=20,W=vw("gHeat",1000),cw=(W-L-6)/12,ch=26,H=T+nY*ch+4;clear(svg,W,H);const pm=S.measure==="pesc";
   const val=i=>pm?(A.ymFis[i]&&A.ymFis[i].size?A.ym[i]/A.ymFis[i].size:0):A.ym[i];
   let mx=0;for(let i=0;i<nY*12;i++)mx=Math.max(mx,val(i));MES.forEach((m,i)=>E("text",{x:L+i*cw+cw/2,y:13,"text-anchor":"middle"},svg).textContent=m);
   for(let y=0;y<nY;y++){E("text",{x:L-8,y:T+y*ch+ch/2+4,"text-anchor":"end"},svg).textContent=String(R.y0+y);
     for(let m=0;m<12;m++){const i=y*12+m,v=val(i),k=mx?v/mx:0,out=i<R.firstYM||i>R.lastYM;const g=E("g",{},svg);const nf=A.ymFis[i]?A.ymFis[i].size:0;
       E("rect",{x:L+m*cw+1.5,y:T+y*ch+1.5,width:cw-3,height:ch-3,rx:4,fill:v>0?"var(--brand)":"var(--brand-08)","fill-opacity":v>0?(.1+.9*k).toFixed(2):1},g);
-      E("text",{x:L+m*cw+cw/2,y:T+y*ch+ch/2+4,"text-anchor":"middle",style:`font-size:11px;font-weight:600;fill:${k>.5?"#fff":"var(--ink-2)"}`},g).textContent=out?"":v>0?(pm?tt(v):t0(v)):"–";
+      E("text",{x:L+m*cw+cw/2,y:T+y*ch+ch/2+4,"text-anchor":"middle",style:`font-size:11px;font-weight:600;fill:${k>.5?"#fff":"var(--ink-2)"}`},g).textContent=out||cw<38?"":v>0?(pm?tt(v):t0(v)):"–";
       if(!out)hover(g,()=>`<b>${MESL[m]} ${R.y0+y}</b><br>${t1(A.ym[i])} t en total<br>${nf} pescadores · ${tt(nf?A.ym[i]/nf:0)} t por pescador`,v>0?add=>{const fy=S.f.yr,fm=S.f.mo,same=fy.size===1&&fy.has(y)&&fm.size===1&&fm.has(m);if(!add){fy.clear();fm.clear()}if(!same||add){fy.add(y);fm.add(m)}S.page=0;render()}:null)}}
 }
 /* ---------- Pescadores ---------- */
 function pareto(A){
-  const svg=$("#gPareto"),W=520,H=260,L=44,Rr=W-12,T=12,B=H-30;clear(svg,W,H);const arr=[...A.pq.values()].sort((a,b)=>b-a);if(!arr.length){emptyMsg(svg,W,H);return}
+  const svg=$("#gPareto"),W=vw("gPareto",520),H=260,L=44,Rr=W-12,T=12,B=H-30;clear(svg,W,H);const arr=[...A.pq.values()].sort((a,b)=>b-a);if(!arr.length){emptyMsg(svg,W,H);return}
   const tot=arr.reduce((a,b)=>a+b,0),n=arr.length,sx=p=>L+p/100*(Rr-L),sy=p=>B-p/100*(B-T);
   [0,25,50,75,100].forEach(p=>{E("line",{x1:L,x2:Rr,y1:sy(p),y2:sy(p),class:"gl"},svg);E("text",{x:L-6,y:sy(p)+4,"text-anchor":"end"},svg).textContent=p+" %";E("text",{x:sx(p),y:B+16,"text-anchor":"middle"},svg).textContent=p+" %"});
   E("text",{x:(L+Rr)/2,y:H-2,"text-anchor":"middle"},svg).textContent="% de pescadores";
@@ -927,7 +1466,7 @@ function pareto(A){
 function hist(A){
   const bins=[[0,1,"< 1 t"],[1,5,"1 a 5 t"],[5,20,"5 a 20 t"],[20,50,"20 a 50 t"],[50,100,"50 a 100 t"],[100,500,"100 a 500 t"],[500,1e12,"500 t o más"]];
   const c=bins.map(()=>0),s=bins.map(()=>0);A.pq.forEach(v=>{const i=bins.findIndex(b=>v>=b[0]&&v<b[1]);c[i]++;s[i]+=v});
-  const svg=$("#gHist"),W=520,H=260,L=40,Rr=W-8,T=18,B=H-30;clear(svg,W,H);if(!A.pq.size){emptyMsg(svg,W,H);return}
+  const svg=$("#gHist"),W=vw("gHist",520),H=260,L=40,Rr=W-8,T=18,B=H-30;clear(svg,W,H);if(!A.pq.size){emptyMsg(svg,W,H);return}
   const mx=niceMax(Math.max(...c)),sc=v=>B-(v/mx)*(B-T);yAxis(svg,L,Rr,sc,mx);const bw=(Rr-L)/bins.length;
   bins.forEach((b,i)=>{const x=L+i*bw+bw*.15,w=bw*.7;if(c[i])E("path",{d:rr(x,sc(c[i]),w,B-sc(c[i]),4),fill:"var(--brand)"},svg);
     E("text",{x:x+w/2,y:sc(c[i])-5,"text-anchor":"middle",class:"val"},svg).textContent=c[i];E("text",{x:x+w/2,y:B+16,"text-anchor":"middle"},svg).textContent=b[2];
@@ -935,7 +1474,7 @@ function hist(A){
   E("line",{x1:L,x2:Rr,y1:B,y2:B,stroke:"var(--ink-2)"},svg);
 }
 function yearBars(id,vals,unit,fmt){
-  const R=S.R,svg=$("#"+id),W=520,H=230,L=44,Rr=W-8,T=18,B=H-26;clear(svg,W,H);const mx=niceMax(Math.max(1,...vals)),sc=v=>B-(v/mx)*(B-T);yAxis(svg,L,Rr,sc,mx,unit==="t"?t1:t0);
+  const R=S.R,svg=$("#"+id),W=vw(id,520),H=230,L=44,Rr=W-8,T=18,B=H-26;clear(svg,W,H);const mx=niceMax(Math.max(1,...vals)),sc=v=>B-(v/mx)*(B-T);yAxis(svg,L,Rr,sc,mx,unit==="t"?t1:t0);
   const bw=(Rr-L)/vals.length,partial=R.lastYM%12!==11;
   vals.forEach((v,y)=>{const x=L+y*bw+bw*.2,w=bw*.6,isP=partial&&y===vals.length-1;if(v>0)E("path",{d:rr(x,sc(v),w,B-sc(v),4),fill:"var(--brand)","fill-opacity":isP?.5:1},svg);
     if(v>0)E("text",{x:x+w/2,y:sc(v)-5,"text-anchor":"middle",class:"val"},svg).textContent=fmt(v);E("text",{x:x+w/2,y:B+16,"text-anchor":"middle"},svg).textContent=(R.y0+y)+(isP?"*":"");
@@ -951,10 +1490,10 @@ function xEspCal(pass,A){
   const M=new Map();for(let i=0;i<R.n;i++){if(!pass[i])continue;const k=R.e[i]*1000+R.c[i];M.set(k,(M.get(k)||0)+R.q[i]/1000)}
   let mx=0;M.forEach(v=>{if(v>mx)mx=v});
   $("#xEspCal").innerHTML=`<table><thead><tr><th>Especie</th>${cals.map(c=>`<th class="r" title="${esc(c.n)}">${esc(c.n.length>14?c.n.slice(0,13)+"…":c.n)}</th>`).join("")}<th class="r">Total</th></tr></thead><tbody>`+
-    top.map(e=>`<tr><td><b>${esc(e.n)}</b></td>${cals.map(c=>{const v=M.get(e.i*1000+c.i)||0;const k=mx?v/mx:0;return`<td class="r" style="background:${v?`rgba(0,122,148,${(.06+.8*Math.sqrt(k)).toFixed(2)})`:"transparent"};color:${Math.sqrt(k)>.55?"#fff":"inherit"}">${v?tt(v):"·"}</td>`}).join("")}<td class="r"><b>${tt(e.v)}</b></td></tr>`).join("")+`</tbody></table>`;
+    top.map(e=>`<tr><td><b>${esc(e.n)}</b></td>${cals.map(c=>{const v=M.get(e.i*1000+c.i)||0;const k=mx?v/mx:0;return`<td class="r" style="background:${v?`rgba(255,128,0,${(.06+.9*Math.sqrt(k)).toFixed(2)})`:"transparent"};color:${Math.sqrt(k)>.55?"#241100":"inherit"}">${v?tt(v):"·"}</td>`}).join("")}<td class="r"><b>${tt(e.v)}</b></td></tr>`).join("")+`</tbody></table>`;
 }
 function varEsp(A){
-  const R=S.R,svg=$("#gVar"),W=520;
+  const R=S.R,svg=$("#gVar"),W=vw("gVar",520);
   if(!A.hasPrev){clear(svg,W,90);E("text",{x:W/2,y:40,"text-anchor":"middle"},svg).textContent="Elige uno o más años (o un rango de meses) arriba";E("text",{x:W/2,y:60,"text-anchor":"middle"},svg).textContent="para comparar con el mismo período del año anterior.";$("#varSub").textContent="Mismo período, año anterior";return}
   $("#varSub").textContent=`Diferencia en toneladas: ${periodText()} frente al mismo período del año anterior`;
   const ch=R.m.E.map((e,i)=>({n:e[1],d:A.esp[i]-A.P.esp[i],c:A.esp[i],p:A.P.esp[i]})).filter(x=>Math.abs(x.d)>0.01).sort((a,b)=>b.d-a.d);
@@ -1000,7 +1539,7 @@ $("#tSearch").addEventListener("input",ev=>{S.q=ev.target.value;S.page=0;renderT
 $("#tGroup").addEventListener("change",ev=>{S.group=ev.target.value;S.page=0;renderTable(LAST.pass)});
 $("#tCsv").onclick=async()=>{
   const lines=[TCOLS.map(c=>c[1]).join(";")].concat(TROWS.map(r=>TCOLS.map(([k])=>{let v=r[k];if(k==="d1")v=dstr(v);else if(typeof v==="number"&&k!=="rpa"&&k!=="n")v=String(Math.round(v*1000)/1000).replace(".",",");return`"${String(v).replace(/"/g,'""')}"`}).join(";")));
-  const blob=new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="detalle_pescadores.csv";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)};
+  const blob=new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="detalle_pescadores.csv";ST.log("Exportar CSV",`${TROWS.length} filas`);document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)};
 
 /* ---------- Buscador de pescador ---------- */
 const fs=$("#fs"),fl=$("#fsList");let fsSel=0,fsHits=[];
@@ -1014,6 +1553,332 @@ fs.addEventListener("input",()=>{
 fs.addEventListener("keydown",ev=>{if(fl.hidden)return;const b=fl.querySelectorAll("button");if(ev.key==="ArrowDown"){fsSel=Math.min(b.length-1,fsSel+1)}else if(ev.key==="ArrowUp"){fsSel=Math.max(0,fsSel-1)}else if(ev.key==="Enter"){ev.preventDefault();if(b[fsSel])b[fsSel].click();return}else if(ev.key==="Escape"){fl.hidden=true;return}else return;ev.preventDefault();b.forEach((x,k)=>x.classList.toggle("act",k===fsSel))});
 fl.addEventListener("click",ev=>{const b=ev.target.closest("button[data-i]");if(!b)return;S.f.p.clear();S.f.p.add(+b.dataset.i);fl.hidden=true;fs.value="";setTab("resumen");S.page=0;render();window.scrollTo({top:0,behavior:"smooth"})});
 document.addEventListener("click",ev=>{if(!ev.target.closest(".fsearch"))fl.hidden=true});
+
+/* Almacenamiento de ajustes, bitácora, vistas y registro: servidor (cada regla se valida allí) */
+const FALTA="Falta crear tablas nuevas en Supabase: vuelve a ejecutar supabase/schema.sql.";
+const ST={
+  async ajustes(){const r=await api("ajustes");if(r.falta)throw new Error(FALTA);return r.data||{}},
+  saveAjustes:o=>api("ajustes",{method:"PUT",body:{data:o}}),
+  async bitList(){const r=await api("bitacora");if(r.falta)throw new Error(FALTA);return(r.items||[]).map(x=>({...x,id:String(x.id)}))},
+  async bitSave(e){const r=await api("bitacora",{method:"POST",body:{accion:e.id?"editar":"crear",...e}});return r.id},
+  bitDel:id=>api("bitacora",{method:"POST",body:{accion:"eliminar",id}}),
+  async vistas(){try{const r=await api("vistas");return r.data||[]}catch(e){return[]}},
+  saveVistas:list=>api("vistas",{method:"PUT",body:{data:list}}),
+  log(accion,detalle){if(!["Reporte ejecutivo","Exportar CSV","Escenarios de negociación"].includes(accion))return;api("actividad",{method:"POST",body:{accion,detalle:String(detalle||"").slice(0,300)}}).catch(()=>{})},
+  async actList(){const r=await api("actividad");if(r.falta)throw new Error(FALTA);return r.items||[]}
+};
+const MAPA={
+  async load(){const r=await api("mapa");if(r.falta)throw new Error("Falta crear la tabla de evaluaciones en Supabase: vuelve a ejecutar supabase/schema.sql. Mientras tanto se muestra solo el cálculo automático.");
+    return new Map((r.evaluaciones||[]).map(e=>[String(e.rpa),{p:e.poder||null,i:e.interes||null,nota:e.nota||"",org:e.organizacion||""}]))},
+  save:(k,v)=>api("mapa",{method:"POST",body:{rpa:k,poder:v.p||null,interes:v.i||null,nota:v.nota||"",organizacion:v.org||""}})
+};
+
+/* ================= Ajustes generales: precios, vedas y alertas ================= */
+const CFG={loaded:false,precios:{},vedas:[],alertas:{umbral:30,minT:5},warn:""};
+async function cfgLoad(force){if(CFG.loaded&&!force)return;try{const o=await ST.ajustes()||{};CFG.precios=o.precios||{};CFG.vedas=Array.isArray(o.vedas)?o.vedas:[];CFG.alertas={umbral:30,minT:5,...(o.alertas||{})};CFG.warn=""}catch(e){CFG.warn=e&&e.message||"No se pudieron leer los ajustes."}CFG.loaded=true}
+async function cfgSave(){await ST.saveAjustes({precios:CFG.precios,vedas:CFG.vedas,alertas:CFG.alertas})}
+const priceOf=e=>+CFG.precios[S.R.m.E[e][0]]||0;
+const hasPrices=()=>Object.values(CFG.precios).some(v=>+v>0);
+const money=v=>{const a=Math.abs(v)/1e6;return a>=1?"$ "+(a>=100?t0(v/1e6):t1(v/1e6))+" millones":"$ "+t0(v)};
+const mIn=(m,a,b)=>a<=b?m>=a&&m<=b:m>=a||m<=b;
+function vedaOf(code,mo,regRaw){return CFG.vedas.find(v=>(v.esp||[]).map(String).includes(String(code))&&mIn(mo,+v.desde,+v.hasta)&&(regRaw===undefined||!v.zona||v.zona===regRaw))}
+function vedaMask(){if(!CFG.vedas.length||!S.f.esp.size)return null;const R=S.R,m=R.m,codes=[...S.f.esp].map(e=>m.E[e][0]),zone=S.f.reg.size===1?R.regRaw[[...S.f.reg][0]]:undefined;
+  const mk=MES.map((_,mo)=>codes.some(c=>vedaOf(c,mo,zone)));return mk.some(Boolean)?mk:null}
+function dimPass(){const R=S.R,F=R.F.filter(f=>f.id!=="yr"&&f.id!=="mo"&&S.f[f.id].size);const out=new Uint8Array(R.n);for(let i=0;i<R.n;i++){let ok=1;for(const f of F)if(!S.f[f.id].has(f.arr[i])){ok=0;break}out[i]=ok}return out}
+function lastFullYM(){const R=S.R,d=new Date(BASE+R.maxD*DAY);return d.getUTCDate()>=25?R.lastYM:R.lastYM-1}
+async function saveFile(name,data,type){if(S.downloads){await S.downloads.save({filename:name,data});return}
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
+const todayISO=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const fmtD=s=>{if(!s)return"—";const [y,m,d]=String(s).slice(0,10).split("-");return d&&m?`${d}-${m}-${y}`:s};
+function filterText(){const R=S.R,p=[];R.F.forEach(f=>{if(f.pills)return;const s=S.f[f.id];if(s.size)p.push(`${f.label}: ${[...s].slice(0,4).map(v=>f.opts[v]).join(", ")}${s.size>4?` y ${s.size-4} más`:""}`)});return p.join(" · ")}
+
+/* ================= Alertas ================= */
+const ALR={all:false,items:[],ml:"",mp:""};
+function computeAlerts(){
+  const R=S.R,m=R.m,dp=dimPass(),L=lastFullYM(),U=+CFG.alertas.umbral||30,minT=+CFG.alertas.minT||5;ALR.ml=ymLabel(L);ALR.mp=L>=12?ymLabel(L-12):"";
+  if(L<12)return[];
+  const Z=new Map(),add=(mp,k,v)=>mp.set(k,(mp.get(k)||0)+v);
+  const zo=z=>{let g=Z.get(z);if(!g){g={cur:new Map(),prv:new Map(),ecur:new Map(),eprv:new Map(),q3:0,p3:0,f12:new Map()};Z.set(z,g)}return g};
+  for(let i=0;i<R.n;i++){if(!dp[i])continue;const ym=R.ym[i];if(ym<L-26||ym>L)continue;const q=R.q[i]/1000,g=zo(R.reg[i]);
+    if(ym===L){add(g.cur,R.c[i],q);add(g.ecur,R.e[i],q)}else if(ym===L-12){add(g.prv,R.c[i],q);add(g.eprv,R.e[i],q)}
+    if(ym>L-3)g.q3+=q;else if(ym>L-15&&ym<=L-12)g.p3+=q;
+    if(ym>L-12){let f=g.f12.get(R.p[i]);if(!f){f={q:0,ym:new Set(),last:-1};g.f12.set(R.p[i],f)}f.q+=q;f.ym.add(ym);if(ym>f.last)f.last=ym}}
+  const items=[],ml=ALR.ml,mp=ALR.mp;
+  for(const [z,g] of [...Z].sort((a,b)=>R.regRaw[a[0]].localeCompare(R.regRaw[b[0]]))){const zl=R.regs[z],zr=R.regRaw[z];
+    if(g.p3>=minT){const d=pct(g.q3,g.p3);if(d<=-U)items.push({s:3,z:zl,t:`El desembarque de los últimos 3 meses cayó ${t0(Math.abs(d))} % frente a un año antes`,d:`${t0(g.q3)} t frente a ${t0(g.p3)} t`})}
+    for(const [c,p] of g.prv){if(p<minT)continue;const cu=g.cur.get(c)||0,d=pct(cu,p);if(d<=-U)items.push({s:2,z:zl,t:`Caleta ${m.C[c][0]}: ${t0(Math.abs(d))} % menos en ${ml}`,d:`${tt(cu)} t frente a ${tt(p)} t en ${mp}`})}
+    for(const [e,p] of g.eprv){if(p<minT)continue;const cu=g.ecur.get(e)||0,d=pct(cu,p);if(d>-U)continue;const v=vedaOf(m.E[e][0],L%12,zr);
+      items.push({s:v?0:2,z:zl,t:`${m.E[e][1]}: ${t0(Math.abs(d))} % menos en ${ml}`,d:`${tt(cu)} t frente a ${tt(p)} t en ${mp}`+(v?` · coincide con una veda${v.nota?" ("+v.nota+")":""}, probablemente no es una señal de conflicto`:"")})}
+    const Lf=[...g.f12.entries()],n=Lf.length;
+    if(n>=5){Lf.sort((a,b)=>b[1].q-a[1].q);Lf.forEach(([p,f],k)=>f.ap=5-Math.floor(k*5/n));const first=new Map();[...Lf].sort((a,b)=>b[1].ym.size-a[1].ym.size).forEach(([p,f],k)=>{if(!first.has(f.ym.size))first.set(f.ym.size,k)});
+      const off=[];Lf.forEach(([p,f])=>{f.ai=5-Math.floor(first.get(f.ym.size)*5/n);const o=PI.ov.get(String(m.P[p][0]));const pw=o&&o.p?+o.p:f.ap,it=o&&o.i?+o.i:f.ai;if(pw>=3&&it>=3&&f.last<=L-3)off.push([p,f])});
+      if(off.length)items.push({s:2,z:zl,t:`${off.length} pescador${off.length>1?"es":""} de "Gestionar de cerca" sin desembarques en los últimos 3 meses`,d:off.slice(0,6).map(([p,f])=>`${m.P[p][1]} (último: ${ymLabel(f.last)})`).join(" · ")+(off.length>6?` y ${off.length-6} más`:"")})}
+  }
+  return items.sort((a,b)=>b.s-a.s);
+}
+function alertsHtml(items,lim){return items.length?`<ul class="alist">${items.slice(0,lim).map(a=>`<li class="al s${a.s}"><span class="ai" aria-hidden="true">${a.s===3?"!!":a.s===2?"!":"i"}</span><div><b>${esc(a.z)}</b> · ${esc(a.t)}<br><span class="cs">${esc(a.d)}</span></div></li>`).join("")}</ul>`:`<p class="cs" style="margin:0">Sin alertas: no hay caídas importantes en el último mes completo.</p>`}
+function renderAlerts(){const el=$("#alerts");if(!S.R||!S.R.n){el.hidden=true;return}
+  const items=computeAlerts();ALR.items=items;el.hidden=false;const U=+CFG.alertas.umbral||30,minT=+CFG.alertas.minT||5;
+  el.innerHTML=`<div class="tbar"><h3><span class="bell" aria-hidden="true"></span>Alertas · ${esc(ALR.ml)} frente a ${esc(ALR.mp)}</h3><span class="cs">Caídas de ${U} % o más, con al menos ${minT} t de base${S.perm&&S.perm.admin?" · ajustable en Administración":""}</span></div>`+alertsHtml(items,ALR.all?items.length:4)+(items.length>4?`<button class="btn ghost small" type="button" id="alMore">${ALR.all?"Ver menos":`Ver las ${items.length} alertas`}</button>`:"");
+  const b=$("#alMore");if(b)b.onclick=()=>{ALR.all=!ALR.all;renderAlerts()}}
+
+/* ================= Comparación de zonas ================= */
+function zoneAgg(pass,prev){const R=S.R,m=R.m,muj=m.sexes.indexOf("Mujer"),G=new Map();
+  const g0=()=>({q:0,pq:0,pv:0,fis:new Set(),muj:new Set(),cal:new Set(),esp:new Map(),fq:new Map(),ym:new Set(),val:0});const get=z=>{let g=G.get(z);if(!g){g=g0();G.set(z,g)}return g};
+  for(let i=0;i<R.n;i++){const q=R.q[i]/1000;if(prev&&prev[i]){const g=get(R.reg[i]);g.pq+=q;g.pv+=q*1000*priceOf(R.e[i])}
+    if(!pass[i])continue;const g=get(R.reg[i]);g.q+=q;g.fis.add(R.p[i]);if(R.sex[i]===muj)g.muj.add(R.p[i]);g.cal.add(R.c[i]);g.esp.set(R.e[i],(g.esp.get(R.e[i])||0)+q);g.fq.set(R.p[i],(g.fq.get(R.p[i])||0)+q);g.ym.add(R.ym[i])}
+  for(const g of G.values())g.val=[...g.esp].reduce((a,[e,t])=>a+t*1000*priceOf(e),0);
+  return[...G].filter(([z,g])=>g.q>0).sort((a,b)=>R.regRaw[a[0]].localeCompare(R.regRaw[b[0]]))}
+function compData(pass,prev,hasPrev){const R=S.R,m=R.m,Z=zoneAgg(pass,prev),tot=Z.reduce((a,[,g])=>a+g.q,0),PZ=piCompute(pass,"p","t");
+  const top=g=>[...g.esp].sort((a,b)=>b[1]-a[1])[0];
+  const rows=[["Desembarque",g=>`<b>${t0(g.q)}</b> t`],["Participación del total",g=>t1(tot?g.q/tot*100:0)+" %"]];
+  if(hasPrev)rows.push(["Variación frente al año anterior",g=>{const d=g.pq>0?pct(g.q,g.pq):null;return d===null?"—":`<span class="delta ${Math.abs(d)<.5?"flat":d>0?"up":"down"}">${d>0?"▲":d<0?"▼":"•"} ${t1(Math.abs(d))} %</span>`}]);
+  if(hasPrices())rows.push(["Valor estimado (precio de playa)",g=>money(g.val)]);
+  rows.push(["Pescadores activos",g=>t0(g.fis.size)],["Mujeres",g=>`${t0(g.muj.size)} (${t1(g.fis.size?g.muj.size/g.fis.size*100:0)} %)`],["Toneladas por pescador",g=>t1(g.fis.size?g.q/g.fis.size:0)],
+    ["Meses con desembarque",g=>t0(g.ym.size)],["Caletas activas",g=>t0(g.cal.size)],["Especies distintas",g=>t0(g.esp.size)],
+    ["Recurso principal",g=>{const t=top(g);return t?`${esc(m.E[t[0]][1])} <span class="cs">${t1(t[1]/g.q*100)} %</span>`:"—"}],
+    ["El 10 % con más volumen explica",g=>{const a=[...g.fq.values()].sort((x,y)=>y-x);if(a.length<10)return"—";const k=Math.max(1,Math.round(a.length*.1));return t0(a.slice(0,k).reduce((x,y)=>x+y,0)/g.q*100)+" % del total"}],
+    ['En "Gestionar de cerca"',(g,z)=>{const P=PZ.find(x=>x.z===z);return P?t0(P.L.filter(f=>f.pw>=3&&f.in>=3).length)+" pescadores":"—"}]);
+  return{heads:Z.map(([z])=>R.regs[z]),rows:rows.map(([l,fn])=>[l,...Z.map(([z,g])=>fn(g,z))])}}
+function compTable(d){return`<thead><tr><th>Indicador</th>${d.heads.map(h=>`<th class="r">${esc(h)}</th>`).join("")}</tr></thead><tbody>${d.rows.map(r=>`<tr><td>${r[0]}</td>${r.slice(1).map(v=>`<td class="r">${v}</td>`).join("")}</tr>`).join("")}</tbody>`}
+function renderComp(){const {pass,prev,A}=LAST;const d=compData(pass,prev,A.hasPrev);$("#cZonas").hidden=d.heads.length<1;$("#compTbl").innerHTML=compTable(d)}
+
+/* ================= Proyección ================= */
+function projData(){const R=S.R,dp=dimPass(),L=lastFullYM(),Z=new Map();
+  for(let i=0;i<R.n;i++){if(!dp[i])continue;let a=Z.get(R.reg[i]);if(!a){a=new Float64Array(R.lastYM+40);Z.set(R.reg[i],a)}a[R.ym[i]]+=R.q[i]/1000}
+  const out=[];for(const [z,a] of Z){let s1=0,s0=0;for(let k=L-11;k<=L;k++)if(k>=0)s1+=a[k];for(let k=L-23;k<=L-12;k++)if(k>=0)s0+=a[k];
+    const raw=s0>0?s1/s0:1,tr=Math.min(1.3,Math.max(.7,raw));const P=[];
+    for(let k=1;k<=3;k++){const T=L+k;const vs=[1,2,3].map(y=>T-12*y).filter(x=>x>=R.firstYM&&x<=L).map(x=>a[x]);if(!vs.length)continue;const b=vs.reduce((x,y)=>x+y,0)/vs.length;P.push({ym:T,f:b*tr,lo:Math.min(...vs)*tr,hi:Math.max(...vs)*tr,n:vs.length})}
+    const hist=[];for(let k=Math.max(0,L-11);k<=L;k++)hist.push({ym:k,v:a[k]});out.push({z,label:R.regs[z],raw:R.regRaw[z],tr:raw,P,hist})}
+  return out.sort((a,b)=>a.raw.localeCompare(b.raw))}
+function renderProj(){const D=projData(),box=$("#proj");if(!D.length){box.innerHTML=`<p class="cs">Sin datos con estos filtros.</p>`;return}
+  box.innerHTML=D.map((d,j)=>`<div class="pz"><div class="pz-h"><b>${esc(d.label)}</b><span class="cs">Tendencia 12 meses: ${d.tr>=1?"+":""}${t1((d.tr-1)*100)} %</span></div><svg id="gProj${j}" role="img" aria-label="Proyección ${esc(d.label)}"></svg>
+    <div class="pz-l">${d.P.map(p=>`<div><span>${cap(ymLabel(p.ym))}</span><b>${t0(p.f)} t</b><span class="cs">entre ${t0(p.lo)} y ${t0(p.hi)} t</span></div>`).join("")}</div></div>`).join("");
+  D.forEach((d,j)=>{const svg=$("#gProj"+j),W=vw("gProj"+j,520),H=170,L=40,Rr=W-6,T=12,B=H-22;clear(svg,W,H);
+    const all=d.hist.map(h=>h.v).concat(d.P.map(p=>p.hi));const mx=niceMax(Math.max(1,...all)),sc=v=>B-(v/mx)*(B-T);yAxis(svg,L,Rr,sc,mx,t0);
+    const n=d.hist.length+d.P.length,bw=(Rr-L)/n;
+    d.hist.forEach((h,k)=>{const x=L+k*bw;if(h.v>0)E("path",{d:rr(x+1.5,sc(h.v),bw-3,B-sc(h.v),3),fill:"var(--s3)"},svg);if(k%3===0)E("text",{x:x+bw/2,y:B+15,"text-anchor":"middle"},svg).textContent=MES[h.ym%12];hover(E("rect",{x,y:T,width:bw,height:B-T,fill:"transparent"},svg),()=>`<b>${ymLabel(h.ym)}</b><br>${t1(h.v)} t (real)`)});
+    d.P.forEach((p,k)=>{const x=L+(d.hist.length+k)*bw;E("path",{d:rr(x+1.5,sc(p.f),bw-3,B-sc(p.f),3),fill:"var(--brand)"},svg);E("line",{x1:x+bw/2,x2:x+bw/2,y1:sc(p.hi),y2:sc(p.lo),stroke:"var(--ink)","stroke-width":1.5},svg);
+      [p.hi,p.lo].forEach(v=>E("line",{x1:x+bw/2-5,x2:x+bw/2+5,y1:sc(v),y2:sc(v),stroke:"var(--ink)","stroke-width":1.5},svg));E("text",{x:x+bw/2,y:B+15,"text-anchor":"middle","font-weight":700},svg).textContent=bw>=26?MES[p.ym%12]:MES[p.ym%12][0].toUpperCase();
+      hover(E("rect",{x,y:T,width:bw,height:B-T,fill:"transparent"},svg),()=>`<b>${ymLabel(p.ym)} (proyección)</b><br>${t1(p.f)} t estimadas<br>rango ${t1(p.lo)} a ${t1(p.hi)} t<br>basado en ${p.n} año${p.n>1?"s":""}`)});
+    E("line",{x1:L,x2:Rr,y1:B,y2:B,stroke:"var(--line)"},svg)})}
+
+/* ================= Reporte ejecutivo ================= */
+const REP_CSS=`.rep{font-family:Manrope,"Segoe UI",Arial,sans-serif;color:#24170c;font-size:13px;line-height:1.45;display:grid;gap:16px}
+.rep h1{margin:0;font-size:20px}.rep h2{margin:6px 0 0;font-size:15px;color:#a84c00;border-bottom:2px solid #ff8000;padding-bottom:4px}
+.rep .rh{background:linear-gradient(118deg,#ff8000,#ffa347);color:#241100;border-radius:12px;padding:16px 18px;display:grid;gap:4px}.rep .rh .k{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.rep .kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}.rep .kp div{border:1px solid #eee3d8;border-radius:10px;padding:8px 10px;display:grid}.rep .kp b{font-size:18px}.rep .kp span{font-size:11px;color:#8d7b6b}
+.rep table{border-collapse:collapse;width:100%;font-size:12px}.rep th,.rep td{white-space:normal!important;min-width:0!important}.rep>*{min-width:0}.rep th,.rep td{border-bottom:1px solid #eee3d8;padding:5px 7px;text-align:left;vertical-align:top}.rep th{background:#fff6ec;font-size:11px;text-transform:uppercase;color:#5c4a3b}.rep .r{text-align:right}
+.rep .cs{font-size:11px;color:#8d7b6b}.rep ul{margin:0;padding-left:18px}.rep .regs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}.rep .reg{border:1px solid #eee3d8;border-radius:10px;padding:10px;background:#fff6ec}.rep .reg h4{margin:0 0 4px;color:#7a3a00}
+.rep .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:6px 0}.rep .fact{background:#fff;border:1px solid #eee3d8;border-radius:8px;padding:6px 8px;display:grid}.rep .fact .fk{font-size:10px;font-weight:800;text-transform:uppercase;color:#a84c00}.rep .fact .fs{font-size:10.5px;color:#8d7b6b}
+.rep .reg-k{display:flex;flex-wrap:wrap;gap:4px 12px}.rep .delta.up{color:#16794a}.rep .delta.down{color:#b4372f}.rep .alist{list-style:none;padding:0;display:grid;gap:5px}.rep .al{display:flex;gap:8px}.rep .ai{display:none}.rep .stg{font-weight:700}
+.rep .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}.rep footer{font-size:11px;color:#8d7b6b;border-top:1px solid #eee3d8;padding-top:8px}
+@media print{.rep .reg,.rep table,.rep .kp{break-inside:avoid}}`;
+function buildReport(){const {pass,A,prev}=LAST,R=S.R,m=R.m;renderClaves(A);const per=periodText()||"Todo el período",flt=filterText();
+  const nf=A.fis.size,val=hasPrices()?A.esp.reduce((a,t,e)=>a+t*1000*priceOf(e),0):null;
+  const k=[[t0(A.q)+" t","Desembarque"],[t0(nf),"Pescadores activos"],[t1(nf?A.q/nf:0)+" t","Por pescador"],...(A.hasPrev?[[(d=>`${d>=0?"+":""}${t1(d)} %`)(pct(A.q,A.P.q)),"Frente al año anterior"]]:[]),...(val!==null?[[money(val),"Valor estimado"]]:[]),[t0(A.x)+" t","Captura calculada"]];
+  const items=computeAlerts();const cd=compData(pass,prev,A.hasPrev);const PZ=piCompute(pass,"p","t");const pj=projData();
+  const now=new Date();const gen=now.toLocaleDateString("es-CL")+" "+now.toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});
+  const regs=$("#claves .regs");
+  return`<div class="rep"><div class="rh"><span class="k">Asuntos Públicos · Reporte ejecutivo</span><h1>Estadísticas de Recolección y Captura</h1><span>Período: <b>${esc(per)}</b>${flt?` · ${esc(flt)}`:""}</span><span style="font-size:11px">Datos del ${dstr(R.minD)} al ${dstr(R.maxD)} · generado el ${esc(gen)} por ${esc(S.acct.usuario)}</span></div>
+  <div class="kp">${k.map(([b,s])=>`<div><b>${b}</b><span>${s}</span></div>`).join("")}</div>
+  <h2>Comparación de zonas</h2><table>${compTable(cd)}</table>
+  <h2>Alertas · ${esc(ALR.ml)} frente a ${esc(ALR.mp)}</h2>${alertsHtml(items,12)}
+  <h2>Claves por zona</h2><div class="regs">${regs?regs.innerHTML:""}</div>
+  <h2>Proyección de los próximos 3 meses</h2><table><thead><tr><th>Zona</th>${(pj[0]?pj[0].P:[]).map(p=>`<th class="r">${cap(ymLabel(p.ym))}</th>`).join("")}<th class="r">Tendencia 12 meses</th></tr></thead><tbody>${pj.map(d=>`<tr><td>${esc(d.label)}</td>${d.P.map(p=>`<td class="r"><b>${t0(p.f)} t</b><br><span class="cs">${t0(p.lo)}–${t0(p.hi)} t</span></td>`).join("")}<td class="r">${d.tr>=1?"+":""}${t1((d.tr-1)*100)} %</td></tr>`).join("")}</tbody></table>
+  <p class="cs">Estimación simple: promedio del mismo mes en los últimos 3 años, ajustado por la tendencia de los últimos 12 meses.</p>
+  <h2>Actores clave por zona (10 con más toneladas)</h2><div class="two">${PZ.map(Z=>`<div><b>${esc(Z.label)}</b><table><thead><tr><th class="r">#</th><th>Pescador</th><th class="r">t</th><th>Poder · interés</th><th>Estrategia</th></tr></thead><tbody>${Z.L.slice(0,10).map(f=>`<tr><td class="r">${f.rank}</td><td>${esc(f.name)}<br><span class="cs">${esc(m.C[f.mainCal][0])}</span></td><td class="r">${tt(f.q)}</td><td>${f.pw} · ${f.in}</td><td class="stg">${PI_STRAT(f.pw,f.in)[0]}</td></tr>`).join("")}</tbody></table></div>`).join("")}</div>
+  ${S.perm.admin&&BIT.loaded?(()=>{const p=BIT.list.filter(b=>b.estado==="Pendiente");return p.length?`<h2>Compromisos pendientes</h2><table><thead><tr><th>Fecha</th><th>Actor</th><th>Tipo</th><th>Detalle</th><th>Responsable</th></tr></thead><tbody>${p.sort((a,b)=>(a.fecha||"").localeCompare(b.fecha||"")).slice(0,20).map(b=>`<tr><td>${fmtD(b.fecha)}</td><td>${esc(b.actor||b.clave)}</td><td>${esc(b.tipo)}</td><td>${esc(b.texto)}</td><td>${esc(b.responsable||"—")}</td></tr>`).join("")}</tbody></table>`:""})():""}
+  <footer>Fuente: registros de desembarque artesanal y recolección de orilla cargados en la plataforma. Documento de uso interno: contiene nombres de pescadores.</footer></div>`}
+async function openReport(){if(!LAST)return;if(S.perm.admin)await bitLoad();$("#repBody").innerHTML=`<style>${REP_CSS}</style>`+buildReport();$("#repModal").hidden=false;ST.log("Reporte ejecutivo",periodText()||"Todo el período")}
+$("#btnReport").onclick=openReport;$("#repClose").onclick=()=>$("#repModal").hidden=true;
+$("#repPrint").onclick=()=>{document.body.classList.add("printing");try{window.print()}catch(e){toast("Tu navegador no permitió imprimir aquí. Usa Descargar y ábrelo para imprimir.")}setTimeout(()=>document.body.classList.remove("printing"),500)};
+$("#repDl").onclick=async()=>{const html=`<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporte ejecutivo · Asuntos Públicos</title><style>body{margin:0;padding:24px;background:#fff}${REP_CSS}</style></head><body>${buildReport()}</body></html>`;
+  try{await saveFile("reporte_ejecutivo_"+todayISO()+".html",html,"text/html")}catch(e){if(e&&e.code!=="cancelled")toast("No se pudo descargar el reporte.")}};
+
+/* ================= Vistas guardadas ================= */
+const VW={list:[],loaded:false};
+async function vLoad(){VW.list=await ST.vistas();VW.loaded=true;vFill()}
+function vFill(){const s=$("#vSel");s.innerHTML=`<option value="">${VW.list.length?"Elegir vista…":"Sin vistas guardadas"}</option>`+VW.list.map((v,i)=>`<option value="${i}">${esc(v.nombre)}</option>`).join("");$("#vDel").hidden=true}
+function vSerialize(name){const R=S.R,f={};R.F.forEach(F=>{if(S.f[F.id].size)f[F.id]=[...S.f[F.id]].map(v=>F.opts[v])});const lab=i=>i==null?null:(R.y0+Math.floor(i/12))+"-"+(i%12+1);
+  return{nombre:name,tab:["admin","negociacion"].includes(S.tab)?"resumen":S.tab,medida:S.measure,f,desde:lab(S.from),hasta:lab(S.to),ts:Date.now()}}
+function vApply(v){const R=S.R;R.F.forEach(F=>{S.f[F.id].clear();(v.f&&v.f[F.id]||[]).forEach(o=>{const k=F.opts.indexOf(o);if(k>=0)S.f[F.id].add(k)})});
+  const ix=s=>{if(!s)return null;const [y,mo]=s.split("-").map(Number);const i=(y-R.y0)*12+mo-1;return i>=R.firstYM&&i<=R.lastYM?i:null};S.from=ix(v.desde);S.to=ix(v.hasta);$("#ymFrom").value=S.from??"";$("#ymTo").value=S.to??"";
+  if(v.medida&&v.medida!==S.measure){const mb=document.querySelector(`#meas button[data-m="${v.medida}"]`);if(mb)mb.click()}S.page=0;setTab(v.tab||"resumen");render()}
+$("#vSel").onchange=ev=>{const v=VW.list[+ev.target.value];$("#vDel").hidden=ev.target.value==="";if(v&&ev.target.value!==""){vApply(v);toast(`Vista "${v.nombre}" aplicada.`)}};
+$("#vSave").onclick=()=>{$("#vName").value=periodText()||"";$("#vErr").textContent="";$("#vModal").hidden=false;$("#vName").focus()};
+$("#vCancel").onclick=()=>$("#vModal").hidden=true;
+$("#vOk").onclick=async()=>{const n=$("#vName").value.trim().slice(0,60);if(!n){$("#vErr").textContent="Escribe un nombre.";return}const b=$("#vOk");b.disabled=true;
+  try{const list=VW.list.filter(v=>v.nombre!==n);list.unshift(vSerialize(n));await ST.saveVistas(list.slice(0,30));VW.list=list.slice(0,30);vFill();$("#vModal").hidden=true;toast(`Vista "${n}" guardada.`)}catch(e){$("#vErr").textContent=e&&e.message||"No se pudo guardar."}b.disabled=false};
+$("#vDel").onclick=async()=>{const i=+$("#vSel").value;const v=VW.list[i];if(!v)return;const b=$("#vDel");if(b.dataset.c!=="1"){b.dataset.c="1";b.textContent="¿Borrar?";setTimeout(()=>{b.dataset.c="";b.textContent="Borrar"},3000);return}
+  b.dataset.c="";b.textContent="Borrar";try{const list=VW.list.filter((_,k)=>k!==i);await ST.saveVistas(list);VW.list=list;vFill();toast(`Vista "${v.nombre}" borrada.`)}catch(e){toast("No se pudo borrar la vista.")}};
+
+/* ================= Bitácora de relacionamiento ================= */
+const BIT={list:[],loaded:false,key:null,label:"",warn:""};
+const BIT_T=["Reunión","Compromiso","Acuerdo","Conflicto","Otro"],BIT_E=["Pendiente","Cumplido","No aplica"];
+async function bitLoad(force){if(!S.perm||!S.perm.admin)return;if(BIT.loaded&&!force)return;try{BIT.list=await ST.bitList();BIT.warn=""}catch(e){BIT.list=[];BIT.warn=e&&e.message||""}BIT.loaded=true}
+const bitCount=k=>BIT.list.filter(b=>b.clave===k).length;
+function bitOpen(k,label){BIT.key=k;BIT.label=label;$("#bitWho").textContent=label;$("#bF").value=todayISO();$("#bT").value="Reunión";$("#bE").value="Pendiente";$("#bR").value="";$("#bX").value="";$("#bErr").textContent="";bitRenderList();$("#bitModal").hidden=false;$("#bX").focus()}
+function bitRenderList(){const L=BIT.list.filter(b=>b.clave===BIT.key).sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
+  $("#bList").innerHTML=L.length?L.map(b=>`<div class="bit"><div class="bit-h"><span class="bt">${esc(b.tipo)}</span><b>${fmtD(b.fecha)}</b>${b.responsable?`<span class="cs">Responsable: ${esc(b.responsable)}</span>`:""}<span style="flex:1"></span><select data-bst="${esc(b.id)}" aria-label="Estado">${BIT_E.map(e=>`<option ${e===b.estado?"selected":""}>${e}</option>`).join("")}</select><button class="btn ghost small" type="button" data-bdel="${esc(b.id)}">Eliminar</button></div><p>${esc(b.texto)}</p><span class="cs">Registrado por ${esc(b.por||"—")}</span></div>`).join(""):`<p class="cs">Aún no hay registros para este actor.</p>`}
+$("#bSave").onclick=async()=>{const x=$("#bX").value.trim();if(!x){$("#bErr").textContent="Escribe el detalle.";return}const b=$("#bSave");b.disabled=true;$("#bErr").textContent="";
+  try{await ST.bitSave({clave:BIT.key,actor:BIT.label,fecha:$("#bF").value||todayISO(),tipo:$("#bT").value,estado:$("#bE").value,responsable:$("#bR").value.trim().slice(0,80),texto:x.slice(0,1500),por:S.acct.usuario});
+    ST.log("Bitácora",`${BIT.label}: ${$("#bT").value}`);await bitLoad(true);bitRenderList();$("#bX").value="";$("#bR").value="";toast("Registro guardado.");if(S.tab==="poder")renderPoder()}catch(e){$("#bErr").textContent=e&&e.message||"No se pudo guardar."}b.disabled=false};
+$("#bList").addEventListener("change",async ev=>{const s=ev.target.closest("[data-bst]");if(!s)return;const it=BIT.list.find(b=>b.id===s.dataset.bst);if(!it)return;try{await ST.bitSave({...it,estado:s.value});it.estado=s.value;toast("Estado actualizado.");if(S.tab==="poder")renderBitPend()}catch(e){toast("No se pudo actualizar.")}});
+$("#bList").addEventListener("click",async ev=>{const d=ev.target.closest("[data-bdel]");if(!d)return;if(d.dataset.c!=="1"){d.dataset.c="1";d.textContent="¿Eliminar?";return}
+  try{await ST.bitDel(d.dataset.bdel);await bitLoad(true);bitRenderList();toast("Registro eliminado.");if(S.tab==="poder")renderPoder()}catch(e){toast("No se pudo eliminar.")}});
+$("#bClose").onclick=()=>$("#bitModal").hidden=true;
+function renderBitPend(){const el=$("#bitPend");if(!S.perm.admin||!BIT.loaded){el.hidden=true;return}el.hidden=false;
+  const P=BIT.list.filter(b=>b.estado==="Pendiente").sort((a,b)=>(a.fecha||"").localeCompare(b.fecha||""));const tot=BIT.list.length;
+  el.innerHTML=`<div class="tbar"><h3>Compromisos y seguimiento</h3><span class="cs">${t0(P.length)} pendientes de ${t0(tot)} registros en la bitácora</span></div>${BIT.warn?`<p class="warnbox">${esc(BIT.warn)}</p>`:""}`+
+   (P.length?`<div class="tbl"><table><thead><tr><th>Fecha</th><th>Actor</th><th>Tipo</th><th>Detalle</th><th>Responsable</th><th></th></tr></thead><tbody>${P.slice(0,15).map(b=>`<tr><td>${fmtD(b.fecha)}</td><td><b>${esc(b.actor||b.clave)}</b></td><td><span class="bt">${esc(b.tipo)}</span></td><td style="white-space:normal;min-width:220px">${esc(b.texto)}</td><td>${esc(b.responsable||"—")}</td><td><button class="btn small" type="button" data-bok="${esc(b.id)}">Marcar cumplido</button> <button class="btn ghost small" type="button" data-bopen="${esc(b.clave)}" data-bl="${esc(b.actor||b.clave)}">Abrir</button></td></tr>`).join("")}</tbody></table></div>${P.length>15?`<p class="cs">Se muestran 15 de ${P.length}.</p>`:""}`
+   :`<p class="cs" style="margin:0">No hay compromisos pendientes. Usa el botón <b>Bitácora</b> de cada pescador u organización para registrar reuniones, compromisos, acuerdos y conflictos.</p>`)}
+$("#bitPend").addEventListener("click",async ev=>{const ok=ev.target.closest("[data-bok]");if(ok){const it=BIT.list.find(b=>b.id===ok.dataset.bok);if(!it)return;ok.disabled=true;try{await ST.bitSave({...it,estado:"Cumplido"});it.estado="Cumplido";toast("Marcado como cumplido.");renderBitPend()}catch(e){toast("No se pudo actualizar.");ok.disabled=false}return}
+  const o=ev.target.closest("[data-bopen]");if(o)bitOpen(o.dataset.bopen,o.dataset.bl)});
+
+/* ================= Escenarios de negociación ================= */
+const SC={args:null};
+function renderScen(fis,y0,y1,esp,months){SC.args=[fis,y0,y1,esp,months];const yN=y1-y0+1,m=S.R.m;const base=[...fis].map(([p,f])=>({p,kg:f.q/yN*1000}));
+  const pk=+$("#nPrice").value||priceOf(esp)||0;$("#scA").placeholder=pk?String(pk):"Ej. 3500";
+  const A=+$("#scA").value||pk,B=+$("#scB").value||0,Cf=+$("#scCf").value||0,Ck=+$("#scCk").value||0;
+  const defs=[["A","Según volumen histórico",f=>f.kg*A,A?`$ ${t0(A)} por kg × kilos promedio por año`:"Falta el precio por kg"],["B","Monto fijo por pescador",()=>B,B?`$ ${t0(B)} a cada pescador`:"Falta el monto fijo"],["C","Mixto",f=>Cf+f.kg*Ck,Cf||Ck?`$ ${t0(Cf)} fijo + $ ${t0(Ck)} por kg`:"Faltan los montos"]];
+  const res=defs.map(([id,t,fn,d])=>{const v=base.map(fn).sort((a,b)=>b-a),tot=v.reduce((a,b)=>a+b,0),k=Math.max(1,Math.round(v.length*.1));return{id,t,d,tot,n:v.length,max:v[0]||0,min:v[v.length-1]||0,med:v.length?v[Math.floor(v.length/2)]:0,top:tot?v.slice(0,k).reduce((a,b)=>a+b,0)/tot*100:0,ok:tot>0}});
+  $("#scTbl").innerHTML=`<thead><tr><th>Escenario</th><th class="r">Costo total</th><th class="r">Beneficiarios</th><th class="r">Mínimo</th><th class="r">Mediana</th><th class="r">Máximo</th><th class="r">Se lleva el 10 % mayor</th></tr></thead><tbody>${res.map(r=>`<tr><td><b>${r.id} · ${r.t}</b><br><span class="cs">${esc(r.d)}</span></td>${r.ok?`<td class="r"><b>${money(r.tot)}</b></td><td class="r">${t0(r.n)}</td><td class="r">${money(r.min)}</td><td class="r">${money(r.med)}</td><td class="r">${money(r.max)}</td><td class="r">${t0(r.top)} %</td>`:`<td colspan="6" class="cs">Completa los montos para calcular</td>`}</tr>`).join("")}</tbody>`;
+  const ok=res.filter(r=>r.ok),svg=$("#gScen"),W=vw("gScen",640),H=16+ok.length*34;clear(svg,W,H);
+  if(ok.length){const mx=Math.max(...ok.map(r=>r.tot)),L=170,Rr=W-110;ok.forEach((r,j)=>{const y=12+j*34,w=Math.max(2,(Rr-L)*r.tot/mx);E("text",{x:0,y:y+17,"font-weight":700},svg).textContent=`${r.id} · ${r.t}`;E("path",{d:rrH(L,y+4,w,20,5),fill:["var(--brand)","var(--s2)","var(--s3)"][["A","B","C"].indexOf(r.id)]},svg);E("text",{x:L+w+6,y:y+18},svg).textContent=money(r.tot)})}
+  $("#scNote").innerHTML=ok.length>1?(()=>{const s=[...ok].sort((a,b)=>a.tot-b.tot);return`El escenario más económico es <b>${s[0].id}</b> (${money(s[0].tot)}) y el más costoso <b>${s[s.length-1].id}</b> (${money(s[s.length-1].tot)}). El A premia a quienes más extraen (el 10 % mayor se lleva el ${t0((res[0]||{}).top||0)} %); el B reparte igual entre todos, incluidos quienes desembarcan poco.`})():`Base: ${t0(base.length)} pescadores con desembarque de <b>${esc(m.E[esp][1])}</b> en los meses y años elegidos; se usa su promedio de kilos por año.`}
+["scA","scB","scCf","scCk"].forEach(id=>$("#"+id).addEventListener("input",()=>{if(SC.args)renderScen(...SC.args)}));
+
+/* ================= Revisión de calidad al cargar ================= */
+function lev(a,b){if(Math.abs(a.length-b.length)>2)return 9;const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]}
+const RV0=out=>reviewRows(out).length;
+function reviewRows(out){const M=[],base=S.full,today=Math.floor((Date.now()-BASE)/DAY);
+  const sinNom=new Set(out.filter(r=>/^Sin nombre/.test(r.name)).map(r=>r.rpa));if(sinNom.size)M.push(["w",`${sinNom.size} RPA sin nombre de pescador (ej. ${[...sinNom].slice(0,5).join(", ")}). Aparecerán como "Sin nombre".`]);
+  const fut=out.filter(r=>r.d>today+1).length;if(fut)M.push(["w",`${fut} filas con fecha futura.`]);
+  const old=out.filter(r=>r.d<0).length;if(old)M.push(["i",`${old} filas anteriores a 2020.`]);
+  const zero=out.filter(r=>r.q===0).length;if(zero)M.push(["i",`${zero} filas con desembarque 0.`]);
+  const seen=new Set();let dupIn=0;out.forEach(r=>{const k=rowKey(r.d,r.rpa,r.cal,r.com,r.code,r.q,r.cat);if(seen.has(k))dupIn++;else seen.add(k)});if(dupIn)M.push(["w",`${dupIn} filas repetidas dentro del mismo archivo (misma fecha, pescador, caleta, especie y cantidad).`]);
+  if(base&&base.P&&base.P.length){
+    const pn=new Map(base.P.map(p=>[p[0],p[1]])),diffN=new Map();out.forEach(r=>{const o=pn.get(r.rpa);if(o&&!/^Sin nombre/.test(r.name)&&!/^Pescador RPA/.test(o)&&norm(o).trim()!==norm(r.name).trim())diffN.set(r.rpa,[o,r.name])});
+    if(diffN.size){const [k,[a,b]]=[...diffN][0];M.push(["w",`${diffN.size} RPA con un nombre distinto al de la base (ej. RPA ${k}: "${a}" ahora aparece como "${b}").`])}
+    const eS=new Set(base.E.map(e=>e[0])),newE=[...new Map(out.filter(r=>!eS.has(r.code)).map(r=>[r.code,r.esp]))];if(newE.length)M.push(["i",`${newE.length} especie${newE.length>1?"s":""} nueva${newE.length>1?"s":""}: ${newE.slice(0,6).map(e=>e[1]).join(", ")}.`]);
+    const cS=new Set(base.C.map(c=>c[0]+"|"+c[1]));[...new Set(out.filter(r=>!cS.has(r.cal+"|"+r.com)).map(r=>r.cal+"|"+r.com))].slice(0,10).forEach(k=>{const [cal,com]=k.split("|");const sk=norm(cal).replace(/\W/g,"");const sim=base.C.find(c=>c[0]!==cal&&lev(norm(c[0]).replace(/\W/g,""),sk)<=2);
+      M.push([sim?"w":"i",sim?`Caleta nueva "${cal}" (${com}) se parece a "${sim[0]}": revisa si es un error de escritura.`:`Caleta nueva: "${cal}" (${com}).`])});
+    const by=new Map(),c=base.cols,step=Math.max(1,Math.floor(c.d.length/20000));for(let i=0;i<c.d.length;i+=step){const code=base.E[c.e[i]][0];let a=by.get(code);if(!a){a=[];by.set(code,a)}a.push(c.q[i])}
+    const med=new Map();for(const [k,a] of by){a.sort((x,y)=>x-y);med.set(k,a[Math.floor(a.length/2)])}
+    const big=out.filter(r=>{const md=med.get(r.code);return md>0&&r.q>=1000&&r.q>md*50});if(big.length)M.push(["w",`${big.length} filas con volúmenes muy superiores a lo habitual para la especie (más de 50 veces la mediana). Ej.: ${big.slice(0,3).map(r=>`${r.esp} ${t1(r.q/1000)} t el ${dstr(r.d)}`).join("; ")}.`])}
+  return M}
+
+/* ================= Calendario de vedas ================= */
+function renderVedas(){const el=$("#vedaCal"),R=S.R,m=R.m;if(!CFG.vedas.length){el.innerHTML=`<p class="cs" style="margin:0">No hay vedas registradas.${S.perm.admin?" Agrégalas en Administración › Vedas y temporadas.":" Un administrador puede agregarlas."}</p>`;return}
+  const pass=LAST.pass,codes=[...new Set(CFG.vedas.flatMap(v=>(v.esp||[]).map(String)))],eI=new Map(m.E.map((e,i)=>[String(e[0]),i]));const T=new Map(codes.map(c=>[c,new Float64Array(12)]));
+  for(let i=0;i<R.n;i++){if(!pass[i])continue;const c=String(m.E[R.e[i]][0]);const a=T.get(c);if(a)a[R.mo[i]]+=R.q[i]/1000}
+  el.innerHTML=`<table class="vcal"><thead><tr><th>Especie</th>${MES.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${codes.map(c=>{const e=eI.get(c),a=T.get(c),mx=Math.max(...a)||1;return`<tr><td><b>${esc(e!=null?m.E[e][1]:"Código "+c)}</b></td>${MES.map((_,mo)=>{const v=vedaOf(c,mo);const t=a[mo];return`<td class="${v?"vd":""}" title="${v?"Veda"+(v.zona?" en "+esc(regLabel(v.zona)):"")+(v.nota?": "+esc(v.nota):""):""}">${t>0?`<i style="opacity:${(.25+.75*t/mx).toFixed(2)}"></i>`:""}<span>${t>0?tt(t):""}</span></td>`}).join("")}</tr>`}).join("")}</tbody></table>`}
+
+/* ================= Administración: precios, vedas, alertas y registro ================= */
+let ACT=[],PRD=null;
+function cfgRender(){if(!S.perm.admin||!S.R)return;const R=S.R,m=R.m;$("#cfgWarn").hidden=!CFG.warn;$("#cfgWarn").textContent=CFG.warn;
+  if(!PRD)PRD={...CFG.precios};const tot=new Float64Array(m.E.length);for(let i=0;i<R.n;i++)tot[R.e[i]]+=R.q[i]/1000;const q=norm($("#prS").value||"");
+  const idx=m.E.map((e,i)=>i).filter(i=>tot[i]>0&&(!q||norm(m.E[i][1]+" "+m.E[i][2]).includes(q))).sort((a,b)=>tot[b]-tot[a]);
+  $("#prTbl").innerHTML=`<thead><tr><th>Especie</th><th>Grupo</th><th class="r">Toneladas en la base</th><th class="r">$ por kg</th></tr></thead><tbody>${idx.map(i=>`<tr><td><b>${esc(m.E[i][1])}</b></td><td>${esc(m.E[i][2])}</td><td class="r">${t0(tot[i])}</td><td class="r"><input type="number" min="0" step="10" class="prIn" data-code="${esc(m.E[i][0])}" value="${PRD[m.E[i][0]]||""}" aria-label="Precio por kg de ${esc(m.E[i][1])}"></td></tr>`).join("")}</tbody>`;
+  const eOpts=m.E.map((e,i)=>i).filter(i=>tot[i]>0).sort((a,b)=>m.E[a][1].localeCompare(m.E[b][1],"es"));
+  if(!$("#vdE").options.length){$("#vdE").innerHTML=eOpts.map(i=>`<option value="${esc(m.E[i][0])}">${esc(m.E[i][1])}</option>`).join("");$("#vdZ").innerHTML=`<option value="">Todas las zonas</option>`+R.regRaw.map((r,i)=>`<option value="${esc(r)}">${esc(R.regs[i])}</option>`).join("");$("#vdD").innerHTML=$("#vdH").innerHTML=MESL.map((x,i)=>`<option value="${i}">${cap(x)}</option>`).join("")}
+  const eName=c=>{const e=m.E.find(x=>String(x[0])===String(c));return e?e[1]:"Código "+c};
+  $("#vdList").innerHTML=CFG.vedas.length?`<thead><tr><th>Especie</th><th>Zona</th><th>Meses</th><th>Nota</th><th></th></tr></thead><tbody>${CFG.vedas.map((v,k)=>`<tr><td><b>${esc((v.esp||[]).map(eName).join(", "))}</b></td><td>${v.zona?esc(regLabel(v.zona)):"Todas"}</td><td>${cap(MESL[v.desde])} a ${MESL[v.hasta]}</td><td style="white-space:normal">${esc(v.nota||"")}</td><td><button class="btn ghost small" type="button" data-vdel="${k}">Quitar</button></td></tr>`).join("")}</tbody>`:`<tbody><tr><td class="empty">Sin vedas registradas</td></tr></tbody>`;
+  $("#alU").value=CFG.alertas.umbral;$("#alT").value=CFG.alertas.minT}
+$("#prS").addEventListener("input",()=>cfgRender());
+$("#prTbl").addEventListener("input",ev=>{const i=ev.target.closest(".prIn");if(!i)return;const v=+i.value;if(v>0)PRD[i.dataset.code]=Math.round(v);else delete PRD[i.dataset.code]});
+$("#prSave").onclick=async()=>{const b=$("#prSave");b.disabled=true;const p={...PRD};
+  const old=CFG.precios;CFG.precios=p;try{await cfgSave();ST.log("Ajustes","Actualizó precios de playa");toast("Precios guardados.")}catch(e){CFG.precios=old;toast(e&&e.message||"No se pudieron guardar los precios.")}b.disabled=false};
+$("#vdAdd").onclick=async()=>{const v={esp:[$("#vdE").value],zona:$("#vdZ").value,desde:+$("#vdD").value,hasta:+$("#vdH").value,nota:$("#vdN").value.trim().slice(0,120)};const b=$("#vdAdd");b.disabled=true;
+  CFG.vedas.push(v);try{await cfgSave();ST.log("Ajustes","Agregó una veda");$("#vdN").value="";cfgRender();toast("Veda agregada.")}catch(e){CFG.vedas.pop();toast(e&&e.message||"No se pudo guardar.")}b.disabled=false};
+$("#vdList").addEventListener("click",async ev=>{const d=ev.target.closest("[data-vdel]");if(!d)return;const k=+d.dataset.vdel,old=CFG.vedas.slice();CFG.vedas.splice(k,1);try{await cfgSave();ST.log("Ajustes","Quitó una veda");cfgRender();toast("Veda quitada.")}catch(e){CFG.vedas=old;toast("No se pudo guardar.")}});
+$("#alSave").onclick=async()=>{const u=Math.min(90,Math.max(5,+$("#alU").value||30)),t=Math.max(0,+$("#alT").value||0);const old=CFG.alertas;CFG.alertas={umbral:u,minT:t};
+  try{await cfgSave();ST.log("Ajustes",`Alertas: ${u} % y ${t} t`);toast("Umbral de alertas guardado.")}catch(e){CFG.alertas=old;toast("No se pudo guardar.")}};
+async function actRender(){const el=$("#actTbl");el.innerHTML=`<tbody><tr><td class="empty">Cargando…</td></tr></tbody>`;try{ACT=await ST.actList()}catch(e){el.innerHTML=`<tbody><tr><td class="empty">${esc(e&&e.message||"No se pudo leer el registro.")}</td></tr></tbody>`;return}actFill()}
+function actFill(){const q=norm($("#actS").value||"");const L=ACT.filter(a=>!q||norm(`${a.usuario} ${a.accion} ${a.detalle}`).includes(q));
+  $("#actTbl").innerHTML=`<thead><tr><th>Fecha</th><th>Usuario</th><th>Acción</th><th>Detalle</th></tr></thead><tbody>${L.slice(0,200).map(a=>`<tr><td>${new Date(a.fecha).toLocaleString("es-CL")}</td><td>${esc(a.usuario||"—")}</td><td><b>${esc(a.accion)}</b></td><td style="white-space:normal">${esc(a.detalle||"")}</td></tr>`).join("")||`<tr><td colspan="4" class="empty">Sin actividad registrada</td></tr>`}</tbody>`}
+$("#actS").addEventListener("input",actFill);$("#actRef").onclick=actRender;
+
+/* ================= Mapa de poder e interés ================= */
+const PI={ov:new Map(),loaded:false,top:20,cell:{},q:{},page:{},edit:null,warn:"",mode:"p",base:"t"};
+const PI_STRAT=(p,i)=>p>=3&&i>=3?["Gestionar de cerca","g4"]:p>=3?["Mantener satisfecho","g3"]:i>=3?["Mantener informado","g2"]:["Monitorear","g1"];
+const PI_LVL=["","Muy bajo","Bajo","Medio","Alto","Muy alto"];
+async function piLoad(force){if(PI.loaded&&!force)return;try{PI.ov=await MAPA.load();PI.warn=""}catch(e){PI.ov=new Map();PI.warn=e&&e.message||"No se pudieron leer los ajustes guardados."}PI.loaded=true}
+function orgOf(p){const m=S.R.m,o=PI.ov.get(String(m.P[p][0]));if(o&&o.org)return o.org;const x=m.orgs[m.P[p][3]];return x&&x!=="-"?String(x).trim():""}
+function piCompute(pass,mode=PI.mode,base=PI.base){
+  const R=S.R,m=R.m,Z=new Map(),useV=base==="v"&&hasPrices(),pr=m.E.map((e,i)=>priceOf(i)),oc=mode==="o"?m.P.map((_,p)=>orgOf(p)):null;
+  for(let i=0;i<R.n;i++){if(!pass[i])continue;const z=R.reg[i];let g=Z.get(z);if(!g){g={q:0,v:0,f:new Map(),sin:new Set()};Z.set(z,g)}
+    const q=R.q[i]/1000,v=q*1000*pr[R.e[i]],p=R.p[i];g.q+=q;g.v+=v;let key=p;
+    if(oc){if(!oc[p]){g.sin.add(p);continue}key="org:"+oc[p]}
+    let f=g.f.get(key);if(!f){f={p:oc?null:p,org:oc?oc[p]:"",q:0,v:0,ym:new Set(),cal:new Map(),mem:new Set()};g.f.set(key,f)}
+    f.q+=q;f.v+=v;f.ym.add(R.ym[i]);f.cal.set(R.c[i],(f.cal.get(R.c[i])||0)+q);f.mem.add(p)}
+  const out=[];
+  for(const [z,g] of Z){const L=[...g.f.values()],n=L.length;
+    if(n){const mv=f=>useV?f.v:f.q;L.sort((a,b)=>b.q-a.q);L.forEach((f,k)=>f.rank=k+1);[...L].sort((a,b)=>mv(b)-mv(a)).forEach((f,k)=>f.ap=5-Math.floor(k*5/n));
+      const first=new Map();[...L].sort((a,b)=>b.ym.size-a.ym.size).forEach((f,k)=>{if(!first.has(f.ym.size))first.set(f.ym.size,k)});
+      L.forEach(f=>{f.ai=5-Math.floor(first.get(f.ym.size)*5/n);f.id=oc?"org:"+f.org:String(m.P[f.p][0]);f.name=oc?f.org:m.P[f.p][1];const o=PI.ov.get(f.id);
+        f.adj=!!(o&&(o.p||o.i));f.pw=o&&o.p?+o.p:f.ap;f.in=o&&o.i?+o.i:f.ai;f.nota=o&&o.nota||"";f.mainCal=[...f.cal].sort((a,b)=>b[1]-a[1])[0][0];f.share=f.q/g.q;f.orgName=oc?"":orgOf(f.p)})}
+    out.push({z,label:R.regs[z],raw:R.regRaw[z],q:g.q,v:g.v,L,sin:g.sin.size})}
+  return out.sort((a,b)=>a.raw.localeCompare(b.raw));
+}
+async function renderPoder(pass){
+  const box=$("#piZones");if(!PI.loaded||(S.perm.admin&&!BIT.loaded)){box.innerHTML=`<div class="card"><div class="spinner"></div></div>`;await Promise.all([piLoad(),bitLoad()]);if(S.tab!=="poder")return}
+  $("#piWarn").hidden=!PI.warn;$("#piWarn").textContent=PI.warn;$("#piBase").disabled=!hasPrices();if(!hasPrices()&&PI.base==="v"){PI.base="t";$("#piBase").value="t"}
+  $("#piBaseNote").hidden=hasPrices();renderBitPend();
+  const Zs=piCompute(pass||LAST.pass);
+  if(!Zs.length){box.innerHTML=`<div class="card"><p class="cs">No hay desembarques con estos filtros.</p></div>`;return}
+  box.innerHTML=Zs.map(Z=>piZone(Z)).join("");
+}
+function piZone(Z){
+  const key=Z.raw,top=PI.top,sel=PI.cell[key]||null,qq=norm(PI.q[key]||""),org=PI.mode==="o",useV=PI.base==="v"&&hasPrices(),R=S.R;
+  const who=org?"organizaciones":"pescadores";
+  if(!Z.L.length)return`<section class="card piz"><div class="tbar"><h3>${esc(Z.label)}</h3></div><p class="cs" style="margin:0">Ningún pescador de esta zona tiene organización asignada en el período (${t0(Z.sin)} sin organización). Asígnala con <b>Evaluar</b> en la vista por pescador o completa la columna Organización del Excel.</p></section>`;
+  const cnt=Array.from({length:6},()=>new Array(6).fill(0)),chips=Array.from({length:6},()=>Array.from({length:6},()=>[]));
+  Z.L.forEach(f=>{cnt[f.pw][f.in]++;if(f.rank<=top)chips[f.pw][f.in].push(f)});
+  let grid=`<div class="pig" role="grid" aria-label="Mapa de poder e interés ${esc(Z.label)}"><div class="pi-ylab"><span>Poder de influencia</span></div>`;
+  for(let p=5;p>=1;p--){grid+=`<div class="pi-ax y">${p}</div>`;
+    for(let i=1;i<=5;i++){const [st,cl]=PI_STRAT(p,i),n=cnt[p][i],on=sel&&sel[0]===p&&sel[1]===i,ch=chips[p][i];
+      grid+=`<button type="button" class="pic ${cl}${on?" on":""}${n?"":" empty"}" data-z="${esc(key)}" data-p="${p}" data-i="${i}" aria-label="Poder ${p}, interés ${i}: ${n} ${who}, ${st}"><span class="pin">${n||""}</span><span class="pch">${ch.slice(0,6).map(f=>`<i title="${esc(f.name)}">${f.rank}</i>`).join("")}${ch.length>6?`<i class="more">+${ch.length-6}</i>`:""}</span></button>`}}
+  grid+=`<div></div><div></div>${[1,2,3,4,5].map(i=>`<div class="pi-ax x">${i}</div>`).join("")}<div></div><div></div><div class="pi-xlab">Interés en la actividad</div></div>`;
+  const quad=[["g4","Gestionar de cerca","poder ≥ 3 e interés ≥ 3"],["g3","Mantener satisfecho","poder ≥ 3, interés < 3"],["g2","Mantener informado","poder < 3, interés ≥ 3"],["g1","Monitorear","poder e interés < 3"]]
+    .map(([c,t,s])=>{const n=Z.L.filter(f=>PI_STRAT(f.pw,f.in)[1]===c).length;return`<div class="piq"><span class="sw ${c}"></span><span><b>${t}</b><span class="cs"> ${s}</span></span><b class="n">${t0(n)}</b></div>`}).join("")+
+    (org&&Z.sin?`<p class="cs" style="margin:4px 0 0">${t0(Z.sin)} pescadores de la zona no tienen organización asignada.</p>`:"");
+  let rows=Z.L;if(sel)rows=rows.filter(f=>f.pw===sel[0]&&f.in===sel[1]);if(qq){const w=qq.split(/\s+/);rows=rows.filter(f=>{const h=norm(f.name+" "+f.id+" "+R.m.C[f.mainCal][0]+" "+f.orgName);return w.every(x=>h.includes(x))})}
+  const lim=PI.page[key]||25,adm=S.perm&&S.perm.admin;
+  const acts=f=>adm?`<button class="btn ghost small" type="button" data-pie="${esc(f.id)}" data-z="${esc(key)}">Evaluar</button> <button class="btn ghost small" type="button" data-bit="${esc(f.id)}" data-bl="${esc(f.name)}">Bitácora${bitCount(f.id)?` <span class="bc">${bitCount(f.id)}</span>`:""}</button>`:"";
+  const tr=rows.slice(0,lim).map(f=>{const [st,cl]=PI_STRAT(f.pw,f.in);const sub=org?`${f.mem.size} integrantes · ${esc(R.m.C[f.mainCal][0])}`:`RPA ${esc(f.id)} · ${esc(R.m.C[f.mainCal][0])}${f.orgName?" · "+esc(f.orgName):""}`;
+    return`<tr><td class="r">${f.rank}</td><td><b>${esc(f.name)}</b><br><span class="cs">${sub}</span><br><span class="stg sm-only ${cl}">${st}</span>${adm?`<span class="sm-only" style="margin-top:4px">${acts(f)}</span>`:""}</td>
+    <td class="r"><b>${tt(f.q)}</b><br><span class="cs">${t1(f.share*100)} %</span>${useV?`<br><span class="cs">${money(f.v)}</span>`:""}</td><td class="r hm">${f.ym.size}</td>
+    <td class="c"><span class="lv">${f.pw}</span>${f.adj&&f.pw!==f.ap?`<span class="cs"> (calc. ${f.ap})</span>`:""}</td><td class="c"><span class="lv">${f.in}</span>${f.adj&&f.in!==f.ai?`<span class="cs"> (calc. ${f.ai})</span>`:""}</td>
+    <td class="hm"><span class="stg ${cl}">${st}</span>${f.adj?` <span class="adj" title="${esc(adm&&f.nota?f.nota:"Ajustado por un administrador")}">ajustado</span>`:""}</td>${adm?`<td class="hm" style="white-space:nowrap">${acts(f)}</td>`:""}</tr>`}).join("");
+  return`<section class="card piz" data-zone="${esc(key)}">
+    <div class="tbar"><h3>${esc(Z.label)}</h3><span class="cs">${t0(Z.L.length)} ${who} · ${t0(Z.q)} t${useV?" · "+money(Z.v):""} en el período</span></div>
+    <div class="pi-wrap"><div class="pi-left">${grid}<div class="piqs">${quad}</div></div>
+    <div class="pi-right"><div class="tbar"><h4 style="margin:0">Ranking por toneladas${sel?` · celda poder ${sel[0]}, interés ${sel[1]} <button class="btn ghost small" type="button" data-picl="${esc(key)}">Ver todos</button>`:""}</h4>
+      <input type="search" class="pi-s" data-z="${esc(key)}" value="${esc(PI.q[key]||"")}" placeholder="Buscar ${org?"organización":"pescador, RPA, caleta u organización"}" aria-label="Buscar en el ranking"></div>
+      <div class="tbl"><table class="pit"><thead><tr><th class="r">#</th><th>${org?"Organización":"Pescador"}</th><th class="r">Toneladas<br><span style="font-weight:600;text-transform:none">% de la zona${useV?" · valor":""}</span></th><th class="r hm">Meses<br>activos</th><th class="c">Poder</th><th class="c">Interés</th><th class="hm">Estrategia</th>${adm?'<th class="hm"></th>':""}</tr></thead><tbody>${tr||`<tr><td colspan="8" class="empty">Sin ${who} en esta selección</td></tr>`}</tbody></table></div>
+      ${rows.length>lim?`<div class="pager"><button class="btn ghost small" type="button" data-pimore="${esc(key)}">Ver ${Math.min(25,rows.length-lim)} más (${t0(rows.length-lim)} restantes)</button></div>`:""}</div></div></section>`;
+}
+$("#piZones").addEventListener("click",ev=>{const c=ev.target.closest(".pic");if(c){const k=c.dataset.z,p=+c.dataset.p,i=+c.dataset.i;const s=PI.cell[k];PI.cell[k]=s&&s[0]===p&&s[1]===i?null:[p,i];PI.page[k]=25;renderPoder();return}
+  const cl=ev.target.closest("[data-picl]");if(cl){PI.cell[cl.dataset.picl]=null;renderPoder();return}
+  const mo=ev.target.closest("[data-pimore]");if(mo){const k=mo.dataset.pimore;PI.page[k]=(PI.page[k]||25)+25;renderPoder();return}
+  const b=ev.target.closest("[data-bit]");if(b){bitOpen(b.dataset.bit,b.dataset.bl);return}
+  const e=ev.target.closest("[data-pie]");if(e)piOpen(e.dataset.pie,e.dataset.z)});
+let piST=null;$("#piZones").addEventListener("input",ev=>{const s=ev.target.closest(".pi-s");if(!s)return;PI.q[s.dataset.z]=s.value;PI.page[s.dataset.z]=25;clearTimeout(piST);piST=setTimeout(()=>{const pos=s.selectionStart;renderPoder();const n=document.querySelector(`.pi-s[data-z="${CSS.escape(s.dataset.z)}"]`);if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}},250)});
+$("#piTop").onchange=ev=>{PI.top=ev.target.value==="all"?1e9:+ev.target.value;renderPoder()};
+$("#piMode").onchange=ev=>{PI.mode=ev.target.value;PI.cell={};PI.page={};renderPoder()};
+$("#piBase").onchange=ev=>{PI.base=ev.target.value;renderPoder()};
+function piOpen(id,zkey){if(!S.perm.admin)return;const Z=piCompute(LAST.pass).find(z=>z.raw===zkey);const f=Z&&Z.L.find(x=>x.id===id);if(!f)return;PI.edit=f;const o=PI.ov.get(id)||{};const org=PI.mode==="o";
+  $("#pieWho").innerHTML=`<b>${esc(f.name)}</b>${org?"":` · RPA ${esc(id)}`} · #${f.rank} de ${esc(Z.label)}<br><span class="cs">${tt(f.q)} t en el período · ${f.ym.size} meses activos${org?` · ${f.mem.size} integrantes`:""} · cálculo automático: poder ${f.ap}, interés ${f.ai}</span>`;
+  const opts=(v,a)=>`<option value="" ${v?"":"selected"}>Automático (${a} · ${PI_LVL[a]})</option>`+[1,2,3,4,5].map(n=>`<option value="${n}" ${+v===n?"selected":""}>${n} · ${PI_LVL[n]}</option>`).join("");
+  $("#pieP").innerHTML=opts(o.p,f.ap);$("#pieI").innerHTML=opts(o.i,f.ai);$("#pieN").value=o.nota||"";$("#pieOrgBox").hidden=org;
+  if(!org){const all=new Set();S.R.m.orgs.forEach(x=>{if(x&&x!=="-")all.add(String(x).trim())});PI.ov.forEach(v=>{if(v.org)all.add(v.org)});$("#pieOrgL").innerHTML=[...all].sort().map(x=>`<option value="${esc(x)}">`).join("");$("#pieOrg").value=o.org||"";$("#pieOrg").placeholder=orgOf(f.p)||"Sin organización"}
+  $("#pieErr").textContent="";$("#pieModal").hidden=false;$("#pieP").focus()}
+$("#pieCancel").onclick=()=>$("#pieModal").hidden=true;
+$("#pieSave").onclick=async()=>{const b=$("#pieSave"),f=PI.edit;b.disabled=true;$("#pieErr").textContent="";const o=PI.ov.get(f.id)||{};
+  const v={p:+$("#pieP").value||null,i:+$("#pieI").value||null,nota:$("#pieN").value.trim().slice(0,400),org:PI.mode==="o"?"":$("#pieOrg").value.trim().slice(0,80)};
+  try{await MAPA.save(f.id,v);ST.log("Mapa de poder e interés",`${f.name}: poder ${v.p||"auto"}, interés ${v.i||"auto"}${v.org?", organización "+v.org:""}`);await piLoad(true);$("#pieModal").hidden=true;toast("Evaluación guardada.");renderPoder()}catch(e){$("#pieErr").textContent=e&&e.message||"No se pudo guardar."}b.disabled=false};
 
 /* ================= Negociación ================= */
 const N={mo:new Set([7])};
@@ -1059,7 +1924,7 @@ function renderNeg(){
   $("#nText").innerHTML=`<b>${esc(en)}</b> en ${esc(lugT)}, ${y0}–${y1}: ${lines.join("; ")}.${out.some(o=>o.n<y1-y0+1)?` <span class="cs">Los meses aún sin datos (año en curso) no se cuentan en el promedio.</span>`:""} <span class="cs">El promedio considera todos los años del rango, incluidos los años sin captura en ese mes.</span>`;
   $("#nTbl").innerHTML=`<thead><tr><th>Mes</th><th class="r">Prom. t</th><th class="r">Pesc.</th><th class="r">t/pesc.</th><th class="r">Máx.</th><th class="r">Mín.</th></tr></thead><tbody>`+out.map(o=>`<tr><td><b>${MESL[o.m]}</b></td><td class="r">${tt(o.avg)}</td><td class="r">${t1(o.avgF)}</td><td class="r">${tt(o.perF)}</td><td class="r">${o.max.t>=0?tt(o.max.t)+" ("+o.max.y+")":"—"}</td><td class="r">${o.min.t<Infinity?tt(o.min.t)+" ("+o.min.y+")":"—"}</td></tr>`).join("")+"</tbody>";
   // gráfico
-  const svg=$("#gNeg"),W=620,H=250,L=46,Rr=W-8,T=18,B=H-26;clear(svg,W,H);const yN=y1-y0+1;
+  const svg=$("#gNeg"),W=vw("gNeg",620),H=250,L=46,Rr=W-8,T=18,B=H-26;clear(svg,W,H);const yN=y1-y0+1;
   $("#nLeg").innerHTML=months.length<=6?months.map((x,i)=>`<span><i style="background:${COLS[i]}"></i>${MESL[x]}</span>`).join(""):"";
   const vals=out.map(o=>{const a=new Float64Array(yN);o.ys.forEach(r=>a[r.y-y0]=r.t);return a});const mx=niceMax(Math.max(.001,...vals.flatMap(a=>[...a]))),sc=v=>B-(v/mx)*(B-T);yAxis(svg,L,Rr,sc,mx,tt);
   const gw=(Rr-L)/yN,k=Math.min(months.length,6),bw=gw*.78/k;
@@ -1070,36 +1935,89 @@ function renderNeg(){
   // pescadores
   const fr=[...fis].sort((a,b)=>b[1].q-a[1].q);
   $("#nFis").innerHTML=`<thead><tr><th>Pescador</th><th class="r">RPA</th><th>Caleta</th><th class="r">Toneladas</th><th class="r">Meses con desembarque</th><th class="r">Promedio por mes activo (kg)</th></tr></thead><tbody>`+(fr.slice(0,40).map(([p,f])=>`<tr><td>${esc(m.P[p][1])}</td><td class="r">${m.P[p][0]}</td><td>${esc(m.C[f.cal][0])}</td><td class="r">${tt(f.q)}</td><td class="r">${f.months.size}</td><td class="r">${t0(f.q/f.months.size*1000)}</td></tr>`).join("")||`<tr><td colspan="6" class="empty">Sin pescadores con desembarque en esos meses</td></tr>`)+"</tbody>"+(fr.length>40?`<caption class="cs" style="caption-side:bottom;text-align:left;padding:6px">Se muestran 40 de ${fr.length} pescadores.</caption>`:"");
+  renderScen(fis,y0,y1,esp,months);
 }
 
-/* ================= Administración ================= */
-let ADM={users:[],car:[]},editing=null;
+/* Usuarios: servidor (cada acción se valida en el servidor) */
+const uname=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/[^a-z0-9._-]/g,"");
+const uPost=b=>api("users",{method:"POST",body:b});
+const USR={
+  async list(){return(await api("users")).usuarios||[]},
+  async cargas(){return(await api("cargas")).cargas||[]},
+  create:d=>uPost({accion:"crear",...d}),
+  update:(u,d)=>uPost({accion:"editar",usuario:u.usuario,...d}),
+  async setPassword(u,pw){await uPost({accion:"password",usuario:u.usuario,password:pw});if(isMe(u))setTimeout(()=>logout("Cambiaste tu contraseña. Inicia sesión con la nueva."),50)},
+  approve:(u,d)=>uPost({accion:"aprobar",usuario:u.usuario,...d}),
+  reject:u=>uPost({accion:"rechazar",usuario:u.usuario}),
+  suspend:u=>uPost({accion:"suspender",usuario:u.usuario}),
+  remove:u=>uPost({accion:"eliminar",usuario:u.usuario})
+};
+
+/* ================= Administración (solo administradores) ================= */
+let ADM={users:[],car:[]},editing=null,pwTarget=null,delTarget=null;
+const isMe=u=>S.acct&&u.usuario===S.acct.usuario;
+const activeAdmins=()=>ADM.users.filter(u=>u.estado==="activo"&&u.rol==="administrador").length;
+function adminInit(){}
 async function adminRender(){
-  try{const [u,c]=await Promise.all([api("users"),api("cargas")]);ADM.users=u.usuarios||[];ADM.car=c.cargas||[]}
-  catch(e){$("#uTbl").innerHTML=`<tbody><tr><td class="empty">No se pudo cargar la lista de usuarios.</td></tr></tbody>`;return}
-  const rows=ADM.users.slice().sort((a,b)=>(a.estado==="pendiente"?0:1)-(b.estado==="pendiente"?0:1)||a.usuario.localeCompare(b.usuario));
-  $("#uTbl").innerHTML=`<thead><tr><th>Usuario</th><th>Nombre</th><th>Cargo y área</th><th>Motivo</th><th>Estado</th><th>Nivel</th><th></th></tr></thead><tbody>`+(rows.map(x=>{const me=S.acct&&x.usuario===S.acct.usuario;
-    return`<tr><td><b>${esc(x.usuario)}</b>${me?` <span class="cs">(tú)</span>`:""}</td><td>${esc(x.nombre||"")}</td><td>${esc(x.cargo||"")}<br><span class="cs">${esc(x.area||"")}</span></td><td style="white-space:normal;max-width:240px">${esc(x.motivo||"")}</td><td><span class="ustate ${x.estado==="activo"?"aprobado":x.estado}">${esc(x.estado)}</span></td>
-    <td>${x.estado==="activo"?esc(ROLE_LBL[x.rol]||x.rol)+(x.comunas&&x.comunas.length?`<br><span class="cs">${esc(x.comunas.join(", "))}</span>`:""):"—"}</td>
-    <td><div class="row" style="justify-content:flex-start;flex-wrap:nowrap">${me?"":x.estado==="activo"?`<button class="btn ghost small" data-act="edit" data-id="${esc(x.usuario)}">Nivel</button><button class="btn ghost small" data-act="suspender" data-id="${esc(x.usuario)}">Suspender</button>`:x.estado==="pendiente"?`<button class="btn small" data-act="edit" data-id="${esc(x.usuario)}">Aprobar</button><button class="btn ghost small" data-act="rechazar" data-id="${esc(x.usuario)}">Rechazar</button>`:`<button class="btn ghost small" data-act="edit" data-id="${esc(x.usuario)}">Reactivar</button>`}</div></td></tr>`}).join("")||`<tr><td colspan="7" class="empty">Aún no hay usuarios.</td></tr>`)+"</tbody>";
+  if(!S.perm||!S.perm.admin)return;PRD=null;cfgLoad().then(cfgRender);actRender();
+  try{const [u,c]=await Promise.all([USR.list(),USR.cargas().catch(()=>[])]);ADM.users=u||[];ADM.car=c||[]}
+  catch(e){$("#uTbl").innerHTML=`<tbody><tr><td class="empty">No se pudo cargar la lista de usuarios. ${esc(e&&e.message||"")}</td></tr></tbody>`;return}
+  const order={pendiente:0,activo:1,suspendido:2,rechazado:3};
+  const rows=ADM.users.slice().sort((a,b)=>(order[a.estado]??9)-(order[b.estado]??9)||a.usuario.localeCompare(b.usuario));
+  const n=k=>rows.filter(r=>r.estado===k).length;
+  $("#uSum").innerHTML=`<span><b>${rows.length}</b> usuarios</span><span><b>${n("activo")}</b> activos</span><span><b>${n("pendiente")}</b> pendientes</span><span><b>${activeAdmins()}</b> administradores</span>`;
+  const btn=(act,id,txt,cls="ghost")=>`<button class="btn ${cls} small" data-act="${act}" data-id="${esc(id)}" type="button">${txt}</button>`;
+  $("#uTbl").innerHTML=`<thead><tr><th>Usuario</th><th>Nombre</th><th>Cargo y área</th><th>Estado</th><th>Nivel y permisos</th><th>Acciones</th></tr></thead><tbody>`+(rows.map(x=>{const me=isMe(x),p=x.permisos||{};
+    const perms=x.estado==="activo"?(x.rol==="administrador"?"Todo":[p.nombres===false?"Sin nombres":"",p.exportar?"Exporta CSV":"",x.comunas&&x.comunas.length?x.comunas.join(", "):"Todas las comunas"].filter(Boolean).join(" · ")):"";
+    let acts;
+    if(x.estado==="pendiente")acts=btn("aprobar",x.usuario,"Aprobar","")+btn("rechazar",x.usuario,"Rechazar")+btn("eliminar",x.usuario,"Eliminar");
+    else if(x.estado==="activo")acts=btn("editar",x.usuario,"Editar")+btn("password",x.usuario,"Contraseña")+(me?"":btn("suspender",x.usuario,"Suspender")+btn("eliminar",x.usuario,"Eliminar"));
+    else acts=btn("aprobar",x.usuario,"Reactivar")+btn("eliminar",x.usuario,"Eliminar");
+    return`<tr><td><b>${esc(x.usuario)}</b>${me?` <span class="cs">(tú)</span>`:""}</td><td>${esc(x.nombre||"")}${x.motivo&&x.estado==="pendiente"?`<br><span class="cs" style="white-space:normal">${esc(x.motivo)}</span>`:""}</td><td>${esc(x.cargo||"")}<br><span class="cs">${esc(x.area||"")}</span></td><td><span class="ustate ${x.estado==="activo"?"aprobado":x.estado}">${esc(x.estado)}</span></td>
+    <td>${x.estado==="activo"?`<b>${esc(ROLE_LBL[x.rol]||x.rol)}</b><br><span class="cs" style="white-space:normal">${esc(perms)}</span>`:"—"}</td><td><div class="row" style="justify-content:flex-start;flex-wrap:wrap;gap:6px">${acts}</div></td></tr>`}).join("")||`<tr><td colspan="6" class="empty">Aún no hay usuarios.</td></tr>`)+"</tbody>";
   $("#cTbl").innerHTML=`<thead><tr><th>Fecha</th><th>Cargado por</th><th>Archivo</th><th>Modo</th><th class="r">Filas nuevas</th><th class="r">Total filas</th></tr></thead><tbody>`+(ADM.car.map(c=>`<tr><td>${new Date(c.fecha).toLocaleString("es-CL")}</td><td>${esc(c.por||"—")}</td><td>${esc(c.archivo||"")}</td><td>${esc(c.modo||"")}</td><td class="r">${t0(c.nuevas||0)}</td><td class="r">${t0(c.filas||0)}</td></tr>`).join("")||`<tr><td colspan="6" class="empty">Sin cargas registradas</td></tr>`)+"</tbody>";
 }
-$("#uTbl").addEventListener("click",async ev=>{const b=ev.target.closest("button[data-act]");if(!b)return;const id=b.dataset.id,act=b.dataset.act;const x=ADM.users.find(u=>u.usuario===id);if(!x)return;
-  if(act==="edit"){openPerm(x);return}
-  b.disabled=true;try{await api("users",{method:"POST",body:{accion:act,usuario:id}});toast(act==="rechazar"?"Solicitud rechazada.":"Cuenta suspendida. Ya no puede iniciar sesión.");adminRender()}catch(e){toast(e.message||"No se pudo guardar.");b.disabled=false}});
-function openPerm(x){editing=x;
-  $("#pWho").textContent=`Usuario ${x.usuario} · ${x.nombre||""}${x.cargo?" · "+x.cargo:""}${x.area?" · "+x.area:""}`;
-  $("#pRol").value=x.estado==="activo"&&x.rol||"visualizador";const p=x.permisos||{nombres:true};
-  $("#pExport").checked=!!p.exportar;$("#pNombres").checked=p.nombres!==false;
-  $("#pCom").innerHTML=S.full?[...new Set(S.full.C.map(cc=>cc[1]))].map(cc=>`<label><input type="checkbox" value="${esc(cc)}" ${x.comunas&&x.comunas.includes(cc)?"checked":""}> ${esc(cc)}</label>`).join(""):"";
-  syncRol();$("#pSave").textContent=x.estado==="activo"?"Guardar nivel":"Aprobar";$("#pErr").textContent="";$("#pModal").hidden=false}
-function syncRol(){const adm=$("#pRol").value==="administrador";document.querySelectorAll("#pExtra input").forEach(i=>{i.disabled=adm;if(adm)i.checked=true});$("#pExtra").style.opacity=adm?.5:1;$("#pAdmNote").hidden=true}
+$("#uTbl").addEventListener("click",async ev=>{const b=ev.target.closest("button[data-act]");if(!b)return;const x=ADM.users.find(u=>u.usuario===b.dataset.id);if(!x)return;const act=b.dataset.act;
+  if(act==="editar"||act==="aprobar"){openUser(act,x);return}
+  if(act==="password"){pwTarget=x;$("#pwWho").textContent=`Usuario ${x.usuario}${x.nombre?" · "+x.nombre:""}`;$("#pw1").value="";$("#pw2").value="";$("#pwErr").textContent="";$("#pwModal").hidden=false;$("#pw1").focus();return}
+  if(act==="eliminar"){if(x.rol==="administrador"&&x.estado==="activo"&&activeAdmins()<=1){toast("No puedes eliminar al único administrador.");return}delTarget=x;$("#delWho").textContent=`${x.usuario}${x.nombre?" ("+x.nombre+")":""}`;$("#delErr").textContent="";$("#delModal").hidden=false;return}
+  b.disabled=true;
+  try{if(act==="rechazar"){await USR.reject(x);ST.log("Usuarios",`Rechazó a ${x.usuario}`);toast("Solicitud rechazada.")}
+    if(act==="suspender"){if(x.rol==="administrador"&&activeAdmins()<=1){toast("No puedes suspender al único administrador.");b.disabled=false;return}await USR.suspend(x);ST.log("Usuarios",`Suspendió a ${x.usuario}`);toast(`${x.usuario} quedó suspendido y ya no puede iniciar sesión.`)}
+    await adminRender()}catch(e){toast(e&&e.message||"No se pudo guardar.");b.disabled=false}});
+$("#uAdd").onclick=()=>openUser("nuevo",null);
+function openUser(mode,x){editing={mode,x};const nuevo=mode==="nuevo",me=x&&isMe(x);
+  $("#pTitle").textContent=nuevo?"Agregar usuario":mode==="aprobar"?(x.estado==="pendiente"?"Aprobar solicitud":"Reactivar usuario"):"Editar usuario";
+  $("#uUsr").value=x?x.usuario:"";$("#uUsr").disabled=!nuevo;$("#uNom").value=x?x.nombre||"":"";$("#uCargo").value=x?x.cargo||"":"";$("#uArea").value=x?x.area||"":"";
+  $("#uPwBox").hidden=!nuevo;$("#uPw").value="";$("#uPw2").value="";
+  $("#pRol").value=x&&x.estado==="activo"?x.rol:(x&&x.rol)||"visualizador";$("#pRol").disabled=!!me;$("#uMeNote").hidden=!me;
+  const p=(x&&x.permisos)||{nombres:true};$("#pExport").checked=!!p.exportar;$("#pNombres").checked=p.nombres!==false;
+  $("#pCom").innerHTML=S.full?[...new Set(S.full.C.map(cc=>cc[1]))].map(cc=>`<label><input type="checkbox" value="${esc(cc)}" ${x&&x.comunas&&x.comunas.includes(cc)?"checked":""}> ${esc(cc)}</label>`).join(""):"";
+  syncRol();$("#pSave").textContent=nuevo?"Crear usuario":mode==="aprobar"?"Aprobar":"Guardar cambios";$("#pErr").textContent="";$("#pModal").hidden=false;(nuevo?$("#uUsr"):$("#uNom")).focus()}
+function syncRol(){const adm=$("#pRol").value==="administrador";document.querySelectorAll("#pExtra input,#pCom input").forEach(i=>{i.disabled=adm});$("#pExtra").style.opacity=adm?.5:1;$("#pCom").style.opacity=adm?.5:1}
 $("#pRol").onchange=syncRol;$("#pCancel").onclick=()=>$("#pModal").hidden=true;
-$("#pSave").onclick=async()=>{const b=$("#pSave");b.disabled=true;$("#pErr").textContent="";const x=editing;
-  try{const rol=$("#pRol").value;await api("users",{method:"POST",body:{accion:"aprobar",usuario:x.usuario,rol,permisos:{exportar:$("#pExport").checked,nombres:$("#pNombres").checked},comunas:rol==="administrador"?[]:[...document.querySelectorAll("#pCom input:checked")].map(i=>i.value)}});
-    $("#pModal").hidden=true;toast(`Nivel guardado. ${x.usuario} ya puede iniciar sesión.`);adminRender()}
-  catch(e){$("#pErr").textContent=e.message||"No se pudo guardar."}
+$("#pSave").onclick=async()=>{const b=$("#pSave"),err=$("#pErr");err.textContent="";const {mode,x}=editing;
+  const rol=$("#pRol").value,data={nombre:$("#uNom").value.trim(),cargo:$("#uCargo").value.trim(),area:$("#uArea").value.trim(),rol,permisos:{exportar:$("#pExport").checked,nombres:$("#pNombres").checked},comunas:rol==="administrador"?[]:[...document.querySelectorAll("#pCom input:checked")].map(i=>i.value)};
+  if(!data.nombre){err.textContent="Escribe el nombre.";return}
+  if(x&&x.rol==="administrador"&&x.estado==="activo"&&rol!=="administrador"&&activeAdmins()<=1){err.textContent="Debe quedar al menos un administrador activo.";return}
+  b.disabled=true;
+  try{if(mode==="nuevo"){const id=uname($("#uUsr").value),pw=$("#uPw").value;
+        if(id.length<3)throw new Error("El usuario debe tener al menos 3 letras o números (sin espacios).");
+        if(pw.length<8)throw new Error("La contraseña debe tener al menos 8 caracteres.");
+        if(pw!==$("#uPw2").value)throw new Error("Las contraseñas no coinciden.");
+        if(ADM.users.some(u=>u.usuario===id))throw new Error("Ese usuario ya existe. Elige otro.");
+        await USR.create({usuario:id,password:pw,...data});ST.log("Usuarios",`Creó a ${id}`);toast(`Usuario ${id} creado. Ya puede iniciar sesión.`)}
+      else if(mode==="aprobar"){await USR.approve(x,data);ST.log("Usuarios",`Aprobó a ${x.usuario}`);toast(`${x.usuario} ya puede iniciar sesión.`)}
+      else{if(isMe(x))data.rol=x.rol;await USR.update(x,data);ST.log("Usuarios",`Editó a ${x.usuario}`);toast("Cambios guardados.")}
+      $("#pModal").hidden=true;await adminRender()}
+  catch(e){err.textContent=e&&e.message||"No se pudo guardar."}
   b.disabled=false};
+$("#pwCancel").onclick=()=>$("#pwModal").hidden=true;
+$("#pwSave").onclick=async()=>{const b=$("#pwSave"),err=$("#pwErr");err.textContent="";const pw=$("#pw1").value;
+  if(pw.length<8){err.textContent="La contraseña debe tener al menos 8 caracteres.";return}if(pw!==$("#pw2").value){err.textContent="Las contraseñas no coinciden.";return}
+  b.disabled=true;try{await USR.setPassword(pwTarget,pw);$("#pwModal").hidden=true;ST.log("Usuarios",`Cambió la contraseña de ${pwTarget.usuario}`);toast(`Contraseña de ${pwTarget.usuario} actualizada.`)}catch(e){err.textContent=e&&e.message||"No se pudo cambiar la contraseña."}b.disabled=false};
+$("#delCancel").onclick=()=>$("#delModal").hidden=true;
+$("#delOk").onclick=async()=>{const b=$("#delOk");b.disabled=true;$("#delErr").textContent="";try{await USR.remove(delTarget);$("#delModal").hidden=true;ST.log("Usuarios",`Eliminó a ${delTarget.usuario}`);toast(`Usuario ${delTarget.usuario} eliminado.`);await adminRender()}catch(e){$("#delErr").textContent=e&&e.message||"No se pudo eliminar."}b.disabled=false};
 
 /* ================= Lectura de Excel (sin librerías) ================= */
 async function inflate(u){return new Uint8Array(await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer())}
@@ -1132,7 +2050,7 @@ async function readSheet(buf,status){
   return{rows,warn};
 }
 const REQ={cat:"categoria",y:"ano",m:"mes",d:"dia",reg:"region de desembarque",prov:"provincia",com:"comuna",cal:"caleta",grp:"grupo especie",code:"codigo especie",esp:"nombre especie",q:"desembarque",x:"captura calculada",rpa:"rpa armador",name:"nm_armador",sex:"sexo",comp:"compania area de influ"};
-const OPT={org:"organizacion"};
+const OPT={org:"organizacion",lat:"latitud",lon:"longitud"};
 function toModelRows(rows){
   const hdr=(rows[0]||[]).map(h=>norm(String(h??"")).trim().replace(/\s+/g," "));const find=k=>hdr.findIndex(h=>h===k||h.startsWith(k));
   const ix={},missing=[];for(const k in REQ){const i=find(REQ[k]);if(i<0)missing.push(REQ[k]);ix[k]=i}for(const k in OPT)ix[k]=find(OPT[k]);if(missing.length)return{missing};
@@ -1142,7 +2060,7 @@ function toModelRows(rows){
     if(!(y>1990&&y<2100))bad.push("año");if(!(m>=1&&m<=12))bad.push("mes");if(!(d>=1&&d<=31))bad.push("día");if(q==null||q<0)bad.push("desembarque");if(rpa==null)bad.push("RPA");if(code==null)bad.push("código de especie");if(!s(row[ix.cal]))bad.push("caleta");
     if(bad.length){errs.push(`Fila ${r+1}: falta o no es válido ${bad.join(", ")}`);continue}
     let g=s(row[ix.grp]);g=g.charAt(0).toUpperCase()+g.slice(1).toLowerCase();if(g==="Crustaceos")g="Crustáceos";let nm=s(row[ix.name]);if(!nm||nm==="-")nm=`Sin nombre (RPA ${rpa})`;
-    out.push({d:Math.round((Date.UTC(y,m-1,d)-BASE)/DAY),cat:s(row[ix.cat]),reg:s(row[ix.reg]),prov:s(row[ix.prov]),com:s(row[ix.com]),cal:s(row[ix.cal]),grp:g,code,esp:s(row[ix.esp]),q:Math.round(q*1000),x:(v=>v==null?-1:Math.round(v*1000))(num(row[ix.x])),rpa,name:nm,sex:s(row[ix.sex]),comp:s(row[ix.comp]),org:ix.org>=0?s(row[ix.org]):""})}
+    out.push({d:Math.round((Date.UTC(y,m-1,d)-BASE)/DAY),cat:s(row[ix.cat]),reg:s(row[ix.reg]),prov:s(row[ix.prov]),com:s(row[ix.com]),cal:s(row[ix.cal]),grp:g,code,esp:s(row[ix.esp]),q:Math.round(q*1000),x:(v=>v==null?-1:Math.round(v*1000))(num(row[ix.x])),rpa,name:nm,sex:s(row[ix.sex]),comp:s(row[ix.comp]),org:ix.org>=0?s(row[ix.org]):"",lat:ix.lat>=0?num(row[ix.lat]):null,lon:ix.lon>=0?num(row[ix.lon]):null})}
   return{out,errs};
 }
 function emptyModel(){return{meta:{},P:[],C:[],E:[],cats:[],sexes:[],orgs:[""],cols:{d:[],p:[],c:[],e:[],k:[],q:[],x:[]}}}
@@ -1153,14 +2071,14 @@ function mergeRows(m,rows,all){
   let added=0,dup=0;
   for(const r of rows){if(!all&&keys.has(rowKey(r.d,r.rpa,r.cal,r.com,r.code,r.q,r.cat))){dup++;continue}
     let si=m.sexes.indexOf(r.sex);if(si<0){si=m.sexes.length;m.sexes.push(r.sex)}let oi=m.orgs.indexOf(r.org);if(oi<0){oi=m.orgs.length;m.orgs.push(r.org)}
-    if(!pI.has(r.rpa)){pI.set(r.rpa,m.P.length);m.P.push([r.rpa,r.name,si,oi])}const ck=r.cal+"|"+r.com;if(!cI.has(ck)){cI.set(ck,m.C.length);m.C.push([r.cal,r.com,r.prov,r.reg,r.comp])}
+    if(!pI.has(r.rpa)){pI.set(r.rpa,m.P.length);m.P.push([r.rpa,r.name,si,oi])}const ck=r.cal+"|"+r.com;if(!cI.has(ck)){cI.set(ck,m.C.length);m.C.push([r.cal,r.com,r.prov,r.reg,r.comp,r.lat??null,r.lon??null])}else if(r.lat!=null&&r.lon!=null){const C=m.C[cI.get(ck)];if(C[5]==null){C[5]=r.lat;C[6]=r.lon}}
     if(!eI.has(r.code)){eI.set(r.code,m.E.length);m.E.push([r.code,r.esp,r.grp])}let ki=m.cats.indexOf(r.cat);if(ki<0){ki=m.cats.length;m.cats.push(r.cat)}
     c.d.push(r.d);c.p.push(pI.get(r.rpa));c.c.push(cI.get(ck));c.e.push(eI.get(r.code));c.k.push(ki);c.q.push(r.q);c.x.push(r.x);added++}
   return{added,dup};
 }
 let PENDING=null;const up=$("#upModal"),st=$("#upStatus");
 $("#btnUpload").onclick=()=>{resetUp();up.hidden=false};$("#upCancel").onclick=()=>up.hidden=true;up.addEventListener("click",ev=>{if(ev.target===up)up.hidden=true});
-addEventListener("keydown",ev=>{if(ev.key==="Escape"){up.hidden=true;$("#pModal").hidden=true}});
+addEventListener("keydown",ev=>{if(ev.key==="Escape")document.querySelectorAll(".overlay").forEach(o=>o.hidden=true)});
 function resetUp(){PENDING=null;$("#fileIn").value="";st.innerHTML="";$("#upPrev").hidden=true;$("#upOk").disabled=true}
 const drop=$("#drop");["dragover","dragenter"].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add("over")}));["dragleave","drop"].forEach(e=>drop.addEventListener(e,()=>drop.classList.remove("over")));
 drop.addEventListener("drop",ev=>{ev.preventDefault();const f=ev.dataTransfer.files[0];if(f)handleFile(f)});$("#fileIn").addEventListener("change",ev=>{const f=ev.target.files[0];if(f)handleFile(f)});
@@ -1172,14 +2090,14 @@ async function handleFile(file){
     const {out,errs}=res;if(!out.length){say("No se encontraron filas válidas en el archivo.","e");return}
     const probe=JSON.parse(JSON.stringify(S.full));const {added,dup}=mergeRows(probe,out,false);let mn=Infinity,mx=-Infinity;out.forEach(r=>{if(r.d<mn)mn=r.d;if(r.d>mx)mx=r.d});
     PENDING={file:file.name,rows:out,added};st.innerHTML="";
-    $("#prevStats").innerHTML=[[t0(out.length),"filas válidas"],[dstr(mn)+" – "+dstr(mx),"rango de fechas"],[t0(added),"filas nuevas"],[t0(dup),"ya existían"],[t0(errs.length),"filas con error"]].map(([b,s])=>`<div><b>${b}</b><span>${s}</span></div>`).join("");
-    $("#prevMsgs").innerHTML=(warn?`<div class="w">${esc(warn)}</div>`:"")+errs.slice(0,50).map(e=>`<div class="e">${esc(e)}</div>`).join("")+(errs.length>50?`<div class="e">… y ${errs.length-50} errores más</div>`:"")+(!errs.length&&!warn?`<div class="ok">El archivo se leyó sin errores.</div>`:"");
+    $("#prevStats").innerHTML=[[t0(out.length),"filas válidas"],[dstr(mn)+" – "+dstr(mx),"rango de fechas"],[t0(added),"filas nuevas"],[t0(dup),"ya existían"],[t0(errs.length),"filas con error"],[t0(RV0(out)),"avisos de calidad"]].map(([b,s])=>`<div><b>${b}</b><span>${s}</span></div>`).join("");
+    const RV=reviewRows(out);$("#prevMsgs").innerHTML=(RV.length?`<div class="rvh">Revisión de calidad: ${RV.length} aviso${RV.length>1?"s":""} (no impiden la carga)</div>`+RV.map(([c,t])=>`<div class="${c}">${esc(t)}</div>`).join(""):`<div class="ok">Revisión de calidad: sin observaciones.</div>`)+(warn?`<div class="w">${esc(warn)}</div>`:"")+errs.slice(0,50).map(e=>`<div class="e">${esc(e)}</div>`).join("")+(errs.length>50?`<div class="e">… y ${errs.length-50} errores más</div>`:"")+(!errs.length&&!warn?`<div class="ok">El archivo se leyó sin errores.</div>`:"");
     $("#upPrev").hidden=false;$("#upOk").disabled=false}catch(e){say(e.message||"No se pudo leer el archivo.","e")}
 }
 $("#upOk").onclick=async()=>{if(!PENDING)return;const mode=document.querySelector("input[name=mode]:checked").value;const b=$("#upOk");b.disabled=true;b.textContent="Guardando…";
   try{const m=mode==="replace"?emptyModel():JSON.parse(JSON.stringify(S.full));const {added}=mergeRows(m,PENDING.rows,mode==="replace");m.meta={archivo:PENDING.file,filas:m.cols.d.length};
     await saveData(m,PENDING.file,added,mode==="replace"?"reemplazo":"agregar");up.hidden=true;await loadData();
-    toast(mode==="replace"?`Datos reemplazados: ${t0(m.cols.d.length)} registros.`:`Se agregaron ${t0(added)} filas nuevas.`)}
+    ST.log("Carga de datos",PENDING.file+" · "+(mode==="replace"?"reemplazo":"agregar")+" · "+t0(added)+" filas nuevas");toast(mode==="replace"?`Datos reemplazados: ${t0(m.cols.d.length)} registros.`:`Se agregaron ${t0(added)} filas nuevas.`)}
   catch(e){st.innerHTML=`<div class="e">${esc(e&&e.message?e.message:"No se pudo guardar. Revisa tu conexión.")}</div>`}
   b.disabled=false;b.textContent="Confirmar carga"};
 

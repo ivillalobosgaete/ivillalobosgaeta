@@ -9,6 +9,9 @@ Funciones principales:
 - Dos niveles de usuario: Administrador y Visualizador.
 - Dashboard con filtros y con un selector para ver toneladas totales o promedios.
 - Calculadora de negociación.
+- Mapa de poder e interés (5×5) por zona, por pescador u organización, con ranking y bitácora de relacionamiento.
+- Alertas automáticas, comparación de zonas, proyección de 3 meses y reporte ejecutivo imprimible.
+- Valor económico con precios de playa, calendario de vedas, escenarios de compensación, vistas guardadas y registro de actividad.
 - Carga de Excel para actualizar los datos.
 
 ## Qué hay en esta carpeta
@@ -67,19 +70,55 @@ Para generar `SESSION_SECRET`, en una terminal con Node escribe:
    - Los demás crean su cuenta con **Crear cuenta**.
    - Tú las apruebas en la pestaña **Administración**.
 
-Después del primer ingreso puedes borrar `ADMIN_PASSWORD` de Vercel: el administrador ya quedó guardado.
+Después del primer ingreso puedes borrar `ADMIN_PASSWORD` de Vercel: el administrador ya quedó guardado. Si la dejas y alguien elimina la cuenta `ADMIN_USER`, se volverá a crear con esa contraseña en el siguiente inicio de sesión.
+
+## Indicadores económicos y actividad por caleta
+- **Indicadores del día:** dólar observado, euro, UF, UTM, cobre, IPC y tasa de política monetaria. Se obtienen automáticamente desde mindicador.cl, que publica los valores del Banco Central de Chile, y se actualizan cada 30 minutos.
+- **Actividad por caleta y mes:** un mapa de calor con las caletas agrupadas por zona (Asuntos Públicos Norte y Asuntos Públicos Los Pelambres) y los 12 meses. Responde a los filtros y al selector de medida (toneladas totales, promedio mensual o promedio por pescador).
+
+## Mapa de poder e interés
+- Hay un mapa de 5×5 y un ranking por toneladas para cada zona: Asuntos Públicos Norte y Asuntos Públicos Los Pelambres.
+- **Poder de influencia (1 a 5):** se calcula por volumen. Los pescadores se ordenan por toneladas dentro de su zona y se dividen en quintiles; el 20 % con más toneladas queda en 5.
+- **Interés (1 a 5):** se calcula por regularidad, es decir, por los meses con desembarque en el período. También se divide en quintiles.
+- **Estrategia sugerida:**
+  - Gestionar de cerca: poder 3 o más e interés 3 o más.
+  - Mantener satisfecho: poder 3 o más, interés bajo 3.
+  - Mantener informado: poder bajo 3, interés 3 o más.
+  - Monitorear: el resto.
+- Un administrador puede ajustar el poder y el interés de cada pescador con **Evaluar** y dejar una nota. La nota solo la ven los administradores. También puede volver al cálculo automático.
+- Los ajustes se guardan en la tabla `evaluaciones`.
+- **Si ya tenías la plataforma publicada:** vuelve a ejecutar `supabase/schema.sql` en Supabase. Es seguro repetirlo: solo crea la tabla nueva. Mientras no lo hagas, el mapa funciona igual, pero solo con el cálculo automático.
+
+## Funciones de gestión
+- **Reporte ejecutivo** (botón en el encabezado): resumen de una página con indicadores, comparación de zonas, alertas, claves, proyección y actores clave. Se puede imprimir o guardar como PDF, o descargar como HTML.
+- **Alertas** (Resumen): caídas de una caleta, especie o zona frente al mismo mes del año anterior, y pescadores de "Gestionar de cerca" sin desembarques en los últimos 3 meses. Si la especie estaba en veda, la alerta lo indica. El umbral se ajusta en Administración.
+- **Comparación de zonas** y **Proyección de los próximos 3 meses** (Resumen). La proyección es el promedio del mismo mes en los últimos 3 años, ajustado por la tendencia de 12 meses.
+- **Valor económico:** un administrador ingresa precios de playa ($ por kg) en Administración. Con eso aparecen el valor estimado, el poder según valor y los montos en la negociación.
+- **Organizaciones:** el mapa de poder e interés puede agrupar por organización. Se usa la columna Organización del Excel, o la que asigne un administrador con **Evaluar**.
+- **Bitácora:** reuniones, compromisos, acuerdos y conflictos por pescador u organización, con estado y responsable. Solo la ven los administradores. Los pendientes aparecen en "Compromisos y seguimiento".
+- **Escenarios de compensación** (Negociación): compara costo total y reparto de A (por kilo histórico), B (monto fijo) y C (mixto).
+- **Revisión de calidad al cargar el Excel:** avisa RPA sin nombre, fechas futuras, filas repetidas, nombres distintos para un mismo RPA, especies y caletas nuevas (y las parecidas a una existente) y volúmenes inusuales. No impide la carga.
+- **Vedas:** se registran en Administración. Se ven en el calendario de vedas (Especies y caletas) y sombreadas en la evolución mensual cuando filtras esa especie.
+- **Vistas guardadas:** cada usuario guarda combinaciones de filtros y las abre con un clic.
+- **Registro de actividad** (Administración): inicios de sesión, cargas, cambios de usuarios, evaluaciones, bitácora, ajustes, reportes y exportaciones.
+
+**Si actualizas una plataforma ya publicada:** vuelve a ejecutar `supabase/schema.sql` en Supabase. Crea las tablas nuevas (`ajustes`, `bitacora`, `vistas`, `actividad`) y agrega la columna `organizacion` a `evaluaciones`, sin tocar los datos existentes.
 
 ## Uso diario
 - **Actualizar datos** (solo administradores): sube un Excel nuevo y elige **Agregar solo filas nuevas** o **Reemplazar todos los datos**. Todos los usuarios ven los datos nuevos al volver a entrar.
-- **Administración** (solo administradores):
-  - Aprobar, rechazar o suspender cuentas.
-  - Asignar el nivel (Administrador o Visualizador).
-  - Limitar las comunas que ve cada visualizador y ocultarle los nombres.
-  - Permitirle exportar a CSV.
+- **Administración** (solo administradores; el servidor rechaza estas acciones si las intenta otro nivel):
+  - **Agregar usuario**: crea la cuenta directamente con usuario, nombre, cargo, área, contraseña inicial, nivel y permisos. Queda activa de inmediato.
+  - **Editar**: cambia nombre, cargo, área, nivel (Administrador o Visualizador), comunas visibles, ver nombres y exportar a CSV.
+  - **Contraseña**: asigna una contraseña nueva a cualquier usuario. Las sesiones abiertas de ese usuario se cierran.
+  - **Suspender** o **Reactivar** el acceso sin borrar la cuenta.
+  - **Eliminar** la cuenta (pide confirmación y no se puede deshacer).
+  - Aprobar o rechazar las solicitudes creadas desde **Crear cuenta**.
   - Revisar el historial de cargas.
+  - Para no quedar sin acceso: no puedes suspender, eliminar ni bajar de nivel tu propia cuenta, y siempre debe quedar al menos un administrador activo.
 - **Cierre de sesión**: con el botón **Cerrar sesión**, tras 30 minutos sin uso, o a las 8 horas.
 
 ### Restablecer una contraseña olvidada
+Lo normal es que un administrador use el botón **Contraseña** en la pestaña Administración. Si el único administrador olvidó la suya:
 1. En tu computador, dentro de esta carpeta, ejecuta: `npm run hash -- "NuevaContraseña"`.
 2. En Supabase, abre **Table editor > usuarios**, busca al usuario y pega el resultado en la columna **hash**.
 
